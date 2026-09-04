@@ -113,18 +113,4 @@ Ketika backend aktif, dokumentasi interaktif Swagger UI dapat diakses langsung p
 
 ---
 
-## ⚙️ Variabel Konfigurasi Utama (`.env`)
 
-| Variabel | Deskripsi | Default / Contoh |
-|---|---|---|
-| `DB_USER` | Username PostgreSQL | `postgres` |
-| `DB_PASSWORD` | Password PostgreSQL | `your_secure_password` |
-| `JWT_SECRET` | Secret key penandatangan token JWT (HS256) | *Min 64 karakter Base64* |
-| `JWT_EXPIRATION` | Masa berlaku token (ms) | `86400000` (24 jam) |
-| `SPRING_MAIL_USERNAME` | Email Gmail untuk pengiriman OTP & E-Ticket | `your_email@gmail.com` |
-| `SPRING_MAIL_PASSWORD` | App Password Gmail | `your_app_password` |
-| `INTERNAL_API_KEY` | Secret key komunikasi antar-microservice | *Custom secret string* |
-| `MIDTRANS_SERVER_KEY` | Server Key Midtrans Payment Gateway | `Mid-server-...` |
-| `MIDTRANS_IS_PRODUCTION` | Flag mode Midtrans (Sandbox / Prod) | `false` |
-| `VITE_API_BASE_URL` | Base URL API Gateway untuk frontend | `http://localhost:8080` |
-| `VITE_GOOGLE_CLIENT_ID` | OAuth Client ID Google Login | `*.apps.googleusercontent.com` |
