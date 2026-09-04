@@ -1,0 +1,295 @@
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import eventService from '../services/eventService';
+import { useAuth } from '../context/AuthContext';
+import { Calendar, FileText, MapPin, Ticket, ShieldCheck, AlertCircle } from 'lucide-react';
+
+export default function EventDetail() {
+  const { t } = useTranslation();
+  const { user } = useAuth();
+  const { slug } = useParams();
+  const [event, setEvent] = useState(null);
+  const [tickets, setTickets] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  const isEventExpired = (ev) => {
+    if (!ev) return false;
+    if (ev.status === 'FINISHED' || ev.status === 'CANCELLED') return true;
+    if (!ev.eventDate) return false;
+    
+    const eventDateObj = new Date(ev.eventDate);
+    if (ev.eventTime) {
+      const [hours, minutes] = ev.eventTime.split(':').map(Number);
+      if (!isNaN(hours) && !isNaN(minutes)) {
+        eventDateObj.setHours(hours, minutes, 0, 0);
+        return eventDateObj < new Date();
+      }
+    }
+    eventDateObj.setHours(23, 59, 59, 999);
+    return eventDateObj < new Date();
+  };
+
+  const isExpired = isEventExpired(event);
+
+  const fetchDetails = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const eventRes = await eventService.getEventBySlug(slug);
+      if (eventRes && eventRes.data) {
+        setEvent(eventRes.data);
+
+        const ticketRes = await eventService.getTicketsByEventId(eventRes.data.idEvent);
+        if (ticketRes && ticketRes.data) {
+          setTickets(ticketRes.data);
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      setError(t('detail.errorLoad'));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDetails();
+  }, [slug]);
+
+  const formatRupiah = (value) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0
+    }).format(value);
+  };
+
+  if (loading) {
+    return (
+      <div className="gradient-bg min-h-screen text-slate-800 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 rounded-full border-4 border-blue-100 border-t-blue-500 animate-spin"></div>
+          <p className="text-slate-500 text-sm font-medium">{t('detail.loading')}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error && !event) {
+    return (
+      <div className="gradient-bg min-h-screen text-slate-800 flex items-center justify-center px-6">
+        <div className="glass-effect rounded-2xl p-8 max-w-md w-full border border-slate-200 text-center space-y-4">
+          <p className="text-4xl">⚠️</p>
+          <h2 className="text-xl font-bold text-red-600">{t('detail.errorTitle')}</h2>
+          <p className="text-sm text-slate-500">{error}</p>
+          <Link to="/" className="inline-block px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold transition-all">
+            {t('detail.backCatalog')}
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="gradient-bg min-h-screen text-slate-800 pb-20 pt-28 px-6 md:px-12">
+      <div className="max-w-6xl mx-auto space-y-10">
+        
+        {/* Cover Hero Banner */}
+        <div className="relative rounded-3xl overflow-hidden h-[300px] md:h-[400px] border border-slate-200 shadow-xl">
+          <img
+            src={event?.picture || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=1200'}
+            alt={event?.eventName}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
+          
+          <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-10 md:right-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+            <div>
+              <div className="flex flex-wrap items-center gap-2 mb-3">
+                <span className="px-3 py-1 rounded-full border border-white/30 bg-white/20 text-xs font-semibold text-white backdrop-blur-md inline-block">
+                  {event?.category}
+                </span>
+                {isExpired && (
+                  <span className="px-3 py-1 rounded-full border border-red-400/50 bg-red-600/80 text-xs font-bold text-white backdrop-blur-md inline-block">
+                    {event?.status === 'CANCELLED' ? t('detail.eventCancelled') : t('detail.eventFinished')}
+                  </span>
+                )}
+              </div>
+              <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-tight text-white">
+                {event?.eventName}
+              </h1>
+            </div>
+            
+            <div className="bg-white/90 backdrop-blur-md border border-slate-200 px-5 py-3 rounded-2xl flex items-center gap-3">
+              <Calendar className="w-5 h-5 text-blue-600" />
+              <div className="text-left">
+                <span className="text-[10px] text-slate-500 uppercase tracking-widest block font-bold">{t('detail.eventDate')}</span>
+                <span className="text-sm font-bold text-blue-600">{event?.eventDate} ({event?.eventTime || 'WIB'})</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {error && (
+          <div className="p-4 rounded-xl border border-red-200 bg-red-50 text-red-600 text-xs flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-red-500" /> {error}
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          
+          {/* Main description details */}
+          <div className="lg:col-span-2 space-y-8">
+             <div className="glass-effect rounded-2xl p-8 border border-slate-200 space-y-6">
+              <h3 className="text-xl font-bold text-blue-600 flex items-center gap-2">
+                <FileText className="w-5 h-5 text-blue-600" /> {t('detail.aboutConcert')}
+              </h3>
+              <p className="text-sm text-slate-600 leading-relaxed font-normal whitespace-pre-wrap">
+                {event?.description}
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-slate-100">
+                <div>
+                  <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">{t('detail.mainArtist')}</span>
+                  <span className="text-sm font-semibold text-slate-800">{event?.artistName}</span>
+                </div>
+                <div>
+                  <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">{t('detail.city')}</span>
+                  <span className="text-sm font-semibold text-slate-800 flex items-center gap-1 mt-1"><MapPin className="w-3.5 h-3.5 text-blue-600" /> {event?.city}</span>
+                </div>
+                <div>
+                  <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">{t('detail.venue')}</span>
+                  <span className="text-sm font-semibold text-slate-800 flex items-center gap-1 mt-1"><MapPin className="w-3.5 h-3.5 text-blue-600" /> {event?.location}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Google Maps Location Embed */}
+            {event && (
+              <div className="glass-effect rounded-2xl p-6 border border-slate-200 space-y-4">
+                <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                  <MapPin className="w-5 h-5 text-blue-600" /> {t('detail.mapTitle')}
+                </h3>
+                <div className="rounded-xl overflow-hidden border border-slate-200 h-[280px]">
+                  <iframe
+                    title="Event Location Map"
+                    width="100%"
+                    height="100%"
+                    frameBorder="0"
+                    style={{ border: 0 }}
+                    src={`https://maps.google.com/maps?q=${encodeURIComponent(event.location + ", " + event.city)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Ticket buying panel */}
+          <div className="space-y-6">
+            <h3 className="text-xl font-bold flex items-center gap-2 text-slate-800">
+              <Ticket className="w-5 h-5 text-slate-850" /> {t('detail.selectTicket')}
+            </h3>
+
+            {isExpired && (
+              <div className="p-4 rounded-xl border border-red-200 bg-red-50 text-red-700 text-xs font-semibold flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
+                <p>{t('detail.eventPassedNotice')}</p>
+              </div>
+            )}
+            
+            <div className="space-y-4">
+              {tickets.length === 0 ? (
+                <div className="glass-effect rounded-2xl p-6 text-center text-slate-500 border border-slate-200">
+                  {t('detail.noTickets')}
+                </div>
+              ) : (
+                tickets.map((tItem) => {
+                  const isOutOfStock = tItem.stock <= 0;
+                  const isBlocked = isExpired || isOutOfStock;
+                  return (
+                    <div
+                      key={tItem.idTicket}
+                      className={`glass-effect rounded-2xl p-5 border ${
+                        isBlocked ? 'border-slate-200 opacity-60 bg-slate-50' : 'border-slate-200 hover:border-blue-300'
+                      } transition-all relative overflow-hidden`}
+                    >
+                      {isExpired ? (
+                        <div className="absolute top-3 right-3 bg-slate-200 border border-slate-300 text-slate-600 font-bold px-2 py-0.5 rounded text-[9px] uppercase tracking-wider">
+                          {event?.status === 'CANCELLED' ? t('detail.eventCancelled') : t('detail.eventFinished')}
+                        </div>
+                      ) : isOutOfStock && (
+                        <div className="absolute top-3 right-3 bg-red-100 border border-red-200 text-red-600 font-bold px-2 py-0.5 rounded text-[9px] uppercase tracking-wider">
+                          {t('detail.outOfStock')}
+                        </div>
+                      )}
+                      
+                      <h4 className="text-base font-extrabold text-slate-800">{tItem.ticketType}</h4>
+                      <p className="text-xs text-slate-500 mt-1 font-normal line-clamp-2">
+                        {tItem.description || t('detail.defaultDesc')}
+                      </p>
+                      
+                      <div className="flex items-center justify-between mt-4 pt-3 border-t border-slate-100">
+                        <div>
+                          <span className="text-[10px] text-slate-400 block uppercase tracking-wider font-bold">{t('detail.pricePerTicket')}</span>
+                          <span className="text-base font-extrabold text-blue-600">{formatRupiah(tItem.price)}</span>
+                          <span className="text-[10px] text-slate-500 block mt-0.5 font-medium">{t('detail.remainingStock')}: {tItem.stock}</span>
+                        </div>
+                        
+                        {isExpired ? (
+                          <button
+                            disabled
+                            className="px-4 py-2 bg-slate-200 text-slate-500 text-xs font-bold rounded-xl cursor-not-allowed"
+                          >
+                            {event?.status === 'CANCELLED' ? t('detail.eventCancelled') : t('detail.eventFinished')}
+                          </button>
+                        ) : isOutOfStock ? (
+                          <button
+                            disabled
+                            className="px-4 py-2 bg-slate-200 text-slate-500 text-xs font-bold rounded-xl"
+                          >
+                            {t('detail.soldOut')}
+                          </button>
+                        ) : user && ['ADMIN_CAMTIX', 'ADMIN_APLIKASI'].includes(user.role) ? (
+                          <button
+                            disabled
+                            title={t('detail.adminBlockedTooltip')}
+                            className="px-5 py-2.5 bg-slate-200 text-slate-500 text-xs font-bold rounded-xl cursor-not-allowed"
+                          >
+                            {t('detail.adminBlocked')}
+                          </button>
+                        ) : (
+                          <Link
+                            to={`/booking?eventId=${event?.idEvent}&ticketId=${tItem.idTicket}`}
+                            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-xs font-bold rounded-xl shadow-sm shadow-blue-500/20 hover:shadow-blue-500/30 active:scale-95 transition-all text-white cursor-pointer"
+                          >
+                            {t('detail.bookTicket')}
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+
+            {/* Safety tips */}
+             <div className="bg-blue-50/50 rounded-2xl p-4 border border-blue-100 space-y-2">
+              <span className="text-xs font-bold text-blue-600 uppercase flex items-center gap-1.5 tracking-wider">
+                <ShieldCheck className="w-4 h-4 text-blue-600" /> {t('detail.securityGuarantee')}
+              </span>
+              <p className="text-[10px] text-slate-500 leading-relaxed font-normal">
+                {t('detail.securityDesc')}
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  );
+}

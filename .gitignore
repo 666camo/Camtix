@@ -1,0 +1,21 @@
+# Environment secrets
+.env
+
+# Build outputs
+dist/
+target/
+node_modules/
+
+# IDE
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# Docker
+.dockerignore

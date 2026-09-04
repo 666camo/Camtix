@@ -1,0 +1,9 @@
+# Environment secrets
+.env
+
+# Build outputs
+dist/
+node_modules/
+
+# Misc
+*.log

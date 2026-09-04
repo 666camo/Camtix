@@ -1,0 +1,1405 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.2.5 Chrome/138.0.7204.251 Electron/37.6.1 Safari/537.36" version="28.2.5" pages="15">
+  <diagram name="Start" id="camtix-start">
+    <mxGraphModel dx="786" dy="562" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="camtix-2" value="FLOWCHART CAMTIX (PEMESANAN TIKET KONSER)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="110" y="20" width="620" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-3" value="START" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.terminator;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="160" y="80" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-4" value="apakah database camtix sudah ada?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="150" y="180" width="130" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-5" value="create database camtix_db&#xa;(user, event, transaction)" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="440" y="185" width="130" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-6" value="set default admin:&#xa;ADMIN_APLIKASI&#xa;ADMIN_CAMTIX" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="620" y="350" width="150" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-7" value="tampilan awal CamTix&#xa;- Sign In&#xa;- Register&#xa;- Lihat Event" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="140" y="355" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-8" value="klik == Sign In?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="160" y="500" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-9" value="1" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="430" y="520" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-10" value="klik == Register?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="160" y="650" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-11" value="3" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="430" y="670" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-12" value="klik == Lihat Event?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="160" y="805" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-13" value="12" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="430" y="825" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-14" value="END" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="165" y="965" width="90" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-3" target="camtix-4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-16" value="t" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-4" target="camtix-7" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-17" value="f" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-4" target="camtix-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-5" target="camtix-6" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-6" target="camtix-7" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-7" target="camtix-8" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-21" value="t" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-8" target="camtix-9" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-22" value="f" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-8" target="camtix-10" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-23" value="t" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-10" target="camtix-11" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-24" value="f" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-10" target="camtix-12" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-25" value="t" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-12" target="camtix-13" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-26" value="f" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-12" target="camtix-14" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="login" id="camtix-login">
+    <mxGraphModel dx="1209" dy="865" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="camtix-2" value="1 - Login &amp; Autentikasi" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="110" y="20" width="620" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-3" value="1" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="395" y="75" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-4" value="tampilan login&#xa;-back&#xa;-register" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="355" y="155" width="140" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-5" value="klik == back?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="370" y="250" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-6" value="2" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="550" y="270" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-7" value="klik == register?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="370" y="390" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-8" value="3" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="550" y="410" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-9" value="login input&#xa;Email dan Password" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="370" y="535" width="100" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-10" value="read data user&#xa;di table users" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="365" y="640" width="110" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-11" value="email &amp;&amp; password benar?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="350" y="765" width="140" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-12" value="email / password&#xa;tidak ditemukan" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="575" y="765" width="120" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-13" value="akun aktif &amp; verified?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="350" y="890" width="140" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-14" value="akun belum aktif / belum verified" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="575" y="895" width="130" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-15" value="generate JWT&#xa;add/update table user_login" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="350" y="1015" width="140" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-16" value="role == ADMIN_APLIKASI?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="120" y="875" width="135" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-17" value="4" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="40" y="890" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-18" value="role == ADMIN_CAMTIX?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="120" y="1000" width="135" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-19" value="5" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="40" y="1015" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-20" value="6" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="250" y="1040" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-3" target="camtix-4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-4" target="camtix-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-23" value="t" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-5" target="camtix-6" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-24" value="f" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-5" target="camtix-7" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-25" value="t" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-7" target="camtix-8" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-26" value="f" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-7" target="camtix-9" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-9" target="camtix-10" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-10" target="camtix-11" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-29" value="f" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-11" target="camtix-12" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-12" target="camtix-4" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="635" y="740" />
+              <mxPoint x="270" y="740" />
+              <mxPoint x="270" y="188" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="camtix-31" value="t" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-11" target="camtix-13" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-32" value="f" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-13" target="camtix-14" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-14" target="camtix-4" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="770" y="933" />
+              <mxPoint x="770" y="188" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="camtix-34" value="t" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-13" target="camtix-15" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-15" target="camtix-16" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-36" value="t" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-16" target="camtix-17" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-37" value="f" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-16" target="camtix-18" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-38" value="t" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-18" target="camtix-19" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-39" value="f" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="camtix-18" target="camtix-20" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="register" id="camtix-register">
+    <mxGraphModel dx="1965" dy="1405" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="camtix-2" value="3 - Register User &amp; Verifikasi OTP" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="110" y="20" width="620" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-3" value="3" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="395" y="75" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-4" value="tampilan register&#xa;-exit&#xa;-sudah punya akun" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="350" y="150" width="150" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-5" value="klik == exit?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="370" y="255" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-6" value="2" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="550" y="275" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-7" value="sudah punya akun?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="370" y="395" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-8" value="1" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="550" y="415" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-9" value="registrasi input:&#xa;nama, email, no hp, password" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="340" y="540" width="160" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-10" value="input valid &amp;&amp; email unik?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="355" y="655" width="130" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-11" value="tampilkan error&#xa;field/email tidak valid" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="575" y="660" width="135" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-12" value="set role USER&#xa;set status UNVERIFIED" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="350" y="780" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-13" value="add data user&#xa;ke table users" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="365" y="880" width="110" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-14" value="generate OTP&#xa;simpan table otp_verifications&#xa;kirim email OTP" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="340" y="995" width="165" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-15" value="input kode OTP" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="135" y="770" width="110" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-16" value="OTP valid?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="135" y="875" width="110" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-17" value="OTP invalid/expired&#xa;resend OTP" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="15" y="875" width="110" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-18" value="update user verified&#xa;hapus OTP" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="130" y="1005" width="120" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-19" value="1" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="20" y="1020" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-3" target="camtix-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-4" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-5" target="camtix-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-5" target="camtix-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-7" target="camtix-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-7" target="camtix-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-9" target="camtix-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-10" target="camtix-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-11" target="camtix-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-10" target="camtix-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-12" target="camtix-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-13" target="camtix-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-14" target="camtix-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-15" target="camtix-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-16" target="camtix-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-17" target="camtix-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-16" target="camtix-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-18" target="camtix-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="admin-aplikasi" id="camtix-adminapp">
+    <mxGraphModel dx="1965" dy="1405" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="camtix-2" value="4 - Dashboard Admin Aplikasi" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="110" y="20" width="620" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-3" value="4" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="395" y="75" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-4" value="tampilan dashboard Admin Aplikasi&#xa;menu:&#xa;1. kelola user/pengunjung&#xa;2. kelola pemesanan&#xa;3. kelola pembayaran&#xa;4. logout" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="315" y="155" width="220" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-5" value="pilih == user/pengunjung?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="350" y="315" width="150" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-6" value="9" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="560" y="330" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-7" value="pilih == pemesanan?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="350" y="455" width="150" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-8" value="10" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="560" y="470" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-9" value="pilih == pembayaran?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="350" y="595" width="150" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-10" value="11" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="560" y="610" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-11" value="pilih == logout?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="350" y="735" width="150" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-12" value="2" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="560" y="750" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-13" value="tampilkan dashboard lagi" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="345" y="890" width="160" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-3" target="camtix-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-4" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-5" target="camtix-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-5" target="camtix-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-7" target="camtix-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-7" target="camtix-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-9" target="camtix-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-9" target="camtix-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-11" target="camtix-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-11" target="camtix-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-13" target="camtix-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="admin-camtix" id="camtix-adminc">
+    <mxGraphModel dx="1965" dy="1405" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="camtix-2" value="5 - Dashboard Admin CamTix" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="110" y="20" width="620" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-3" value="5" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="395" y="75" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-4" value="tampilan dashboard Admin CamTix&#xa;menu:&#xa;1. event konser&#xa;2. tiket&#xa;3. user/pengunjung&#xa;4. pemesanan&#xa;5. pembayaran&#xa;6. logout" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="310" y="145" width="230" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-5" value="pilih == event?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="360" y="310" width="130" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-6" value="7" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="560" y="325" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-7" value="pilih == tiket?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="360" y="435" width="130" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-8" value="8" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="560" y="450" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-9" value="pilih == user/pengunjung?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="560" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-10" value="9" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="560" y="575" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-11" value="pilih == pemesanan?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="685" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-12" value="10" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="560" y="700" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-13" value="pilih == pembayaran?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="810" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-14" value="11" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="560" y="825" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-15" value="pilih == logout?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="360" y="940" width="130" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-16" value="2" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="560" y="955" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-3" target="camtix-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-4" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-5" target="camtix-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-5" target="camtix-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-7" target="camtix-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-7" target="camtix-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-9" target="camtix-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-9" target="camtix-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-11" target="camtix-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-11" target="camtix-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-13" target="camtix-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-13" target="camtix-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-15" target="camtix-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-15" target="camtix-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="user" id="camtix-user">
+    <mxGraphModel dx="1965" dy="1405" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="camtix-2" value="6 - Home User" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="110" y="20" width="620" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-3" value="6" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="395" y="75" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-4" value="tampilan home user&#xa;menu:&#xa;1. lihat/search event&#xa;2. booking now&#xa;3. riwayat pesanan/pembayaran&#xa;4. logout" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="320" y="155" width="210" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-5" value="pilih == lihat/search event?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="315" width="160" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-6" value="12" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="560" y="330" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-7" value="pilih == booking now?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="455" width="160" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-8" value="13" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="560" y="470" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-9" value="pilih == riwayat?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="595" width="160" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-10" value="14" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="560" y="610" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-11" value="pilih == logout?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="360" y="735" width="130" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-12" value="2" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="560" y="750" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-3" target="camtix-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-4" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-5" target="camtix-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-5" target="camtix-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-7" target="camtix-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-7" target="camtix-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-9" target="camtix-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-9" target="camtix-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-11" target="camtix-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-11" target="camtix-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="admin-event" id="camtix-event">
+    <mxGraphModel dx="1965" dy="1405" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="camtix-2" value="7 - Admin Kelola Event Konser" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="110" y="20" width="620" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-3" value="7" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="395" y="75" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-4" value="read table events" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="365" y="150" width="110" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-5" value="tampilan list event&#xa;-search/filter&#xa;-tambah event&#xa;-edit event&#xa;-hapus/nonaktif&#xa;-kembali" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="320" y="265" width="210" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-6" value="pilih == search?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="355" y="420" width="140" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-7" value="input keyword/kota/kategori&#xa;read event sesuai filter" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="560" y="410" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-8" value="pilih == tambah?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="355" y="540" width="140" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-9" value="input nama, artis, kota, lokasi, tanggal, waktu, kategori, gambar" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="560" y="525" width="170" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-10" value="data valid?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="580" y="650" width="130" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-11" value="add data event&#xa;ke table events" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="580" y="765" width="130" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-12" value="pilih == edit?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="355" y="665" width="140" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-13" value="pilih event&#xa;input perubahan data" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="120" y="650" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-14" value="update table events" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="130" y="765" width="130" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-15" value="pilih == hapus?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="355" y="790" width="140" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-16" value="event sudah punya booking?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="350" y="910" width="150" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-17" value="tidak bisa delete&#xa;set status INACTIVE" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="575" y="910" width="140" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-18" value="delete/nonaktif event&#xa;di table events" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="150" y="910" width="140" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-19" value="5" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="390" y="1025" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-3" target="camtix-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-4" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-5" target="camtix-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-6" target="camtix-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-7" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-6" target="camtix-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-8" target="camtix-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-9" target="camtix-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-10" target="camtix-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-10" target="camtix-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-11" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-8" target="camtix-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-12" target="camtix-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-13" target="camtix-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-14" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-12" target="camtix-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-15" target="camtix-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-15" target="camtix-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-16" target="camtix-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-16" target="camtix-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-17" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-18" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="admin-ticket" id="camtix-ticket">
+    <mxGraphModel dx="1965" dy="1405" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="camtix-2" value="8 - Admin Kelola Tiket" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="110" y="20" width="620" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-3" value="8" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="395" y="75" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-4" value="read table events&#xa;read table tickets" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="360" y="145" width="130" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-5" value="tampilan kelola tiket&#xa;-pilih event&#xa;-list tiket&#xa;-tambah&#xa;-edit&#xa;-hapus&#xa;-kembali" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="325" y="270" width="200" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-6" value="pilih == tambah tiket?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="425" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-7" value="input jenis tiket, harga, stok, kuota, event_id" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="560" y="420" width="170" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-8" value="data valid?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="575" y="535" width="130" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-9" value="add data ticket&#xa;ke table tickets" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="575" y="650" width="130" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-10" value="pilih == edit tiket?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="555" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-11" value="pilih tiket&#xa;input perubahan harga/stok/status" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="120" y="545" width="160" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-12" value="update table tickets" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="135" y="665" width="130" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-13" value="pilih == hapus tiket?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="685" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-14" value="tiket sudah dibooking?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="350" y="815" width="150" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-15" value="tampilkan pesan&#xa;tidak bisa hapus" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="575" y="820" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-16" value="delete / set inactive&#xa;table tickets" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="135" y="820" width="140" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-17" value="5" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="395" y="970" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-3" target="camtix-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-4" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-5" target="camtix-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-6" target="camtix-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-7" target="camtix-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-8" target="camtix-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-8" target="camtix-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-9" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-6" target="camtix-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-10" target="camtix-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-11" target="camtix-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-12" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-10" target="camtix-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-13" target="camtix-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-13" target="camtix-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-14" target="camtix-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-14" target="camtix-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-15" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-16" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="admin-user-pengunjung" id="camtix-userm">
+    <mxGraphModel dx="1965" dy="1405" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="camtix-2" value="9 - Admin Kelola User &amp; Pengunjung" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="110" y="20" width="620" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-3" value="9" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="395" y="75" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-4" value="read table users&#xa;read table visitor_logs" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="355" y="145" width="140" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-5" value="tampilan user/pengunjung&#xa;-list user&#xa;-search&#xa;-ban/unban&#xa;-lihat log pengunjung&#xa;-kembali" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="320" y="270" width="210" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-6" value="pilih == search user?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="425" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-7" value="input nama/email&#xa;read user sesuai keyword" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="570" y="425" width="150" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-8" value="pilih == ban/unban?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="560" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-9" value="update status user&#xa;ACTIVE / BANNED" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="570" y="565" width="150" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-10" value="pilih == lihat pengunjung?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="695" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-11" value="tampilkan visitor log&#xa;IP, browser, waktu, halaman" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="570" y="690" width="160" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-12" value="kembali ke dashboard?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="830" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-13" value="5" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="560" y="845" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-14" value="4" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="655" y="845" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-3" target="camtix-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-4" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-5" target="camtix-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-6" target="camtix-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-7" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-6" target="camtix-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-8" target="camtix-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-9" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-8" target="camtix-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-10" target="camtix-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-11" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-10" target="camtix-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-12" target="camtix-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-12" target="camtix-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-12" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="admin-booking" id="camtix-bookingm">
+    <mxGraphModel dx="1965" dy="1405" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="camtix-2" value="10 - Admin Kelola Pemesanan" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="110" y="20" width="620" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-3" value="10" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="395" y="75" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-4" value="read table bookings&#xa;join users, events, tickets" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="145" width="160" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-5" value="tampilan semua pemesanan&#xa;-filter status&#xa;-detail booking&#xa;-update status&#xa;-kembali" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="320" y="270" width="210" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-6" value="pilih == filter status?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="420" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-7" value="input status&#xa;PENDING/CONFIRMED/EXPIRED/CANCELLED" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="560" y="410" width="175" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-8" value="pilih == detail?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="550" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-9" value="read detail booking&#xa;tampilkan kode, event, tiket, total, user" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="560" y="535" width="175" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-10" value="pilih == update status?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="680" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-11" value="status menjadi CANCELLED / EXPIRED?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="805" width="165" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-12" value="restore stok ticket&#xa;ke Event Service/table tickets" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="565" y="800" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-13" value="update table bookings" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="925" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-14" value="5" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="550" y="940" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-3" target="camtix-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-4" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-5" target="camtix-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-6" target="camtix-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-7" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-6" target="camtix-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-8" target="camtix-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-9" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-8" target="camtix-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-10" target="camtix-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-10" target="camtix-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-11" target="camtix-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-12" target="camtix-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-11" target="camtix-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-13" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="admin-payment" id="camtix-paymentm">
+    <mxGraphModel dx="1965" dy="1405" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="camtix-2" value="11 - Admin Kelola Pembayaran" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="110" y="20" width="620" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-3" value="11" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="395" y="75" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-4" value="read table payments&#xa;join bookings, users" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="355" y="145" width="140" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-5" value="tampilan data pembayaran&#xa;-waiting confirmation&#xa;-lihat bukti&#xa;-approve/reject&#xa;-kembali" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="320" y="270" width="210" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-6" value="pilih == lihat bukti?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="420" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-7" value="tampilkan bukti transfer&#xa;nominal, metode, booking code" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="560" y="410" width="170" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-8" value="bukti pembayaran valid?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="550" width="165" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-9" value="update payment = PAID&#xa;booking = CONFIRMED" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="565" y="545" width="155" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-10" value="update payment = REJECTED&#xa;booking = CANCELLED&#xa;restore stok ticket" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="680" width="165" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-11" value="pilih == kelola metode bayar?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="815" width="165" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-12" value="add/edit/delete&#xa;table payment_methods" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="565" y="815" width="155" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-13" value="5" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="395" y="955" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-3" target="camtix-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-4" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-5" target="camtix-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-6" target="camtix-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-7" target="camtix-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-8" target="camtix-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-9" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-8" target="camtix-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-10" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-6" target="camtix-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-11" target="camtix-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-12" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-11" target="camtix-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="user-info-event" id="camtix-infoevent">
+    <mxGraphModel dx="1965" dy="1405" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="camtix-2" value="12 - User Informasi Tiket &amp; Event" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="110" y="20" width="620" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-3" value="12" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="395" y="75" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-4" value="read event available&#xa;read ticket stock" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="355" y="145" width="140" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-5" value="tampilan daftar event&#xa;-featured&#xa;-upcoming&#xa;-search/filter&#xa;-detail&#xa;-back" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="320" y="270" width="210" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-6" value="pilih == search/filter?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="430" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-7" value="input keyword/kota/kategori&#xa;GET events/search" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="565" y="425" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-8" value="event ditemukan?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="580" y="540" width="130" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-9" value="tampilkan not found" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="650" y="660" width="130" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-10" value="tampilkan hasil event" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="520" y="660" width="120" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-11" value="pilih == detail event?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="565" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-12" value="read event by id&#xa;read ticket by event_id" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="690" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-13" value="tampilan detail event&#xa;info konser, lokasi, tanggal, tiket, harga, stok" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="315" y="815" width="220" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-14" value="klik == booking?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="350" y="950" width="150" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-15" value="13" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="585" y="965" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-16" value="6" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="210" y="965" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-3" target="camtix-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-4" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-5" target="camtix-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-6" target="camtix-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-7" target="camtix-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-8" target="camtix-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-10" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-8" target="camtix-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-9" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-6" target="camtix-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-11" target="camtix-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-11" target="camtix-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-12" target="camtix-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-13" target="camtix-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-14" target="camtix-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-14" target="camtix-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="user-booking" id="camtix-bookingu">
+    <mxGraphModel dx="1965" dy="1405" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="camtix-2" value="13 - User Pemesanan Tiket" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="110" y="20" width="620" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-3" value="13" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="395" y="75" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-4" value="tampilan event/tiket yang dipilih" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="330" y="145" width="190" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-5" value="input jenis tiket&#xa;dan jumlah tiket" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="360" y="250" width="130" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-6" value="user sudah login?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="355" y="355" width="140" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-7" value="1" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="575" y="370" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-8" value="stok tiket cukup?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="355" y="485" width="140" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-9" value="tampilkan error&#xa;stok tidak cukup" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="575" y="490" width="130" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-10" value="add table bookings&#xa;status=PENDING&#xa;expired=+5 menit" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="340" y="615" width="170" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-11" value="update stok tickets&#xa;kurangi sesuai qty" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="350" y="740" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-12" value="tampilkan invoice booking&#xa;booking code + total bayar" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="330" y="855" width="190" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-13" value="14" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="395" y="980" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-3" target="camtix-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-4" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-5" target="camtix-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-6" target="camtix-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-6" target="camtix-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-8" target="camtix-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-9" target="camtix-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-8" target="camtix-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-10" target="camtix-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-11" target="camtix-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-12" target="camtix-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="user-order-payment" id="camtix-orderpay">
+    <mxGraphModel dx="1965" dy="1405" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="camtix-2" value="14 - User Informasi Pembayaran &amp; Pesanan" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="110" y="20" width="620" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-3" value="14" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="395" y="75" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-4" value="read booking user&#xa;read payment terkait" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="355" y="145" width="140" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-5" value="tampilan riwayat pesanan&#xa;-booking code&#xa;-event/tiket&#xa;-status booking&#xa;-status payment&#xa;-total" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="320" y="270" width="210" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-6" value="ada booking PENDING?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="435" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-7" value="pilih metode bayar&#xa;lihat instruksi pembayaran" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="565" y="425" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-8" value="upload bukti pembayaran" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="575" y="535" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-9" value="add/update table payments&#xa;status=WAITING_CONFIRMATION" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="555" y="640" width="180" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-10" value="klik == cancel booking?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="565" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-11" value="update booking=CANCELLED&#xa;restore stok tiket" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="345" y="690" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-12" value="tampilkan badge status:&#xa;PENDING / WAITING / PAID / REJECTED / EXPIRED / CANCELLED" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="305" y="815" width="240" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-13" value="6" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=offPageConnector;rounded=0;size=0.5;labelPosition=center;align=center;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="395" y="965" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-3" target="camtix-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-4" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-5" target="camtix-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-6" target="camtix-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-7" target="camtix-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-8" target="camtix-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-9" target="camtix-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-6" target="camtix-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="t" source="camtix-10" target="camtix-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-11" target="camtix-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="f" source="camtix-10" target="camtix-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" source="camtix-12" target="camtix-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="ERD" id="camtix-erd">
+    <mxGraphModel dx="1965" dy="1405" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="camtix-2" value="15 - ERD CAMTIX" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="110" y="20" width="620" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-3" value="Table users&#xa;PK id_user&#xa;first_name&#xa;last_name&#xa;email&#xa;password&#xa;phone&#xa;address&#xa;role&#xa;status&#xa;is_verified&#xa;created_at" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;" parent="1" vertex="1">
+          <mxGeometry x="40" y="90" width="190" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-4" value="Table otp_verifications&#xa;PK id_otp&#xa;FK user_id&#xa;otp_code&#xa;expired_at&#xa;created_at" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;" parent="1" vertex="1">
+          <mxGeometry x="285" y="90" width="170" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-5" value="Table visitor_logs&#xa;PK id_log&#xa;FK user_id&#xa;ip_address&#xa;browser&#xa;visited_page&#xa;visited_at" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;" parent="1" vertex="1">
+          <mxGeometry x="520" y="90" width="180" height="165" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-6" value="Table events&#xa;PK id_event&#xa;nama_event&#xa;artist&#xa;kategori&#xa;kota&#xa;lokasi&#xa;tanggal&#xa;jam_mulai&#xa;jam_selesai&#xa;gambar&#xa;status" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;" parent="1" vertex="1">
+          <mxGeometry x="40" y="385" width="190" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-7" value="Table tickets&#xa;PK id_ticket&#xa;FK event_id&#xa;jenis_tiket&#xa;harga&#xa;stok&#xa;kuota&#xa;status" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;" parent="1" vertex="1">
+          <mxGeometry x="285" y="405" width="170" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-8" value="Table bookings&#xa;PK id_booking&#xa;FK user_id&#xa;FK ticket_id&#xa;booking_code&#xa;qty&#xa;total_price&#xa;status&#xa;expired_at&#xa;created_at" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;" parent="1" vertex="1">
+          <mxGeometry x="520" y="365" width="190" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-9" value="Table payment_methods&#xa;PK id_method&#xa;bank/e_wallet&#xa;account_name&#xa;account_number&#xa;status" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;" parent="1" vertex="1">
+          <mxGeometry x="40" y="735" width="190" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-10" value="Table payments&#xa;PK id_payment&#xa;FK booking_id&#xa;FK method_id&#xa;amount&#xa;proof_image&#xa;status&#xa;paid_at&#xa;created_at" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;" parent="1" vertex="1">
+          <mxGeometry x="285" y="705" width="190" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-11" value="Table user_login&#xa;PK id_login&#xa;FK user_id&#xa;jwt_token&#xa;login_time&#xa;expired_at" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;" parent="1" vertex="1">
+          <mxGeometry x="520" y="720" width="180" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="1..*" source="camtix-3" target="camtix-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="1..*" source="camtix-3" target="camtix-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="1..*" source="camtix-6" target="camtix-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="1..*" source="camtix-3" target="camtix-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="1..*" source="camtix-7" target="camtix-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="1..1" source="camtix-8" target="camtix-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="1..*" source="camtix-9" target="camtix-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="camtix-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1" value="1..*" source="camtix-3" target="camtix-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
