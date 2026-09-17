@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import eventService from '../../services/eventService';
 import { useAuth } from '../../context/AuthContext';
 import { Ticket, Plus, AlertCircle, Trash2, Edit } from 'lucide-react';
+import Pagination from '../../components/Pagination';
 
 // ── Helpers ────────────────────────────────────────────────────────
 const EMPTY_FORM = {
@@ -221,9 +222,12 @@ export default function TicketAdmin() {
   // Delete modal
   const [deleteModal, setDeleteModal] = useState({ open: false, id: null, type: '' });
 
-  // Search / filter
+  // Search / filter / sort / pagination
   const [searchQuery, setSearchQuery] = useState('');
   const [filterEventId, setFilterEventId] = useState('');
+  const [sortBy, setSortBy] = useState('newest');
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
 
   // ── Fetch data ────────────────────────────────────────────────────
   const fetchData = async () => {
@@ -338,7 +342,7 @@ export default function TicketAdmin() {
     }
   };
 
-  // ── Filter client-side ───────────────────────────────────────────
+  // ── Filter & sort client-side ────────────────────────────────────
   const filtered = tickets.filter((t) => {
     const q = searchQuery.toLowerCase();
     const matchQ = !q || [t.ticketType, t.description, getEventName(t.eventId)].some(
@@ -347,6 +351,23 @@ export default function TicketAdmin() {
     const matchE = !filterEventId || String(t.eventId) === filterEventId;
     return matchQ && matchE;
   });
+
+  const sorted = [...filtered].sort((a, b) => {
+    if (sortBy === 'newest') return (b.idTicket || 0) - (a.idTicket || 0);
+    if (sortBy === 'oldest') return (a.idTicket || 0) - (b.idTicket || 0);
+    if (sortBy === 'az') return (a.ticketType || '').localeCompare(b.ticketType || '');
+    if (sortBy === 'za') return (b.ticketType || '').localeCompare(a.ticketType || '');
+    if (sortBy === 'price_low') return (Number(a.price) || 0) - (Number(b.price) || 0);
+    if (sortBy === 'price_high') return (Number(b.price) || 0) - (Number(a.price) || 0);
+    return 0;
+  });
+
+  const totalPages = Math.ceil(sorted.length / pageSize);
+  const paginatedTickets = sorted.slice(page * pageSize, (page + 1) * pageSize);
+
+  useEffect(() => {
+    setPage(0);
+  }, [searchQuery, filterEventId, sortBy, pageSize]);
 
   // ── Render ───────────────────────────────────────────────────────
   return (
@@ -381,12 +402,12 @@ export default function TicketAdmin() {
       )}
 
       {/* Toolbar */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex flex-col sm:flex-row flex-wrap gap-3">
         <input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder={t('admin.searchTicketPlaceholder')}
-          className="flex-1 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors shadow-sm"
+          className="flex-1 min-w-[200px] px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors shadow-sm"
         />
         <select
           value={filterEventId}
@@ -399,6 +420,18 @@ export default function TicketAdmin() {
                {ev.eventName}
              </option>
           ))}
+        </select>
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          className="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:border-blue-400 transition-colors shadow-sm"
+        >
+          <option value="newest">Terbaru</option>
+          <option value="oldest">Terlama</option>
+          <option value="az">A - Z</option>
+          <option value="za">Z - A</option>
+          <option value="price_low">Harga: Termurah</option>
+          <option value="price_high">Harga: Termahal</option>
         </select>
         <button
           onClick={fetchData}
@@ -431,7 +464,7 @@ export default function TicketAdmin() {
             </svg>
             <p className="text-sm text-slate-500 font-medium">{t('admin.loadingTickets')}</p>
           </div>
-        ) : filtered.length === 0 ? (
+        ) : sorted.length === 0 ? (
           <div className="py-16 text-center animate-fadeIn">
             <Ticket className="w-12 h-12 text-slate-300 mx-auto mb-3" />
             <p className="text-sm font-bold text-slate-600">
@@ -442,7 +475,7 @@ export default function TicketAdmin() {
           </div>
         ) : (
           <div className="divide-y divide-slate-100">
-            {filtered.map((tk) => (
+            {paginatedTickets.map((tk) => (
               <div
                 key={tk.idTicket}
                 className={`grid ${isOperationalAdmin ? 'grid-cols-[2fr_1fr_auto_auto_auto_auto]' : 'grid-cols-[2fr_1fr_auto_auto_auto]'} gap-4 items-center px-5 py-4 hover:bg-slate-50 transition-colors min-w-[600px]`}
@@ -502,12 +535,22 @@ export default function TicketAdmin() {
             ))}
           </div>
         )}
+
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          totalItems={sorted.length}
+          pageSize={pageSize}
+          onPageChange={setPage}
+          onPageSizeChange={setPageSize}
+          pageSizeOptions={[5, 10, 20, 50]}
+        />
       </div>
 
       {/* Summary */}
-      {!loading && filtered.length > 0 && (
+      {!loading && sorted.length > 0 && (
         <p className="text-xs font-semibold text-slate-500 text-center">
-          {t('admin.showingTickets', { filtered: filtered.length, total: tickets.length })}
+          {t('admin.showingTickets', { filtered: sorted.length, total: tickets.length })}
         </p>
       )}
 

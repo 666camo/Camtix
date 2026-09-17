@@ -6,6 +6,10 @@ import com.camtix.transactionservice.dto.WebResponse;
 import com.camtix.transactionservice.service.BookingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +25,33 @@ public class BookingController {
     private final BookingService bookingService;
 
     @GetMapping
-    public ResponseEntity<WebResponse<List<BookingResponse>>> getAllBookings() {
+    public ResponseEntity<WebResponse<?>> getAllBookings(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) Integer limit,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false, defaultValue = "idBooking") String sortBy,
+            @RequestParam(required = false, defaultValue = "desc") String direction
+    ) {
+        int pageSize = size != null ? size : (limit != null ? limit : 0);
+
+        if (page != null || pageSize > 0) {
+            int pageNumber = page != null ? Math.max(0, page) : 0;
+            int effectiveSize = pageSize > 0 ? pageSize : 10;
+            Sort.Direction sortDirection = "asc".equalsIgnoreCase(direction) ? Sort.Direction.ASC : Sort.Direction.DESC;
+            Pageable pageable = PageRequest.of(pageNumber, effectiveSize, Sort.by(sortDirection, sortBy != null ? sortBy : "idBooking"));
+
+            Page<BookingResponse> bookingsPage = bookingService.getAllBookingsPaged(search, status, userId, pageable);
+            WebResponse<Object> response = WebResponse.<Object>builder()
+                    .status(true)
+                    .message("Successfully retrieved bookings with pagination.")
+                    .data(bookingsPage)
+                    .build();
+            return ResponseEntity.ok(response);
+        }
+
         List<BookingResponse> bookings = bookingService.getAllBookings();
         WebResponse<List<BookingResponse>> response = WebResponse.<List<BookingResponse>>builder()
                 .status(true)
@@ -74,6 +104,20 @@ public class BookingController {
         WebResponse<BookingResponse> response = WebResponse.<BookingResponse>builder()
                 .status(true)
                 .message("Booking status successfully updated.")
+                .data(booking)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<WebResponse<BookingResponse>> patchBooking(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> updates
+    ) {
+        BookingResponse booking = bookingService.patchBooking(id, updates);
+        WebResponse<BookingResponse> response = WebResponse.<BookingResponse>builder()
+                .status(true)
+                .message("Booking partially updated.")
                 .data(booking)
                 .build();
         return ResponseEntity.ok(response);

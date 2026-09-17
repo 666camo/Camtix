@@ -3,16 +3,21 @@ package com.camtix.eventservice.service;
 import com.camtix.eventservice.dto.EventRequest;
 import com.camtix.eventservice.dto.EventResponse;
 import com.camtix.eventservice.entity.Event;
+import com.camtix.eventservice.exception.ResourceNotFoundException;
 import com.camtix.eventservice.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,10 +37,22 @@ public class EventService {
     }
 
     @Transactional(readOnly = true)
+    public Page<EventResponse> getAllEventsPaged(String search, String status, String category, String city,
+                                                  LocalDate startDate, LocalDate endDate, Pageable pageable) {
+        String s = (search == null || search.trim().isEmpty()) ? null : search.trim();
+        String st = (status == null || status.trim().isEmpty()) ? null : status.trim().toUpperCase();
+        String cat = (category == null || category.trim().isEmpty()) ? null : category.trim();
+        String ct = (city == null || city.trim().isEmpty()) ? null : city.trim();
+
+        return eventRepository.findWithFilters(s, st, cat, ct, startDate, endDate, pageable)
+                .map(this::mapToEventResponse);
+    }
+
+    @Transactional(readOnly = true)
     @Cacheable(value = "event", key = "#id")
     public EventResponse getEventById(Long id) {
         Event event = eventRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Event not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found with ID: " + id));
         return mapToEventResponse(event);
     }
 
@@ -49,7 +66,7 @@ public class EventService {
                     }
                     return java.util.Optional.empty();
                 })
-                .orElseThrow(() -> new IllegalArgumentException("Event not found with slug or ID: " + slug));
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found with slug or ID: " + slug));
         return mapToEventResponse(event);
     }
 
@@ -101,7 +118,7 @@ public class EventService {
     })
     public EventResponse updateEvent(Long id, EventRequest request) {
         Event event = eventRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Event not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found with ID: " + id));
 
         String status = request.getStatus();
         if (status != null && !status.trim().isEmpty()) {
@@ -132,16 +149,54 @@ public class EventService {
         @CacheEvict(value = "events", allEntries = true),
         @CacheEvict(value = "event", key = "#id")
     })
+    public EventResponse patchEvent(Long id, Map<String, Object> updates) {
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found with ID: " + id));
+
+        updates.forEach((key, value) -> {
+            switch (key) {
+                case "eventName" -> {
+                    event.setEventName((String) value);
+                    event.setSlug(generateSlug((String) value));
+                }
+                case "artistName" -> event.setArtistName((String) value);
+                case "city" -> event.setCity((String) value);
+                case "location" -> event.setLocation((String) value);
+                case "eventDate" -> {
+                    if (value instanceof String) event.setEventDate(LocalDate.parse((String) value));
+                }
+                case "eventTime" -> event.setEventTime((String) value);
+                case "category" -> event.setCategory((String) value);
+                case "description" -> event.setDescription((String) value);
+                case "picture" -> event.setPicture((String) value);
+                case "status" -> {
+                    String status = ((String) value).toUpperCase();
+                    if (!ALLOWED_STATUSES.contains(status)) {
+                        throw new IllegalArgumentException("Invalid event status. Allowed: " + ALLOWED_STATUSES);
+                    }
+                    event.setStatus(status);
+                }
+            }
+        });
+
+        Event updatedEvent = eventRepository.save(event);
+        return mapToEventResponse(updatedEvent);
+    }
+
+    @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "events", allEntries = true),
+        @CacheEvict(value = "event", key = "#id")
+    })
     public void deleteEvent(Long id) {
         if (!eventRepository.existsById(id)) {
-            throw new IllegalArgumentException("Event not found with ID: " + id);
+            throw new ResourceNotFoundException("Event not found with ID: " + id);
         }
         eventRepository.deleteById(id);
     }
 
     @Transactional(readOnly = true)
     public List<EventResponse> searchEvents(String eventName, String artistName, String city, String category) {
-        // Normalize empty inputs to null for JPQL compatibility
         String normalizedEventName = (eventName == null || eventName.trim().isEmpty()) ? null : eventName.trim();
         String normalizedArtistName = (artistName == null || artistName.trim().isEmpty()) ? null : artistName.trim();
         String normalizedCity = (city == null || city.trim().isEmpty()) ? null : city.trim();

@@ -1,10 +1,19 @@
 package com.camtix.userservice.controller;
 
+import com.camtix.userservice.dto.VisitorRequest;
 import com.camtix.userservice.dto.WebResponse;
 import com.camtix.userservice.entity.Visitor;
+import com.camtix.userservice.repository.UserRepository;
 import com.camtix.userservice.service.VisitorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,10 +24,34 @@ import java.util.List;
 public class VisitorController {
 
     private final VisitorService visitorService;
-    private final com.camtix.userservice.repository.UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @GetMapping
-    public ResponseEntity<WebResponse<List<Visitor>>> getAllVisitors() {
+    public ResponseEntity<WebResponse<?>> getAllVisitors(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) Integer limit,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false, defaultValue = "visitDate") String sortBy,
+            @RequestParam(required = false, defaultValue = "desc") String direction
+    ) {
+        int pageSize = size != null ? size : (limit != null ? limit : 0);
+
+        if (page != null || pageSize > 0) {
+            int pageNumber = page != null ? Math.max(0, page) : 0;
+            int effectiveSize = pageSize > 0 ? pageSize : 10;
+            Sort.Direction sortDirection = "asc".equalsIgnoreCase(direction) ? Sort.Direction.ASC : Sort.Direction.DESC;
+            Pageable pageable = PageRequest.of(pageNumber, effectiveSize, Sort.by(sortDirection, sortBy != null ? sortBy : "visitDate"));
+
+            Page<Visitor> visitorsPage = visitorService.getAllVisitorsPaged(search, pageable);
+            WebResponse<Object> response = WebResponse.<Object>builder()
+                    .status(true)
+                    .message("Successfully retrieved visitors with pagination.")
+                    .data(visitorsPage)
+                    .build();
+            return ResponseEntity.ok(response);
+        }
+
         List<Visitor> visitors = visitorService.getAllVisitors();
         WebResponse<List<Visitor>> response = WebResponse.<List<Visitor>>builder()
                 .status(true)
@@ -30,11 +63,11 @@ public class VisitorController {
 
     @PostMapping
     public ResponseEntity<WebResponse<Visitor>> logVisitor(
-            @jakarta.validation.Valid @RequestBody com.camtix.userservice.dto.VisitorRequest request,
-            org.springframework.security.core.Authentication authentication) {
-        
+            @Valid @RequestBody VisitorRequest request,
+            Authentication authentication) {
+
         Long userId = null;
-        if (authentication != null && authentication.isAuthenticated() && 
+        if (authentication != null && authentication.isAuthenticated() &&
             !"anonymousUser".equals(authentication.getPrincipal())) {
             String email = authentication.getName();
             var userOpt = userRepository.findByEmail(email);
@@ -50,6 +83,6 @@ public class VisitorController {
                 .message("Visitor activity logged successfully.")
                 .data(null)
                 .build();
-        return new ResponseEntity<>(response, org.springframework.http.HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }

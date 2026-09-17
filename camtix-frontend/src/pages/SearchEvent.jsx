@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import eventService from '../services/eventService';
 import { Info, Search, MapPin } from 'lucide-react';
+import Pagination from '../components/Pagination';
 
 export default function SearchEvent() {
   const { t } = useTranslation();
@@ -16,6 +17,11 @@ export default function SearchEvent() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Sorting and pagination state
+  const [sortBy, setSortBy] = useState('newest');
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(9);
 
   // Extract unique cities and categories for filters based on initial loaded events
   const [cities, setCities] = useState(['Jakarta', 'Bandung', 'Surabaya', 'Semarang', 'Tangerang', 'Bali']);
@@ -105,6 +111,26 @@ export default function SearchEvent() {
     return eventDateObj < new Date();
   };
 
+  const sortedEvents = [...events].sort((a, b) => {
+    if (sortBy === 'newest') return (b.idEvent || 0) - (a.idEvent || 0);
+    if (sortBy === 'oldest') return (a.idEvent || 0) - (b.idEvent || 0);
+    if (sortBy === 'az') return (a.eventName || '').localeCompare(b.eventName || '');
+    if (sortBy === 'za') return (b.eventName || '').localeCompare(a.eventName || '');
+    if (sortBy === 'date_soonest') {
+      const dateA = new Date(a.eventDate || 0).getTime();
+      const dateB = new Date(b.eventDate || 0).getTime();
+      return dateA - dateB;
+    }
+    return 0;
+  });
+
+  const totalPages = Math.ceil(sortedEvents.length / pageSize);
+  const paginatedEvents = sortedEvents.slice(page * pageSize, (page + 1) * pageSize);
+
+  useEffect(() => {
+    setPage(0);
+  }, [sortBy, pageSize, events]);
+
   const inputClass = "w-full bg-slate-50 border border-slate-200 focus:border-blue-400 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all";
 
   return (
@@ -193,31 +219,48 @@ export default function SearchEvent() {
               />
             </div>
 
-            <div className="md:col-span-6 flex justify-end gap-3 mt-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setQuery({ keyword: '', city: '', category: '', startDate: '', endDate: '' });
-                  setTimeout(() => handleSearch(), 100);
-                }}
-                className="px-6 py-3 bg-slate-50 rounded-xl text-sm font-semibold hover:bg-slate-100 border border-slate-200 text-slate-600 transition-colors cursor-pointer"
-              >
-                {t('search.resetFilter')}
-              </button>
-              <button
-                type="submit"
-                disabled={loading}
-                className="px-8 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 disabled:text-slate-500 text-white font-bold rounded-xl shadow-sm shadow-blue-500/20 hover:shadow-blue-500/30 active:scale-95 transition-all text-sm cursor-pointer flex items-center gap-2"
-              >
-                {loading ? (
-                  <>
-                    <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin"></span>
-                    <span>{t('search.searching')}</span>
-                  </>
-                ) : (
-                  <span>{t('search.applyFilter')}</span>
-                )}
-              </button>
+            <div className="md:col-span-6 flex flex-col sm:flex-row justify-between items-center gap-4 mt-2">
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Urutkan:</span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+                >
+                  <option value="newest">Terbaru Ditambahkan</option>
+                  <option value="oldest">Terlama Ditambahkan</option>
+                  <option value="date_soonest">Tanggal Terdekat</option>
+                  <option value="az">Nama Event: A - Z</option>
+                  <option value="za">Nama Event: Z - A</option>
+                </select>
+              </div>
+
+              <div className="flex gap-3 w-full sm:w-auto justify-end">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setQuery({ keyword: '', city: '', category: '', startDate: '', endDate: '' });
+                    setTimeout(() => handleSearch(), 100);
+                  }}
+                  className="px-6 py-3 bg-slate-50 rounded-xl text-sm font-semibold hover:bg-slate-100 border border-slate-200 text-slate-600 transition-colors cursor-pointer"
+                >
+                  {t('search.resetFilter')}
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="px-8 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 disabled:text-slate-500 text-white font-bold rounded-xl shadow-sm shadow-blue-500/20 hover:shadow-blue-500/30 active:scale-95 transition-all text-sm cursor-pointer flex items-center gap-2"
+                >
+                  {loading ? (
+                    <>
+                      <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin"></span>
+                      <span>{t('search.searching')}</span>
+                    </>
+                  ) : (
+                    <span>{t('search.applyFilter')}</span>
+                  )}
+                </button>
+              </div>
             </div>
           </form>
         </div>
@@ -244,68 +287,82 @@ export default function SearchEvent() {
               <p className="text-xs text-slate-400 mt-1">{t('search.noResultSub')}</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {events.map((evt) => {
-                const expired = isEventExpired(evt);
-                const displayStatus = evt.status === 'CANCELLED' ? 'CANCELLED' : expired ? 'FINISHED' : (evt.status || 'UPCOMING');
+            <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {paginatedEvents.map((evt) => {
+                  const expired = isEventExpired(evt);
+                  const displayStatus = evt.status === 'CANCELLED' ? 'CANCELLED' : expired ? 'FINISHED' : (evt.status || 'UPCOMING');
 
-                return (
-                  <div key={evt.idEvent} className="glass-effect rounded-2xl overflow-hidden hover:scale-[1.02] hover:shadow-xl transition-all duration-300 flex flex-col group border border-slate-200">
-                    <div className="relative h-48 overflow-hidden bg-slate-100">
-                      {evt.picture ? (
-                        <img 
-                          src={evt.picture} 
-                          alt={evt.eventName} 
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-slate-400 font-bold bg-slate-100">
-                          {t('home.noImage')}
+                  return (
+                    <div key={evt.idEvent} className="glass-effect rounded-2xl overflow-hidden hover:scale-[1.02] hover:shadow-xl transition-all duration-300 flex flex-col group border border-slate-200">
+                      <div className="relative h-48 overflow-hidden bg-slate-100">
+                        {evt.picture ? (
+                          <img 
+                            src={evt.picture} 
+                            alt={evt.eventName} 
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-slate-400 font-bold bg-slate-100">
+                            {t('home.noImage')}
+                          </div>
+                        )}
+                        <span className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-blue-600 border border-blue-200">
+                          {evt.category || 'Event'}
+                        </span>
+                        <span className={`absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-extrabold border ${
+                          displayStatus === 'UPCOMING' ? 'text-blue-600 border-blue-200' : 
+                          displayStatus === 'ONGOING' ? 'text-emerald-600 border-emerald-200 animate-pulse' :
+                          displayStatus === 'CANCELLED' ? 'text-red-600 border-red-200' :
+                          'text-slate-500 border-slate-200'
+                        }`}>
+                          {displayStatus}
+                        </span>
+                      </div>
+                      <div className="p-6 flex-1 flex flex-col">
+                        <span className="text-[10px] text-blue-600 uppercase tracking-widest font-bold mb-1 flex items-center gap-1">
+                          <MapPin className="w-3.5 h-3.5 text-blue-600" /> {evt.city} • {evt.location || t('home.location')}
+                        </span>
+                        <h3 className="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors mb-2 leading-snug">
+                          {evt.eventName}
+                        </h3>
+                        <p className="text-xs text-slate-500 mb-6 flex-1 line-clamp-2">
+                          {evt.description || t('search.noDesc')}
+                        </p>
+                        
+                        <div className="flex items-center justify-between border-t border-slate-100 pt-4 mt-auto">
+                          <div>
+                            <span className="text-[10px] text-slate-400 uppercase tracking-wider block">{t('search.date')}</span>
+                            <span className="text-xs font-semibold text-slate-700">{evt.eventDate}</span>
+                          </div>
+                          <Link 
+                            to={`/events/${evt.slug || evt.idEvent}`}
+                            className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all duration-300 cursor-pointer ${
+                              expired
+                                ? 'bg-slate-100 text-slate-500 border-slate-200 hover:bg-slate-200'
+                                : 'bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-600 border-blue-200 hover:border-blue-600'
+                            }`}
+                          >
+                            {expired ? (evt.status === 'CANCELLED' ? t('detail.eventCancelled') : t('detail.eventFinished')) : t('search.buyTicket')}
+                          </Link>
                         </div>
-                      )}
-                      <span className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-blue-600 border border-blue-200">
-                        {evt.category || 'Event'}
-                      </span>
-                      <span className={`absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-extrabold border ${
-                        displayStatus === 'UPCOMING' ? 'text-blue-600 border-blue-200' : 
-                        displayStatus === 'ONGOING' ? 'text-emerald-600 border-emerald-200 animate-pulse' :
-                        displayStatus === 'CANCELLED' ? 'text-red-600 border-red-200' :
-                        'text-slate-500 border-slate-200'
-                      }`}>
-                        {displayStatus}
-                      </span>
-                    </div>
-                    <div className="p-6 flex-1 flex flex-col">
-                      <span className="text-[10px] text-blue-600 uppercase tracking-widest font-bold mb-1 flex items-center gap-1">
-                        <MapPin className="w-3.5 h-3.5 text-blue-600" /> {evt.city} • {evt.location || t('home.location')}
-                      </span>
-                      <h3 className="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors mb-2 leading-snug">
-                        {evt.eventName}
-                      </h3>
-                      <p className="text-xs text-slate-500 mb-6 flex-1 line-clamp-2">
-                        {evt.description || t('search.noDesc')}
-                      </p>
-                      
-                      <div className="flex items-center justify-between border-t border-slate-100 pt-4 mt-auto">
-                        <div>
-                          <span className="text-[10px] text-slate-400 uppercase tracking-wider block">{t('search.date')}</span>
-                          <span className="text-xs font-semibold text-slate-700">{evt.eventDate}</span>
-                        </div>
-                        <Link 
-                          to={`/events/${evt.slug || evt.idEvent}`}
-                          className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all duration-300 cursor-pointer ${
-                            expired
-                              ? 'bg-slate-100 text-slate-500 border-slate-200 hover:bg-slate-200'
-                              : 'bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-600 border-blue-200 hover:border-blue-600'
-                          }`}
-                        >
-                          {expired ? (evt.status === 'CANCELLED' ? t('detail.eventCancelled') : t('detail.eventFinished')) : t('search.buyTicket')}
-                        </Link>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+
+              <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                <Pagination
+                  currentPage={page}
+                  totalPages={totalPages}
+                  totalItems={sortedEvents.length}
+                  pageSize={pageSize}
+                  onPageChange={setPage}
+                  onPageSizeChange={setPageSize}
+                  pageSizeOptions={[6, 9, 18, 30]}
+                />
+              </div>
             </div>
           )}
         </div>

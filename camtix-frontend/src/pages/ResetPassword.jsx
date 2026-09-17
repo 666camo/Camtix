@@ -16,6 +16,7 @@ export default function ResetPassword() {
   const [tokenInput, setTokenInput] = useState(urlToken);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [touched, setTouched] = useState({});
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
@@ -26,39 +27,49 @@ export default function ResetPassword() {
     }
   }, [urlToken]);
 
+  const validate = () => {
+    const errors = {};
+    if (!tokenInput.trim()) {
+      errors.token = 'Token reset password wajib diisi';
+    }
+    if (!password) {
+      errors.password = 'Password baru wajib diisi';
+    } else if (password.length < 6) {
+      errors.password = 'Password minimal 6 karakter';
+    }
+    if (!confirmPassword) {
+      errors.confirmPassword = 'Konfirmasi password wajib diisi';
+    } else if (password !== confirmPassword) {
+      errors.confirmPassword = 'Konfirmasi password tidak cocok';
+    }
+    return errors;
+  };
+
+  const validationErrors = validate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setTouched({ token: true, password: true, confirmPassword: true });
     setError('');
     setSuccess('');
 
-    const finalToken = tokenInput.trim();
-    if (!finalToken) {
-      setError(t('auth.tokenRequired'));
-      toast.error(t('auth.tokenRequired'));
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setError(t('auth.passwordMismatch'));
-      toast.error(t('auth.passwordMismatch'));
-      return;
-    }
-
-    if (password.length < 6) {
-      setError(t('auth.passwordMinLength'));
-      toast.error(t('auth.passwordMinLength'));
+    const currentErrors = validate();
+    if (Object.keys(currentErrors).length > 0) {
+      const firstError = Object.values(currentErrors)[0];
+      setError(firstError);
+      toast.error(firstError);
       return;
     }
 
     setLoading(true);
     try {
-      await authService.resetPassword(finalToken, password);
+      await authService.resetPassword(tokenInput.trim(), password);
       const msg = t('auth.resetSuccess');
       setSuccess(msg);
       toast.success(msg);
       setTimeout(() => {
         navigate('/login');
-      }, 3000);
+      }, 2500);
     } catch (err) {
       const msg = err.response?.data?.message || t('auth.resetFail');
       setError(msg);
@@ -66,6 +77,18 @@ export default function ResetPassword() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const getInputClass = (fieldName) => {
+    const hasError = touched[fieldName] && validationErrors[fieldName];
+    const isValid = touched[fieldName] && !validationErrors[fieldName];
+    return `w-full bg-slate-50 border ${
+      hasError
+        ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
+        : isValid
+        ? 'border-emerald-400 focus:border-emerald-500 focus:ring-emerald-100'
+        : 'border-slate-200 focus:border-blue-400 focus:ring-blue-100'
+    } rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 transition-all`;
   };
 
   return (
@@ -87,12 +110,11 @@ export default function ResetPassword() {
             <p className="text-left">{success}</p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Token Code Input */}
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center justify-between mb-1.5">
                 <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                  {t('auth.resetTokenLabel')}
+                  {t('auth.resetTokenLabel')} <span className="text-red-500">*</span>
                 </label>
                 {urlToken && tokenInput === urlToken && (
                   <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
@@ -106,35 +128,48 @@ export default function ResetPassword() {
                   type="text"
                   value={tokenInput}
                   onChange={(e) => setTokenInput(e.target.value)}
-                  required
-                  className="w-full bg-slate-50 border border-slate-200 focus:border-blue-400 rounded-xl pl-10 pr-4 py-3 text-xs font-mono text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all"
+                  onBlur={() => setTouched((prev) => ({ ...prev, token: true }))}
+                  className={`${getInputClass('token')} pl-10 font-mono text-xs`}
                   placeholder={t('auth.resetTokenPlaceholder')}
                 />
               </div>
+              {touched.token && validationErrors.token && (
+                <p className="text-[11px] text-red-500 font-medium mt-1 animate-fadeIn">{validationErrors.token}</p>
+              )}
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">{t('auth.newPassword')}</label>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+                {t('auth.newPassword')} <span className="text-red-500">*</span>
+              </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full bg-slate-50 border border-slate-200 focus:border-blue-400 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all"
+                onBlur={() => setTouched((prev) => ({ ...prev, password: true }))}
+                className={getInputClass('password')}
                 placeholder={t('auth.newPassPlaceholder')}
               />
+              {touched.password && validationErrors.password && (
+                <p className="text-[11px] text-red-500 font-medium mt-1 animate-fadeIn">{validationErrors.password}</p>
+              )}
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">{t('auth.confirmPassword')}</label>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+                {t('auth.confirmPassword')} <span className="text-red-500">*</span>
+              </label>
               <input
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                className="w-full bg-slate-50 border border-slate-200 focus:border-blue-400 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all"
+                onBlur={() => setTouched((prev) => ({ ...prev, confirmPassword: true }))}
+                className={getInputClass('confirmPassword')}
                 placeholder={t('auth.confirmPassPlaceholder')}
               />
+              {touched.confirmPassword && validationErrors.confirmPassword && (
+                <p className="text-[11px] text-red-500 font-medium mt-1 animate-fadeIn">{validationErrors.confirmPassword}</p>
+              )}
             </div>
 
             <Magnet className="w-full">

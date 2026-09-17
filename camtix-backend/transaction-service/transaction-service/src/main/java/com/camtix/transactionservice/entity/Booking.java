@@ -1,8 +1,10 @@
 package com.camtix.transactionservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -41,10 +43,20 @@ public class Booking {
     @Column(name = "booking_status")
     private String bookingStatus;
 
+    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Payment payment;
+
     @CreationTimestamp
     @Column(name = "booking_date", updatable = false)
     private LocalDateTime bookingDate;
 
     @Column(name = "expired_at")
     private LocalDateTime expiredAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 }

@@ -38,6 +38,7 @@ export default function AdminLayout() {
     { name: t('admin.visitors'), path: '/admin/visitors', icon: Eye },
     { name: t('admin.bookings'), path: '/admin/bookings', icon: FileText },
     { name: t('admin.payments'), path: '/admin/payments', icon: CreditCard },
+    { name: 'Payment Methods', path: '/admin/payment-methods', icon: Settings },
   ];
 
   return (

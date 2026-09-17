@@ -3,15 +3,19 @@ package com.camtix.transactionservice.service;
 import com.camtix.transactionservice.dto.*;
 import com.camtix.transactionservice.entity.Booking;
 import com.camtix.transactionservice.entity.Payment;
+import com.camtix.transactionservice.exception.ResourceNotFoundException;
 import com.camtix.transactionservice.repository.BookingRepository;
 import com.camtix.transactionservice.repository.PaymentMethodRepository;
 import com.camtix.transactionservice.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import org.springframework.web.client.RestTemplate;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -47,33 +51,37 @@ public class PaymentService {
     }
 
     @Transactional(readOnly = true)
+    public Page<PaymentResponse> getAllPaymentsPaged(String status, Long paymentMethodId, Pageable pageable) {
+        String st = (status == null || status.trim().isEmpty()) ? null : status.trim().toUpperCase();
+        return paymentRepository.findWithFilters(st, paymentMethodId, pageable)
+                .map(this::mapToPaymentResponse);
+    }
+
+    @Transactional(readOnly = true)
     public PaymentResponse getPaymentById(Long id) {
         Payment payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Payment not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Payment not found with ID: " + id));
         return mapToPaymentResponse(payment);
     }
 
     @Transactional(readOnly = true)
     public PaymentResponse getPaymentByBookingId(Long bookingId) {
         Payment payment = paymentRepository.findByBookingId(bookingId)
-                .orElseThrow(() -> new IllegalArgumentException("Payment not found for Booking ID: " + bookingId));
+                .orElseThrow(() -> new ResourceNotFoundException("Payment not found for Booking ID: " + bookingId));
         return mapToPaymentResponse(payment);
     }
 
     @Transactional
     public PaymentResponse createPayment(PaymentRequest request) {
-        // Validate relational Booking exists
-        if (!bookingRepository.existsById(request.getBookingId())) {
-            throw new IllegalArgumentException("Booking not found with ID: " + request.getBookingId());
-        }
+        Booking booking = bookingRepository.findById(request.getBookingId())
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found with ID: " + request.getBookingId()));
 
-        // Validate relational Payment Method exists
         if (!paymentMethodRepository.existsById(request.getPaymentMethodId())) {
-            throw new IllegalArgumentException("Payment method not found with ID: " + request.getPaymentMethodId());
+            throw new ResourceNotFoundException("Payment method not found with ID: " + request.getPaymentMethodId());
         }
 
         Payment payment = Payment.builder()
-                .bookingId(request.getBookingId())
+                .booking(booking)
                 .paymentMethodId(request.getPaymentMethodId())
                 .totalPayment(request.getTotalPayment())
                 .paymentStatus("PENDING")
@@ -81,21 +89,17 @@ public class PaymentService {
 
         Payment savedPayment = paymentRepository.save(payment);
 
-        // Auto-generate Midtrans Snap if requested
         if (Boolean.TRUE.equals(request.getUseMidtrans())) {
-            Booking booking = bookingRepository.findById(request.getBookingId()).orElse(null);
-            if (booking != null) {
-                MidtransService.MidtransSnapData snap = midtransService.createSnapTransaction(
-                        booking.getIdBooking(),
-                        request.getTotalPayment(),
-                        "noreply@camtix.com",
-                        "CamTix Customer"
-                );
-                if (snap != null) {
-                    savedPayment.setSnapToken(snap.token);
-                    savedPayment.setMidtransOrderId(snap.orderId);
-                    savedPayment = paymentRepository.save(savedPayment);
-                }
+            MidtransService.MidtransSnapData snap = midtransService.createSnapTransaction(
+                    booking.getIdBooking(),
+                    request.getTotalPayment(),
+                    "noreply@camtix.com",
+                    "CamTix Customer"
+            );
+            if (snap != null) {
+                savedPayment.setSnapToken(snap.token);
+                savedPayment.setMidtransOrderId(snap.orderId);
+                savedPayment = paymentRepository.save(savedPayment);
             }
         }
 
@@ -105,7 +109,7 @@ public class PaymentService {
     @Transactional
     public PaymentResponse uploadPaymentProof(Long id, UploadPaymentProofRequest request) {
         Payment payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Payment not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Payment not found with ID: " + id));
 
         payment.setPaymentProof(request.getPaymentProof());
         payment.setPaymentStatus("WAITING_CONFIRMATION");
@@ -116,24 +120,45 @@ public class PaymentService {
     }
 
     @Transactional
+    public PaymentResponse patchPayment(Long id, Map<String, Object> updates) {
+        Payment payment = paymentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Payment not found with ID: " + id));
+
+        updates.forEach((key, value) -> {
+            switch (key) {
+                case "paymentStatus" -> payment.setPaymentStatus(((String) value).toUpperCase());
+                case "adminNote" -> payment.setAdminNote((String) value);
+                case "totalPayment" -> {
+                    if (value instanceof Number) payment.setTotalPayment(BigDecimal.valueOf(((Number) value).doubleValue()));
+                }
+            }
+        });
+
+        Payment updatedPayment = paymentRepository.save(payment);
+        return mapToPaymentResponse(updatedPayment);
+    }
+
+    @Transactional
     public PaymentResponse verifyPayment(Long id, VerifyPaymentRequest request) {
         Payment payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Payment not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Payment not found with ID: " + id));
 
-        // Update payment attributes
         payment.setPaymentStatus("PAID");
         payment.setVerifiedAt(LocalDateTime.now());
         if (request.getAdminNote() != null && !request.getAdminNote().trim().isEmpty()) {
             payment.setAdminNote(request.getAdminNote().trim());
         }
 
-        // Update booking status to CONFIRMED
-        Booking booking = bookingRepository.findById(payment.getBookingId())
-                .orElseThrow(() -> new IllegalArgumentException("Associated booking not found with ID: " + payment.getBookingId()));
+        Long bookingId = payment.getBookingId();
+        if (bookingId == null && payment.getBooking() != null) {
+            bookingId = payment.getBooking().getIdBooking();
+        }
+
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("Associated booking not found with ID: " + payment.getBookingId()));
         booking.setBookingStatus("CONFIRMED");
         bookingRepository.save(booking);
 
-        // Trigger e-ticket email notification
         sendETicketNotification(booking);
 
         Payment updatedPayment = paymentRepository.save(payment);
@@ -143,7 +168,7 @@ public class PaymentService {
     @Transactional(readOnly = true)
     public void resendETicketEmail(Long bookingId) {
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new IllegalArgumentException("Associated booking not found with ID: " + bookingId));
+                .orElseThrow(() -> new ResourceNotFoundException("Associated booking not found with ID: " + bookingId));
         if (!"CONFIRMED".equalsIgnoreCase(booking.getBookingStatus())) {
             throw new IllegalArgumentException("Cannot send e-ticket for unconfirmed booking.");
         }
@@ -151,13 +176,12 @@ public class PaymentService {
     }
 
     public void sendETicketNotification(Booking booking) {
-        // Fetch User Email from user-service (port 8081)
         String userEmail = "";
         try {
             String userUrl = userServiceUrl + "/api/users/" + booking.getUserId();
-            
+
             org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
-            org.springframework.web.context.request.ServletRequestAttributes attributes = 
+            org.springframework.web.context.request.ServletRequestAttributes attributes =
                 (org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.getRequestAttributes();
             if (attributes != null) {
                 jakarta.servlet.http.HttpServletRequest requestContext = attributes.getRequest();
@@ -166,7 +190,7 @@ public class PaymentService {
                     headers.set("Authorization", authHeader);
                 }
             }
-            
+
             org.springframework.http.HttpEntity<Void> entity = new org.springframework.http.HttpEntity<>(headers);
             org.springframework.http.ResponseEntity<java.util.Map> responseEntity = restTemplate.exchange(
                 userUrl,
@@ -174,7 +198,7 @@ public class PaymentService {
                 entity,
                 java.util.Map.class
             );
-            
+
             java.util.Map<?, ?> userRes = responseEntity.getBody();
             if (userRes != null && userRes.get("data") != null) {
                 java.util.Map<?, ?> userData = (java.util.Map<?, ?>) userRes.get("data");
@@ -184,7 +208,6 @@ public class PaymentService {
             log.error("Failed to call user-service for user ID {}: {}", booking.getUserId(), e.getMessage());
         }
 
-        // Fetch Event Details from event-service (port 8082)
         String eventName = "Konser Musik";
         String eventDate = "-";
         String city = "-";
@@ -201,7 +224,6 @@ public class PaymentService {
             log.error("Failed to call event-service for event ID {}: {}", booking.getEventId(), e.getMessage());
         }
 
-        // Fetch Ticket Type from event-service (port 8082)
         String ticketType = "Reguler";
         try {
             String ticketUrl = eventServiceUrl + "/api/tickets/" + booking.getTicketId();
@@ -214,7 +236,6 @@ public class PaymentService {
             log.error("Failed to call ticket details for ticket ID {}: {}", booking.getTicketId(), e.getMessage());
         }
 
-        // Send Email to User
         if (userEmail != null && !userEmail.isEmpty()) {
             emailService.sendETicketEmail(
                     userEmail,
@@ -227,7 +248,6 @@ public class PaymentService {
                     booking.getTotalPrice()
             );
 
-            // Publish to RabbitMQ Background Queue as backup notification log tracker
             try {
                 emailProducer.sendEmailMessage(
                         userEmail,
@@ -243,19 +263,21 @@ public class PaymentService {
     @Transactional
     public PaymentResponse rejectPayment(Long id, RejectPaymentRequest request) {
         Payment payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Payment not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Payment not found with ID: " + id));
 
-        // Update payment attributes
         payment.setPaymentStatus("REJECTED");
         payment.setAdminNote(request.getAdminNote().trim());
 
-        // Update booking status to CANCELLED
-        Booking booking = bookingRepository.findById(payment.getBookingId())
-                .orElseThrow(() -> new IllegalArgumentException("Associated booking not found with ID: " + payment.getBookingId()));
+        Long bookingId = payment.getBookingId();
+        if (bookingId == null && payment.getBooking() != null) {
+            bookingId = payment.getBooking().getIdBooking();
+        }
+
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("Associated booking not found with ID: " + payment.getBookingId()));
         booking.setBookingStatus("CANCELLED");
         bookingRepository.save(booking);
 
-        // Restore ticket stock in event-service
         try {
             String url = eventServiceUrl + "/api/tickets/" + booking.getTicketId() + "/restore-stock?quantity=" + booking.getNumberOfTicket();
             restTemplate.put(url, null);
@@ -268,9 +290,13 @@ public class PaymentService {
     }
 
     private PaymentResponse mapToPaymentResponse(Payment payment) {
+        Long bId = payment.getBookingId();
+        if (bId == null && payment.getBooking() != null) {
+            bId = payment.getBooking().getIdBooking();
+        }
         return PaymentResponse.builder()
                 .idPayment(payment.getIdPayment())
-                .bookingId(payment.getBookingId())
+                .bookingId(bId)
                 .paymentMethodId(payment.getPaymentMethodId())
                 .totalPayment(payment.getTotalPayment())
                 .paymentStatus(payment.getPaymentStatus())
@@ -295,7 +321,6 @@ public class PaymentService {
 
         log.info("Midtrans notification: orderId={} status={} fraud={} amount={}", orderId, transactionStatus, fraudStatus, grossAmount);
 
-        // Verify Midtrans signature if server key is configured
         if (midtransServerKey != null && !midtransServerKey.trim().isEmpty() && signatureKey != null) {
             String rawSignature = orderId + statusCode + grossAmount + midtransServerKey;
             String computedSignature = sha512Hex(rawSignature);
@@ -306,19 +331,23 @@ public class PaymentService {
         }
 
         Payment payment = paymentRepository.findByMidtransOrderId(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("Payment not found for order_id: " + orderId));
+                .orElseThrow(() -> new ResourceNotFoundException("Payment not found for order_id: " + orderId));
 
         if ("capture".equals(transactionStatus) || "settlement".equals(transactionStatus)) {
             if ("accept".equals(fraudStatus) || "capture".equals(fraudStatus) || fraudStatus == null) {
                 payment.setPaymentStatus("PAID");
                 payment.setVerifiedAt(java.time.LocalDateTime.now());
 
-                Booking booking = bookingRepository.findById(payment.getBookingId()).orElse(null);
+                Long bId = payment.getBookingId();
+                if (bId == null && payment.getBooking() != null) {
+                    bId = payment.getBooking().getIdBooking();
+                }
+
+                Booking booking = bookingRepository.findById(bId).orElse(null);
                 if (booking != null) {
                     booking.setBookingStatus("CONFIRMED");
                     bookingRepository.save(booking);
 
-                    // Send official e-ticket directly to customer email
                     try {
                         sendETicketNotification(booking);
                     } catch (Exception ex) {
@@ -332,7 +361,12 @@ public class PaymentService {
         } else if ("cancel".equals(transactionStatus) || "expire".equals(transactionStatus) || "deny".equals(transactionStatus)) {
             payment.setPaymentStatus(transactionStatus.toUpperCase());
 
-            Booking booking = bookingRepository.findById(payment.getBookingId()).orElse(null);
+            Long bId = payment.getBookingId();
+            if (bId == null && payment.getBooking() != null) {
+                bId = payment.getBooking().getIdBooking();
+            }
+
+            Booking booking = bookingRepository.findById(bId).orElse(null);
             if (booking != null) {
                 booking.setBookingStatus("CANCELLED");
                 bookingRepository.save(booking);

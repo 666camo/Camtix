@@ -1,17 +1,34 @@
 import api from './api';
 
 const userService = {
-  getAllUsers: async (page, size) => {
-    let url = '/api/users';
-    if (page !== undefined && size !== undefined) {
-      url += `?page=${page}&size=${size}`;
+  getAllUsers: async (params) => {
+    let config = {};
+    if (typeof params === 'object' && params !== null) {
+      config.params = params;
+    } else if (params !== undefined) {
+      config.params = { page: params };
     }
-    const response = await api.get(url);
+    const response = await api.get('/api/users', config);
     return response.data;
   },
 
   getUserById: async (id) => {
     const response = await api.get(`/api/users/${id}`);
+    return response.data;
+  },
+
+  updateUser: async (id, data) => {
+    const response = await api.put(`/api/users/${id}`, data);
+    return response.data;
+  },
+
+  patchUser: async (id, updates) => {
+    const response = await api.patch(`/api/users/${id}`, updates);
+    return response.data;
+  },
+
+  deleteUser: async (id) => {
+    const response = await api.delete(`/api/users/${id}`);
     return response.data;
   },
 
@@ -25,8 +42,8 @@ const userService = {
     return response.data;
   },
 
-  getAllVisitors: async () => {
-    const response = await api.get('/api/visitors');
+  getAllVisitors: async (params) => {
+    const response = await api.get('/api/visitors', { params });
     return response.data;
   },
 
@@ -36,7 +53,6 @@ const userService = {
       return response.data;
     } catch (error) {
       console.error('Failed to log visitor:', error);
-      // Fail silently to not disrupt user experience
       return null;
     }
   },

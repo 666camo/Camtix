@@ -1,7 +1,10 @@
 package com.camtix.transactionservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,11 +22,24 @@ public class Payment {
     @Column(name = "id_payment")
     private Long idPayment;
 
-    @Column(name = "booking_id")
+    @Column(name = "booking_id", insertable = false, updatable = false)
     private Long bookingId;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "booking_id")
+    @JsonBackReference
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Booking booking;
 
     @Column(name = "payment_method_id")
     private Long paymentMethodId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_method_id", insertable = false, updatable = false)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private PaymentMethod paymentMethod;
 
     @Column(name = "total_payment")
     private BigDecimal totalPayment;
@@ -48,4 +64,12 @@ public class Payment {
 
     @Column(name = "midtrans_order_id")
     private String midtransOrderId;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 }

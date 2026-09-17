@@ -6,11 +6,16 @@ import com.camtix.eventservice.dto.WebResponse;
 import com.camtix.eventservice.service.TicketService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,7 +24,32 @@ public class TicketController {
     private final TicketService ticketService;
 
     @GetMapping("/api/tickets")
-    public ResponseEntity<WebResponse<List<TicketResponse>>> getAllTickets() {
+    public ResponseEntity<WebResponse<?>> getAllTickets(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) Integer limit,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) Long eventId,
+            @RequestParam(required = false, defaultValue = "idTicket") String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") String direction
+    ) {
+        int pageSize = size != null ? size : (limit != null ? limit : 0);
+
+        if (page != null || pageSize > 0) {
+            int pageNumber = page != null ? Math.max(0, page) : 0;
+            int effectiveSize = pageSize > 0 ? pageSize : 10;
+            Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+            Pageable pageable = PageRequest.of(pageNumber, effectiveSize, Sort.by(sortDirection, sortBy != null ? sortBy : "idTicket"));
+
+            Page<TicketResponse> ticketsPage = ticketService.getAllTicketsPaged(search, eventId, pageable);
+            WebResponse<Object> response = WebResponse.<Object>builder()
+                    .status(true)
+                    .message("Successfully retrieved tickets with pagination.")
+                    .data(ticketsPage)
+                    .build();
+            return ResponseEntity.ok(response);
+        }
+
         List<TicketResponse> tickets = ticketService.getAllTickets();
         WebResponse<List<TicketResponse>> response = WebResponse.<List<TicketResponse>>builder()
                 .status(true)
@@ -71,6 +101,20 @@ public class TicketController {
         WebResponse<TicketResponse> response = WebResponse.<TicketResponse>builder()
                 .status(true)
                 .message("Ticket successfully updated.")
+                .data(ticket)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/api/tickets/{id}")
+    public ResponseEntity<WebResponse<TicketResponse>> patchTicket(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> updates
+    ) {
+        TicketResponse ticket = ticketService.patchTicket(id, updates);
+        WebResponse<TicketResponse> response = WebResponse.<TicketResponse>builder()
+                .status(true)
+                .message("Ticket partially updated.")
                 .data(ticket)
                 .build();
         return ResponseEntity.ok(response);

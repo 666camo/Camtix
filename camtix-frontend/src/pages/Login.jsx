@@ -12,11 +12,30 @@ export default function Login() {
   const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [touched, setTouched] = useState({});
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  const validate = () => {
+    const errors = {};
+    if (!email.trim()) {
+      errors.email = 'Email wajib diisi';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      errors.email = 'Format email tidak valid';
+    }
+
+    if (!password) {
+      errors.password = 'Password wajib diisi';
+    } else if (password.length < 6) {
+      errors.password = 'Password minimal 6 karakter';
+    }
+    return errors;
+  };
+
+  const validationErrors = validate();
 
   const handleGoogleLogin = async (googleResponse) => {
     setError('');
@@ -44,7 +63,7 @@ export default function Login() {
   useEffect(() => {
     /* global google */
     const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "542247492193-n29h1r559pvt3uip49a9o69a4pco1i68.apps.googleusercontent.com";
-    
+
     const initGoogle = () => {
       if (typeof google !== 'undefined' && googleClientId) {
         try {
@@ -80,11 +99,21 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setTouched({ email: true, password: true });
+
+    const currentErrors = validate();
+    if (Object.keys(currentErrors).length > 0) {
+      const firstError = Object.values(currentErrors)[0];
+      setError(firstError);
+      toast.error(firstError);
+      return;
+    }
+
     setError('');
     setLoading(true);
 
     try {
-      const response = await authService.login(email, password);
+      const response = await authService.login(email.trim(), password);
       login({
         email: response.data.email,
         fullName: response.data.fullName,
@@ -110,13 +139,26 @@ export default function Login() {
     }
   };
 
+  const getInputClass = (fieldName) => {
+    const hasError = touched[fieldName] && validationErrors[fieldName];
+    const isValid = touched[fieldName] && !validationErrors[fieldName];
+    return `w-full bg-slate-50 border ${
+      hasError
+        ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
+        : isValid
+        ? 'border-emerald-400 focus:border-emerald-500 focus:ring-emerald-100'
+        : 'border-slate-200 focus:border-blue-400 focus:ring-blue-100'
+    } rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 transition-all`;
+  };
+
   return (
     <Aurora className="px-6">
       <div className="glass-effect rounded-2xl p-8 max-w-md w-full border border-slate-200 relative overflow-hidden shadow-2xl">
-        {/* Accent dot */}
         <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-100/50 rounded-full blur-2xl -z-10"></div>
-        
-        <h2 className="text-3xl font-extrabold text-center mb-2 tracking-tight text-slate-800">{t('auth.loginTitle')} <span className="gradient-text">CamTix</span></h2>
+
+        <h2 className="text-3xl font-extrabold text-center mb-2 tracking-tight text-slate-800">
+          {t('auth.loginTitle')} <span className="gradient-text">CamTix</span>
+        </h2>
         <p className="text-slate-500 text-sm text-center mb-8">{t('auth.loginSubtitle')}</p>
 
         {error && (
@@ -126,29 +168,39 @@ export default function Login() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">{t('auth.email')}</label>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+              {t('auth.email')} <span className="text-red-500">*</span>
+            </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full bg-slate-50 border border-slate-200 focus:border-blue-400 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all"
+              onBlur={() => setTouched((prev) => ({ ...prev, email: true }))}
+              className={getInputClass('email')}
               placeholder="name@example.com"
             />
+            {touched.email && validationErrors.email && (
+              <p className="text-[11px] text-red-500 font-medium mt-1 animate-fadeIn">{validationErrors.email}</p>
+            )}
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">{t('auth.password')}</label>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+              {t('auth.password')} <span className="text-red-500">*</span>
+            </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full bg-slate-50 border border-slate-200 focus:border-blue-400 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all"
+              onBlur={() => setTouched((prev) => ({ ...prev, password: true }))}
+              className={getInputClass('password')}
               placeholder="••••••••"
             />
+            {touched.password && validationErrors.password && (
+              <p className="text-[11px] text-red-500 font-medium mt-1 animate-fadeIn">{validationErrors.password}</p>
+            )}
           </div>
 
           <div className="flex justify-between items-center text-xs">

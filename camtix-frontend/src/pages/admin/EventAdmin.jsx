@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { Sparkles, Calendar, Plus, AlertCircle, Trash2, Edit, MapPin } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import Pagination from '../../components/Pagination';
 
 // ── Constants ──────────────────────────────────────────────────────
 const STATUS_OPTIONS = ['UPCOMING', 'ONGOING', 'FINISHED', 'CANCELLED'];
@@ -312,9 +313,14 @@ export default function EventAdmin() {
   // Delete confirm
   const [deleteModal, setDeleteModal] = useState({ open: false, id: null, name: '' });
 
-  // Search / filter
+  // Search / filter / sort / pagination
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
+  const [filterCategory, setFilterCategory] = useState('');
+  const [filterDate, setFilterDate] = useState('');
+  const [sortBy, setSortBy] = useState('newest');
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
 
   // ── Fetch all events ─────────────────────────────────────────────
   const fetchEvents = async () => {
@@ -414,15 +420,32 @@ export default function EventAdmin() {
     }
   };
 
-  // ── Filter events client-side ────────────────────────────────────
+  // ── Filter & sort events client-side ─────────────────────────────
   const filtered = events.filter((e) => {
     const q = searchQuery.toLowerCase();
     const matchQ = !q || [e.eventName, e.artistName, e.city, e.category].some(
       (v) => v && v.toLowerCase().includes(q)
     );
     const matchS = !filterStatus || e.status === filterStatus;
-    return matchQ && matchS;
+    const matchC = !filterCategory || e.category === filterCategory;
+    const matchD = !filterDate || (e.eventDate && e.eventDate.startsWith(filterDate));
+    return matchQ && matchS && matchC && matchD;
   });
+
+  const sorted = [...filtered].sort((a, b) => {
+    if (sortBy === 'newest') return (b.idEvent || 0) - (a.idEvent || 0);
+    if (sortBy === 'oldest') return (a.idEvent || 0) - (b.idEvent || 0);
+    if (sortBy === 'az') return (a.eventName || '').localeCompare(b.eventName || '');
+    if (sortBy === 'za') return (b.eventName || '').localeCompare(a.eventName || '');
+    return 0;
+  });
+
+  const totalPages = Math.ceil(sorted.length / pageSize);
+  const paginatedEvents = sorted.slice(page * pageSize, (page + 1) * pageSize);
+
+  useEffect(() => {
+    setPage(0);
+  }, [searchQuery, filterStatus, filterCategory, filterDate, sortBy, pageSize]);
 
   // ── Render ───────────────────────────────────────────────────────
   return (
@@ -457,12 +480,27 @@ export default function EventAdmin() {
       )}
 
       {/* Toolbar */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex flex-col sm:flex-row flex-wrap gap-3">
         <input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder={t('admin.searchEventPlaceholder')}
-          className="flex-1 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors shadow-sm"
+          className="flex-1 min-w-[200px] px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors shadow-sm"
+        />
+        <select
+          value={filterCategory}
+          onChange={(e) => setFilterCategory(e.target.value)}
+          className="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:border-blue-400 transition-colors shadow-sm"
+        >
+          <option value="">{t('admin.allCategories') || 'Semua Kategori'}</option>
+          {CATEGORY_OPTIONS.map(c => <option key={c} value={c}>{c}</option>)}
+        </select>
+        <input
+          type="date"
+          value={filterDate}
+          onChange={(e) => setFilterDate(e.target.value)}
+          className="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:border-blue-400 transition-colors shadow-sm"
+          title="Filter Tanggal Event"
         />
         <select
           value={filterStatus}
@@ -471,6 +509,16 @@ export default function EventAdmin() {
         >
           <option value="">{t('admin.allStatus')}</option>
           {STATUS_OPTIONS.map(s => <option key={s} value={s}>{s}</option>)}
+        </select>
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          className="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:border-blue-400 transition-colors shadow-sm"
+        >
+          <option value="newest">Terbaru</option>
+          <option value="oldest">Terlama</option>
+          <option value="az">A - Z</option>
+          <option value="za">Z - A</option>
         </select>
         <button
           onClick={fetchEvents}
@@ -502,16 +550,16 @@ export default function EventAdmin() {
             </svg>
             <p className="text-sm text-slate-500 font-medium">{t('admin.loadingEvents')}</p>
           </div>
-        ) : filtered.length === 0 ? (
+        ) : sorted.length === 0 ? (
           <div className="py-16 text-center animate-fadeIn">
             <Calendar className="w-12 h-12 text-slate-300 mx-auto mb-3" />
             <p className="text-sm font-bold text-slate-600">
-              {searchQuery || filterStatus ? t('admin.noEventsMatch') : t('admin.noEventsYet')}
+              {searchQuery || filterStatus || filterCategory || filterDate ? t('admin.noEventsMatch') : t('admin.noEventsYet')}
             </p>
           </div>
         ) : (
           <div className="divide-y divide-slate-100">
-            {filtered.map((ev) => (
+            {paginatedEvents.map((ev) => (
               <div
                 key={ev.idEvent}
                 className={`grid ${isOperationalAdmin ? 'grid-cols-[1fr_auto_auto_auto_auto]' : 'grid-cols-[1fr_auto_auto_auto]'} gap-4 items-center px-5 py-4 hover:bg-slate-50 transition-colors min-w-[600px]`}
@@ -578,12 +626,22 @@ export default function EventAdmin() {
             ))}
           </div>
         )}
+
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          totalItems={sorted.length}
+          pageSize={pageSize}
+          onPageChange={setPage}
+          onPageSizeChange={setPageSize}
+          pageSizeOptions={[5, 10, 20, 50]}
+        />
       </div>
 
       {/* Summary bar */}
-      {!loading && filtered.length > 0 && (
+      {!loading && sorted.length > 0 && (
         <p className="text-xs font-semibold text-slate-500 text-center">
-          {t('admin.showingEvents', { filtered: filtered.length, total: events.length })}
+          {t('admin.showingEvents', { filtered: sorted.length, total: events.length })}
         </p>
       )}
 

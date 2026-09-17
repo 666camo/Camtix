@@ -1,8 +1,8 @@
 import api from './api';
 
 const bookingService = {
-  getAllBookings: async () => {
-    const response = await api.get('/api/bookings');
+  getAllBookings: async (params) => {
+    const response = await api.get('/api/bookings', { params });
     return response.data;
   },
 
@@ -13,6 +13,16 @@ const bookingService = {
 
   getBookingById: async (id) => {
     const response = await api.get(`/api/bookings/${id}`);
+    return response.data;
+  },
+
+  patchBooking: async (id, updates) => {
+    const response = await api.patch(`/api/bookings/${id}`, updates);
+    return response.data;
+  },
+
+  deleteBooking: async (id) => {
+    const response = await api.delete(`/api/bookings/${id}`);
     return response.data;
   },
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import userService from '../../services/userService';
 import { Eye, EyeOff, RefreshCw, AlertTriangle } from 'lucide-react';
+import Pagination from '../../components/Pagination';
 
 export default function VisitorAdmin() {
   const { t, i18n } = useTranslation();
@@ -10,6 +11,9 @@ export default function VisitorAdmin() {
   const [error, setError] = useState('');
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState('newest');
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
 
   const fetchVisitors = async () => {
     setLoading(true);
@@ -59,6 +63,21 @@ export default function VisitorAdmin() {
     return activity.includes(q) || userId.includes(q);
   });
 
+  const sorted = [...filtered].sort((a, b) => {
+    if (sortBy === 'newest') return (b.idVisitor || 0) - (a.idVisitor || 0);
+    if (sortBy === 'oldest') return (a.idVisitor || 0) - (b.idVisitor || 0);
+    if (sortBy === 'az') return (a.activity || '').localeCompare(b.activity || '');
+    if (sortBy === 'za') return (b.activity || '').localeCompare(a.activity || '');
+    return 0;
+  });
+
+  const totalPages = Math.ceil(sorted.length / pageSize);
+  const paginatedVisitors = sorted.slice(page * pageSize, (page + 1) * pageSize);
+
+  useEffect(() => {
+    setPage(0);
+  }, [searchQuery, sortBy, pageSize]);
+
   return (
     <div className="p-6 md:p-8 space-y-6">
       {/* Header */}
@@ -87,7 +106,7 @@ export default function VisitorAdmin() {
         </div>
       )}
 
-      {/* Search */}
+      {/* Search & Sort */}
       <div className="flex flex-col sm:flex-row gap-3">
         <input
           value={searchQuery}
@@ -95,6 +114,16 @@ export default function VisitorAdmin() {
           placeholder={t('admin.searchVisitorPlaceholder')}
           className="flex-1 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors shadow-sm"
         />
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          className="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:border-blue-400 transition-colors shadow-sm"
+        >
+          <option value="newest">Terbaru</option>
+          <option value="oldest">Terlama</option>
+          <option value="az">Aktivitas: A - Z</option>
+          <option value="za">Aktivitas: Z - A</option>
+        </select>
       </div>
 
       {/* Table */}
@@ -114,7 +143,7 @@ export default function VisitorAdmin() {
             </svg>
             <p className="text-sm text-slate-500 font-medium">{t('admin.loadingVisitors')}</p>
           </div>
-        ) : filtered.length === 0 ? (
+        ) : sorted.length === 0 ? (
           <div className="py-16 text-center">
             <EyeOff className="w-10 h-10 mx-auto mb-3 text-slate-400 opacity-60" />
             <p className="text-sm font-bold text-slate-600">
@@ -123,14 +152,14 @@ export default function VisitorAdmin() {
           </div>
         ) : (
           <div className="divide-y divide-slate-100">
-            {filtered.map((v, index) => (
+            {paginatedVisitors.map((v, index) => (
               <div
                 key={v.idVisitor || index}
                 className="grid grid-cols-[auto_2fr_1fr_auto] gap-4 items-center px-5 py-4 hover:bg-slate-50 transition-colors min-w-[500px]"
               >
                 {/* No */}
                 <span className="text-xs font-bold text-slate-400">
-                  {index + 1}
+                  {page * pageSize + index + 1}
                 </span>
 
                 {/* Activity */}
@@ -161,12 +190,22 @@ export default function VisitorAdmin() {
             ))}
           </div>
         )}
+
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          totalItems={sorted.length}
+          pageSize={pageSize}
+          onPageChange={setPage}
+          onPageSizeChange={setPageSize}
+          pageSizeOptions={[5, 10, 20, 50]}
+        />
       </div>
 
       {/* Summary */}
-      {!loading && filtered.length > 0 && (
+      {!loading && sorted.length > 0 && (
         <p className="text-xs font-semibold text-slate-500 text-center">
-          {t('admin.showingVisitors', { filtered: filtered.length, total: visitors.length })}
+          {t('admin.showingVisitors', { filtered: sorted.length, total: visitors.length })}
         </p>
       )}
     </div>

@@ -8,6 +8,38 @@ const paymentService = {
     return response.data;
   },
 
+  getAllPaymentMethodsAdmin: async (params) => {
+    const response = await api.get('/api/payment-methods', {
+      params: { activeOnly: false, ...params }
+    });
+    return response.data;
+  },
+
+  getPaymentMethodById: async (id) => {
+    const response = await api.get(`/api/payment-methods/${id}`);
+    return response.data;
+  },
+
+  createPaymentMethod: async (data) => {
+    const response = await api.post('/api/payment-methods', data);
+    return response.data;
+  },
+
+  updatePaymentMethod: async (id, data) => {
+    const response = await api.put(`/api/payment-methods/${id}`, data);
+    return response.data;
+  },
+
+  patchPaymentMethod: async (id, updates) => {
+    const response = await api.patch(`/api/payment-methods/${id}`, updates);
+    return response.data;
+  },
+
+  deletePaymentMethod: async (id) => {
+    const response = await api.delete(`/api/payment-methods/${id}`);
+    return response.data;
+  },
+
   getPaymentByBookingId: async (bookingId) => {
     const response = await api.get(`/api/payments/booking/${bookingId}`);
     return response.data;
@@ -29,8 +61,8 @@ const paymentService = {
   },
 
   // ── Admin ────────────────────────────────────────────────────────
-  getAllPayments: async () => {
-    const response = await api.get('/api/payments');
+  getAllPayments: async (params) => {
+    const response = await api.get('/api/payments', { params });
     return response.data;
   },
 

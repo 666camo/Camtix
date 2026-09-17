@@ -45,10 +45,12 @@ import UserAdmin from './pages/admin/UserAdmin';
 import VisitorAdmin from './pages/admin/VisitorAdmin';
 import BookingAdmin from './pages/admin/BookingAdmin';
 import PaymentAdmin from './pages/admin/PaymentAdmin';
+import PaymentMethodAdmin from './pages/admin/PaymentMethodAdmin';
 import AdminPlaceholder from './pages/admin/AdminPlaceholder';
 
 import NotFound from './pages/NotFound';
 import Forbidden from './pages/Forbidden';
+import Unauthorized from './pages/Unauthorized';
 import ServerError from './pages/ServerError';
 import ProtectedRoute from './components/ProtectedRoute';
 import RouteTracker from './components/RouteTracker';
@@ -398,9 +400,11 @@ export default function App() {
             <Route path="users" element={<UserAdmin />} />
             <Route path="bookings" element={<BookingAdmin />} />
             <Route path="payments" element={<PaymentAdmin />} />
+            <Route path="payment-methods" element={<PaymentMethodAdmin />} />
           </Route>
 
           {/* ── Error pages ──────────────────────────────────────── */}
+          <Route path="/401" element={<Unauthorized />} />
           <Route path="/403" element={<Forbidden />} />
           <Route path="/500" element={<ServerError />} />
 

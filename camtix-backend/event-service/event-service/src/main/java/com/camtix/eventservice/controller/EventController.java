@@ -6,12 +6,18 @@ import com.camtix.eventservice.dto.WebResponse;
 import com.camtix.eventservice.service.EventService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +31,36 @@ public class EventController {
     private final com.camtix.eventservice.service.FileStorageService fileStorageService;
 
     @GetMapping
-    public ResponseEntity<WebResponse<List<EventResponse>>> getAllEvents() {
+    public ResponseEntity<WebResponse<?>> getAllEvents(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) Integer limit,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(required = false, defaultValue = "idEvent") String sortBy,
+            @RequestParam(required = false, defaultValue = "desc") String direction
+    ) {
+        int pageSize = size != null ? size : (limit != null ? limit : 0);
+
+        if (page != null || pageSize > 0) {
+            int pageNumber = page != null ? Math.max(0, page) : 0;
+            int effectiveSize = pageSize > 0 ? pageSize : 10;
+            Sort.Direction sortDirection = "asc".equalsIgnoreCase(direction) ? Sort.Direction.ASC : Sort.Direction.DESC;
+            Pageable pageable = PageRequest.of(pageNumber, effectiveSize, Sort.by(sortDirection, sortBy != null ? sortBy : "idEvent"));
+
+            Page<EventResponse> eventsPage = eventService.getAllEventsPaged(search, status, category, city, startDate, endDate, pageable);
+            WebResponse<Object> response = WebResponse.<Object>builder()
+                    .status(true)
+                    .message("Successfully retrieved events with pagination.")
+                    .data(eventsPage)
+                    .build();
+            return ResponseEntity.ok(response);
+        }
+
         List<EventResponse> events = eventService.getAllEvents();
         WebResponse<List<EventResponse>> response = WebResponse.<List<EventResponse>>builder()
                 .status(true)
@@ -93,6 +128,20 @@ public class EventController {
         WebResponse<EventResponse> response = WebResponse.<EventResponse>builder()
                 .status(true)
                 .message("Event successfully updated.")
+                .data(event)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<WebResponse<EventResponse>> patchEvent(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> updates
+    ) {
+        EventResponse event = eventService.patchEvent(id, updates);
+        WebResponse<EventResponse> response = WebResponse.<EventResponse>builder()
+                .status(true)
+                .message("Event partially updated.")
                 .data(event)
                 .build();
         return ResponseEntity.ok(response);

@@ -3,6 +3,7 @@ import userService from '../../services/userService';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import Pagination from '../../components/Pagination';
 
 function UserModal({ open, userData, onClose, onBan, onUnban, loading, currentUser }) {
   const { t } = useTranslation();
@@ -89,9 +90,10 @@ export default function UserAdmin() {
   
   const [searchQuery, setSearchQuery] = useState('');
   const [filterRole, setFilterRole] = useState('');
+  const [sortBy, setSortBy] = useState('newest');
 
   const [page, setPage] = useState(0);
-  const [size] = useState(10);
+  const [size, setSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -101,14 +103,21 @@ export default function UserAdmin() {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const res = await userService.getAllUsers(page, size);
+      const res = await userService.getAllUsers({ page, size });
       if (res && res.data) {
         if (res.data.content) {
           setUsers(res.data.content);
           setTotalPages(res.data.totalPages);
-        } else {
+        } else if (Array.isArray(res.data)) {
           setUsers(res.data);
+          setTotalPages(Math.ceil(res.data.length / size));
+        } else {
+          setUsers([]);
+          setTotalPages(0);
         }
+      } else if (Array.isArray(res)) {
+        setUsers(res);
+        setTotalPages(Math.ceil(res.length / size));
       }
     } catch (err) {
       setError(t('admin.loadUsersFail'));
@@ -119,7 +128,7 @@ export default function UserAdmin() {
 
   useEffect(() => {
     fetchUsers();
-  }, [page]);
+  }, [page, size]);
 
   const handleBan = async (id) => {
     setActionLoading(true);
@@ -151,11 +160,27 @@ export default function UserAdmin() {
 
   const filtered = users.filter((u) => {
     const q = searchQuery.toLowerCase();
-    const name = `${u.firstName} ${u.lastName}`.toLowerCase();
+    const name = `${u.firstName || ''} ${u.lastName || ''}`.toLowerCase();
     const phone = (u.phone || u.phoneNumber || '').toLowerCase();
-    const matchQ = !q || name.includes(q) || u.email.toLowerCase().includes(q) || phone.includes(q);
+    const matchQ = !q || name.includes(q) || (u.email && u.email.toLowerCase().includes(q)) || phone.includes(q);
     const matchR = !filterRole || u.role === filterRole;
     return matchQ && matchR;
+  });
+
+  const sorted = [...filtered].sort((a, b) => {
+    if (sortBy === 'newest') return (b.idUser || 0) - (a.idUser || 0);
+    if (sortBy === 'oldest') return (a.idUser || 0) - (b.idUser || 0);
+    if (sortBy === 'az') {
+      const nameA = `${a.firstName || ''} ${a.lastName || ''}`.trim();
+      const nameB = `${b.firstName || ''} ${b.lastName || ''}`.trim();
+      return nameA.localeCompare(nameB);
+    }
+    if (sortBy === 'za') {
+      const nameA = `${a.firstName || ''} ${a.lastName || ''}`.trim();
+      const nameB = `${b.firstName || ''} ${b.lastName || ''}`.trim();
+      return nameB.localeCompare(nameA);
+    }
+    return 0;
   });
 
   return (
@@ -172,12 +197,12 @@ export default function UserAdmin() {
         </button>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex flex-col sm:flex-row flex-wrap gap-3">
         <input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder={t('admin.searchUserPlaceholder')}
-          className="flex-1 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:border-blue-400 shadow-sm"
+          className="flex-1 min-w-[200px] px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:border-blue-400 shadow-sm"
         />
         <select
           value={filterRole}
@@ -188,6 +213,16 @@ export default function UserAdmin() {
           <option value="USER">USER</option>
           <option value="ADMIN_CAMTIX">ADMIN CAMTIX</option>
           <option value="ADMIN_APLIKASI">ADMIN APLIKASI</option>
+        </select>
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          className="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:border-blue-400 shadow-sm"
+        >
+          <option value="newest">Terbaru</option>
+          <option value="oldest">Terlama</option>
+          <option value="az">Nama: A - Z</option>
+          <option value="za">Nama: Z - A</option>
         </select>
       </div>
 
@@ -202,11 +237,11 @@ export default function UserAdmin() {
 
         {loading ? (
           <div className="py-12 text-center text-slate-500 text-sm">{t('admin.loadingUsers')}</div>
-        ) : filtered.length === 0 ? (
+        ) : sorted.length === 0 ? (
           <div className="py-12 text-center text-slate-500 text-sm font-semibold">{t('admin.noUserData')}</div>
         ) : (
           <div className="divide-y divide-slate-100">
-            {filtered.map((u) => (
+            {sorted.map((u) => (
               <div key={u.idUser} className={`grid grid-cols-[auto_2fr_2fr_1fr_auto] gap-4 items-center px-5 py-4 hover:bg-slate-50 transition-colors min-w-[600px] ${u.isBanned ? 'opacity-60' : ''}`}>
                 <span className="text-xs font-bold text-slate-400">#{u.idUser}</span>
                 
@@ -243,27 +278,15 @@ export default function UserAdmin() {
         )}
 
         {/* Pagination Controls */}
-        {totalPages > 1 && (
-          <div className="flex justify-between items-center px-6 py-4 border-t border-slate-100 text-xs">
-            <button
-              onClick={() => setPage(p => Math.max(0, p - 1))}
-              disabled={page === 0}
-              className="px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 disabled:opacity-50 text-slate-700 font-bold rounded-lg cursor-pointer"
-            >
-              {t('common.previous')}
-            </button>
-            <span className="text-slate-500 font-medium font-mono">
-              {t('admin.pageOf', { page: page + 1, totalPages })}
-            </span>
-            <button
-              onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
-              disabled={page >= totalPages - 1}
-              className="px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 disabled:opacity-50 text-slate-700 font-bold rounded-lg cursor-pointer"
-            >
-              {t('common.next')}
-            </button>
-          </div>
-        )}
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          totalItems={users.length}
+          pageSize={size}
+          onPageChange={setPage}
+          onPageSizeChange={setSize}
+          pageSizeOptions={[5, 10, 20, 50]}
+        />
       </div>
 
       <UserModal 

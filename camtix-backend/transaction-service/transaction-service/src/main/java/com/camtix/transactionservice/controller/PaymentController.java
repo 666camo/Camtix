@@ -5,6 +5,10 @@ import com.camtix.transactionservice.service.PaymentService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +24,32 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @GetMapping
-    public ResponseEntity<WebResponse<List<PaymentResponse>>> getAllPayments() {
+    public ResponseEntity<WebResponse<?>> getAllPayments(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) Integer limit,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) Long paymentMethodId,
+            @RequestParam(required = false, defaultValue = "idPayment") String sortBy,
+            @RequestParam(required = false, defaultValue = "desc") String direction
+    ) {
+        int pageSize = size != null ? size : (limit != null ? limit : 0);
+
+        if (page != null || pageSize > 0) {
+            int pageNumber = page != null ? Math.max(0, page) : 0;
+            int effectiveSize = pageSize > 0 ? pageSize : 10;
+            Sort.Direction sortDirection = "asc".equalsIgnoreCase(direction) ? Sort.Direction.ASC : Sort.Direction.DESC;
+            Pageable pageable = PageRequest.of(pageNumber, effectiveSize, Sort.by(sortDirection, sortBy != null ? sortBy : "idPayment"));
+
+            Page<PaymentResponse> paymentsPage = paymentService.getAllPaymentsPaged(status, paymentMethodId, pageable);
+            WebResponse<Object> response = WebResponse.<Object>builder()
+                    .status(true)
+                    .message("Successfully retrieved payments with pagination.")
+                    .data(paymentsPage)
+                    .build();
+            return ResponseEntity.ok(response);
+        }
+
         List<PaymentResponse> payments = paymentService.getAllPayments();
         WebResponse<List<PaymentResponse>> response = WebResponse.<List<PaymentResponse>>builder()
                 .status(true)
@@ -72,6 +101,20 @@ public class PaymentController {
         WebResponse<PaymentResponse> response = WebResponse.<PaymentResponse>builder()
                 .status(true)
                 .message("Payment proof uploaded successfully.")
+                .data(payment)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<WebResponse<PaymentResponse>> patchPayment(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> updates
+    ) {
+        PaymentResponse payment = paymentService.patchPayment(id, updates);
+        WebResponse<PaymentResponse> response = WebResponse.<PaymentResponse>builder()
+                .status(true)
+                .message("Payment partially updated.")
                 .data(payment)
                 .build();
         return ResponseEntity.ok(response);

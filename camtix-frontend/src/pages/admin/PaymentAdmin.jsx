@@ -5,6 +5,7 @@ import bookingService from '../../services/bookingService';
 import { useAuth } from '../../context/AuthContext';
 import { CreditCard, RefreshCw, CheckCircle2, XCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
+import Pagination from '../../components/Pagination';
 
 function statusBadge(status) {
   const map = {
@@ -104,9 +105,12 @@ export default function PaymentAdmin() {
   const [actionLoading, setActionLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Search & filter
+  // Search & filter & sort & pagination
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('WAITING_CONFIRMATION');
+  const [sortBy, setSortBy] = useState('newest');
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
 
   // Modals
   const [proofModal, setProofModal] = useState({ open: false, url: '' });
@@ -167,6 +171,21 @@ export default function PaymentAdmin() {
     return matchQ && matchS;
   });
 
+  const sorted = [...filtered].sort((a, b) => {
+    if (sortBy === 'newest') return (b.idPayment || 0) - (a.idPayment || 0);
+    if (sortBy === 'oldest') return (a.idPayment || 0) - (b.idPayment || 0);
+    if (sortBy === 'amount_high') return (Number(b.totalPayment) || 0) - (Number(a.totalPayment) || 0);
+    if (sortBy === 'amount_low') return (Number(a.totalPayment) || 0) - (Number(b.totalPayment) || 0);
+    return 0;
+  });
+
+  const totalPages = Math.ceil(sorted.length / pageSize);
+  const paginatedPayments = sorted.slice(page * pageSize, (page + 1) * pageSize);
+
+  useEffect(() => {
+    setPage(0);
+  }, [searchQuery, filterStatus, sortBy, pageSize]);
+
   return (
     <div className="p-6 md:p-8 space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -182,12 +201,12 @@ export default function PaymentAdmin() {
         </button>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex flex-col sm:flex-row flex-wrap gap-3">
         <input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder={t('admin.searchPaymentPlaceholder')}
-          className="flex-1 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:border-blue-400 shadow-sm"
+          className="flex-1 min-w-[200px] px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:border-blue-400 shadow-sm"
         />
         <select
           value={filterStatus}
@@ -199,6 +218,16 @@ export default function PaymentAdmin() {
           <option value="PAID">{t('admin.paidConfirmed')}</option>
           <option value="REJECTED">{t('admin.rejectedStatus')}</option>
           <option value="PENDING">{t('admin.pendingStatus')}</option>
+        </select>
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          className="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:border-blue-400 shadow-sm"
+        >
+          <option value="newest">Terbaru</option>
+          <option value="oldest">Terlama</option>
+          <option value="amount_high">Nominal: Tertinggi</option>
+          <option value="amount_low">Nominal: Terendah</option>
         </select>
       </div>
 
@@ -214,11 +243,11 @@ export default function PaymentAdmin() {
 
         {loading ? (
           <div className="py-12 text-center text-slate-500 text-sm">{t('admin.loadingPaymentData')}</div>
-        ) : filtered.length === 0 ? (
+        ) : sorted.length === 0 ? (
           <div className="py-12 text-center text-slate-500 text-sm font-semibold">{t('admin.noPaymentDataFound')}</div>
         ) : (
           <div className="divide-y divide-slate-100">
-            {filtered.map((p) => {
+            {paginatedPayments.map((p) => {
               const code = bookingsMap[p.bookingId]?.bookingCode || `Booking #${p.bookingId}`;
               const isWaiting = p.paymentStatus === 'WAITING_CONFIRMATION';
 
@@ -282,6 +311,16 @@ export default function PaymentAdmin() {
             })}
           </div>
         )}
+
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          totalItems={sorted.length}
+          pageSize={pageSize}
+          onPageChange={setPage}
+          onPageSizeChange={setPageSize}
+          pageSizeOptions={[5, 10, 20, 50]}
+        />
       </div>
 
       <ProofModal open={proofModal.open} proofUrl={proofModal.url} onClose={() => setProofModal({ open: false, url: '' })} />

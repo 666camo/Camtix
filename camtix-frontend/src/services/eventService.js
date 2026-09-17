@@ -2,8 +2,8 @@ import api from './api';
 
 const eventService = {
   // ── Events ───────────────────────────────────────────
-  getAllEvents: async () => {
-    const response = await api.get('/api/events');
+  getAllEvents: async (params) => {
+    const response = await api.get('/api/events', { params });
     return response.data;
   },
 
@@ -32,6 +32,11 @@ const eventService = {
     return response.data;
   },
 
+  patchEvent: async (id, updates) => {
+    const response = await api.patch(`/api/events/${id}`, updates);
+    return response.data;
+  },
+
   deleteEvent: async (id) => {
     const response = await api.delete(`/api/events/${id}`);
     return response.data;
@@ -43,8 +48,13 @@ const eventService = {
     return response.data;
   },
 
-  getAllTickets: async () => {
-    const response = await api.get('/api/tickets');
+  getAllTickets: async (params) => {
+    const response = await api.get('/api/tickets', { params });
+    return response.data;
+  },
+
+  getTicketById: async (id) => {
+    const response = await api.get(`/api/tickets/${id}`);
     return response.data;
   },
 
@@ -55,6 +65,11 @@ const eventService = {
 
   updateTicket: async (id, data) => {
     const response = await api.put(`/api/tickets/${id}`, data);
+    return response.data;
+  },
+
+  patchTicket: async (id, updates) => {
+    const response = await api.patch(`/api/tickets/${id}`, updates);
     return response.data;
   },
 

@@ -3,17 +3,21 @@ package com.camtix.transactionservice.service;
 import com.camtix.transactionservice.dto.BookingRequest;
 import com.camtix.transactionservice.dto.BookingResponse;
 import com.camtix.transactionservice.entity.Booking;
+import com.camtix.transactionservice.exception.ResourceNotFoundException;
 import com.camtix.transactionservice.repository.BookingRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import org.springframework.web.client.RestTemplate;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,9 +39,17 @@ public class BookingService {
     }
 
     @Transactional(readOnly = true)
+    public Page<BookingResponse> getAllBookingsPaged(String search, String status, Long userId, Pageable pageable) {
+        String s = (search == null || search.trim().isEmpty()) ? null : search.trim();
+        String st = (status == null || status.trim().isEmpty()) ? null : status.trim().toUpperCase();
+        return bookingRepository.findWithFilters(s, st, userId, pageable)
+                .map(this::mapToBookingResponse);
+    }
+
+    @Transactional(readOnly = true)
     public BookingResponse getBookingById(Long id) {
         Booking booking = bookingRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Booking not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found with ID: " + id));
         return mapToBookingResponse(booking);
     }
 
@@ -50,16 +62,13 @@ public class BookingService {
 
     @Transactional
     public BookingResponse createBooking(BookingRequest request) {
-        // 1. Generate unique bookingCode: CTX-YYYYMMDD-UUID8
         String dateStr = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String uniqueSuffix = java.util.UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         String bookingCode = "CTX-" + dateStr + "-" + uniqueSuffix;
 
-        // 2. Set dates
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime expiredAt = now.plusMinutes(30);
 
-        // Call event-service to reduce ticket stock
         try {
             String url = eventServiceUrl + "/api/tickets/" + request.getTicketId() + "/reduce-stock?quantity=" + request.getNumberOfTicket();
             restTemplate.put(url, null);
@@ -77,7 +86,6 @@ public class BookingService {
             throw new IllegalArgumentException("Koneksi ke Event Service gagal: " + e.getMessage());
         }
 
-        // 3. Construct entity
         Booking booking = Booking.builder()
                 .bookingCode(bookingCode)
                 .userId(request.getUserId())
@@ -97,7 +105,7 @@ public class BookingService {
     @Transactional
     public BookingResponse updateBookingStatus(Long id, String status) {
         Booking booking = bookingRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Booking not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found with ID: " + id));
 
         if (status == null || status.trim().isEmpty()) {
             throw new IllegalArgumentException("Status cannot be empty");
@@ -114,9 +122,33 @@ public class BookingService {
     }
 
     @Transactional
+    public BookingResponse patchBooking(Long id, Map<String, Object> updates) {
+        Booking booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found with ID: " + id));
+
+        updates.forEach((key, value) -> {
+            switch (key) {
+                case "bookingStatus" -> {
+                    String status = ((String) value).toUpperCase();
+                    if (!ALLOWED_STATUSES.contains(status)) {
+                        throw new IllegalArgumentException("Invalid booking status. Allowed: " + ALLOWED_STATUSES);
+                    }
+                    booking.setBookingStatus(status);
+                }
+                case "numberOfTicket" -> {
+                    if (value instanceof Number) booking.setNumberOfTicket(((Number) value).intValue());
+                }
+            }
+        });
+
+        Booking updatedBooking = bookingRepository.save(booking);
+        return mapToBookingResponse(updatedBooking);
+    }
+
+    @Transactional
     public void deleteBooking(Long id) {
         if (!bookingRepository.existsById(id)) {
-            throw new IllegalArgumentException("Booking not found with ID: " + id);
+            throw new ResourceNotFoundException("Booking not found with ID: " + id);
         }
         bookingRepository.deleteById(id);
     }

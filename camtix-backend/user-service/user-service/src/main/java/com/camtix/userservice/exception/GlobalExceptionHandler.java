@@ -4,6 +4,8 @@ import com.camtix.userservice.dto.WebResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,8 +21,32 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<WebResponse<Object>> handleIllegalArgument(IllegalArgumentException ex) {
         log.warn("Bad request: {}", ex.getMessage());
-        return ResponseEntity.badRequest().body(
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 WebResponse.builder().status(false).message(ex.getMessage()).build()
+        );
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<WebResponse<Object>> handleResourceNotFound(ResourceNotFoundException ex) {
+        log.warn("Not found: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                WebResponse.builder().status(false).message(ex.getMessage()).build()
+        );
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<WebResponse<Object>> handleAuthentication(AuthenticationException ex) {
+        log.warn("Unauthorized: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                WebResponse.builder().status(false).message("Unauthorized: " + ex.getMessage()).build()
+        );
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<WebResponse<Object>> handleAccessDenied(AccessDeniedException ex) {
+        log.warn("Forbidden: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                WebResponse.builder().status(false).message("Forbidden: " + ex.getMessage()).build()
         );
     }
 
@@ -29,7 +55,7 @@ public class GlobalExceptionHandler {
         Map<String, String> errors = new LinkedHashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(e -> errors.put(e.getField(), e.getDefaultMessage()));
         log.warn("Validation failed: {}", errors);
-        return ResponseEntity.badRequest().body(
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
                 WebResponse.builder().status(false).message("Validation failed").data(errors).build()
         );
     }

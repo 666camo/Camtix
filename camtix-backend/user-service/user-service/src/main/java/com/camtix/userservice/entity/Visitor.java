@@ -3,6 +3,7 @@ package com.camtix.userservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -27,4 +28,8 @@ public class Visitor {
     @CreationTimestamp
     @Column(name = "visit_date", updatable = false)
     private LocalDateTime visitDate;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 }
