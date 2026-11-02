@@ -1,3 +1,4 @@
+import useDialogFocus from '../../components/useDialogFocus';
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import paymentService from '../../services/paymentService';
@@ -20,17 +21,18 @@ function statusBadge(status) {
 
 function ProofModal({ open, proofUrl, onClose }) {
   const { t } = useTranslation();
+  useDialogFocus(open, onClose);
   if (!open) return null;
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      role="dialog" aria-modal="true" aria-label="Kelola payment CamTix" className="admin-dialog fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ background: 'rgba(15, 23, 42, 0.6)', backdropFilter: 'blur(4px)' }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div className="bg-surface rounded-2xl overflow-hidden max-w-2xl w-full flex flex-col shadow-card">
         <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-surface-hover">
           <h3 className="font-bold text-fg text-sm">{t('admin.transferProofModal')}</h3>
-          <button onClick={onClose} className="text-fg-muted hover:text-fg-secondary">✕</button>
+          <button aria-label="Tutup dialog" onClick={onClose} className="text-fg-muted hover:text-fg-secondary">✕</button>
         </div>
         <div className="p-4 flex items-center justify-center bg-slate-100 min-h-[300px]">
           {proofUrl ? (
@@ -49,12 +51,13 @@ function ActionModal({ open, title, type, onSubmit, onClose, loading }) {
   const [note, setNote] = useState('');
   useEffect(() => { if (open) setNote(''); }, [open]);
 
+  useDialogFocus(open, onClose);
   if (!open) return null;
   const isReject = type === 'reject';
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      role="dialog" aria-modal="true" aria-label="Kelola payment CamTix" className="admin-dialog fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ background: 'rgba(15, 23, 42, 0.6)', backdropFilter: 'blur(4px)' }}
     >
       <div className={`bg-surface border ${isReject ? 'border-red-200' : 'border-emerald-200'} rounded-2xl w-full max-w-sm p-6 shadow-card`}>
@@ -63,8 +66,8 @@ function ActionModal({ open, title, type, onSubmit, onClose, loading }) {
           <h3 className="text-lg font-bold text-fg">{title}</h3>
         </div>
         <div className="mb-6">
-          <label className="block text-xs font-semibold text-fg-secondary mb-2 uppercase tracking-wider">{t('admin.adminNoteOptional')}</label>
-          <textarea
+          <label htmlFor="payment-field-1" className="block text-xs font-semibold text-fg-secondary mb-2 uppercase tracking-wider">{t('admin.adminNoteOptional')}</label>
+          <textarea id="payment-field-1"
             value={note}
             onChange={(e) => setNote(e.target.value)}
             rows={3}
@@ -73,7 +76,7 @@ function ActionModal({ open, title, type, onSubmit, onClose, loading }) {
           />
         </div>
         <div className="flex gap-3">
-          <button
+          <button aria-label="Tutup dialog"
             onClick={onClose}
             className="flex-1 py-2.5 rounded-xl border border-border bg-surface text-sm font-bold text-fg-secondary hover:bg-surface-hover transition-colors"
           >
@@ -120,7 +123,7 @@ export default function PaymentAdmin() {
     setLoading(true);
     setError('');
     try {
-      const payRes = await paymentService.getAllPayments().catch(() => null);
+      const payRes = await paymentService.getAllPayments();
       if (payRes && payRes.data) {
         setPayments(payRes.data);
       }
@@ -187,8 +190,8 @@ export default function PaymentAdmin() {
   }, [searchQuery, filterStatus, sortBy, pageSize]);
 
   return (
-    <div className="p-6 md:p-8 space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div className="admin-page admin-payment space-y-6">
+      <div className="admin-page-header flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl font-extrabold text-fg flex items-center gap-2">
             <CreditCard className="w-5 h-5 text-fg-secondary" /> {t('admin.paymentVerification')}
@@ -201,17 +204,17 @@ export default function PaymentAdmin() {
         </button>
       </div>
 
-      <div className="flex flex-col sm:flex-row flex-wrap gap-3">
+      <div className="admin-toolbar flex flex-col sm:flex-row flex-wrap gap-3">
         <input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder={t('admin.searchPaymentPlaceholder')}
-          className="flex-1 min-w-[200px] px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg focus:outline-none focus:border-blue-400 shadow-card"
+          placeholder={t('admin.searchPaymentPlaceholder')} aria-label={t('admin.searchPaymentPlaceholder')}
+          className="flex-1 min-w-[200px] px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg focus:outline-none focus:border-brand shadow-card"
         />
-        <select
+        <select aria-label="Filter status"
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
-          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-blue-400 shadow-card"
+          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-brand shadow-card"
         >
           <option value="">{t('admin.allStatus')}</option>
           <option value="WAITING_CONFIRMATION">{t('admin.waitingReview')}</option>
@@ -219,10 +222,10 @@ export default function PaymentAdmin() {
           <option value="REJECTED">{t('admin.rejectedStatus')}</option>
           <option value="PENDING">{t('admin.pendingStatus')}</option>
         </select>
-        <select
+        <select aria-label="Urutkan data"
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-blue-400 shadow-card"
+          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-brand shadow-card"
         >
           <option value="newest">Terbaru</option>
           <option value="oldest">Terlama</option>
@@ -231,7 +234,7 @@ export default function PaymentAdmin() {
         </select>
       </div>
 
-      <div className="bg-surface rounded-2xl border border-border overflow-hidden shadow-card overflow-x-auto">
+      <div className="admin-data-table bg-surface border border-border overflow-x-auto" tabIndex={0} aria-label="Data CamTix">
         <div className={`grid ${isOperationalAdmin ? 'grid-cols-[auto_1fr_1fr_auto_auto_auto]' : 'grid-cols-[auto_1fr_1fr_auto_auto]'} gap-4 px-5 py-3 border-b border-border bg-surface text-[10px] font-bold text-fg-muted uppercase tracking-widest min-w-[700px]`}>
           <span>{t('admin.colPaymentId')}</span>
           <span>{t('admin.colPaymentInfo')}</span>

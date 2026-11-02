@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import authService from '../services/authService';
-import Aurora from '../components/Aurora';
+import AuthLayout from '../components/AuthLayout';
 import Magnet from '../components/Magnet';
 import { AlertCircle } from 'lucide-react';
 
@@ -152,13 +152,13 @@ export default function Login() {
   };
 
   return (
-    <Aurora className="px-6">
-      <div className="glass-effect rounded-2xl p-8 max-w-md w-full border border-border relative overflow-hidden shadow-2xl">
+    <AuthLayout>
+      <div className="auth-form glass-effect rounded-2xl p-8 max-w-md w-full border border-border relative overflow-hidden shadow-2xl">
         <div className="absolute -top-10 -right-10 w-32 h-32 bg-brand/10/50 rounded-full blur-2xl -z-10"></div>
 
-        <h2 className="text-3xl font-extrabold text-center mb-2 tracking-tight text-fg">
+        <h1 className="text-3xl font-extrabold text-center mb-2 tracking-tight text-fg">
           {t('auth.loginTitle')} <span className="gradient-text">CamTix</span>
-        </h2>
+        </h1>
         <p className="text-fg-secondary text-sm text-center mb-8">{t('auth.loginSubtitle')}</p>
 
         {error && (
@@ -170,10 +170,10 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
+            <label htmlFor="login-field-1" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
               {t('auth.email')} <span className="text-red-500">*</span>
             </label>
-            <input
+            <input id="login-field-1"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -187,10 +187,10 @@ export default function Login() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
+            <label htmlFor="login-field-2" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
               {t('auth.password')} <span className="text-red-500">*</span>
             </label>
-            <input
+            <input id="login-field-2"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -240,6 +240,6 @@ export default function Login() {
           {t('auth.noAccount')} <Link to="/register" className="text-brand hover:text-brand font-bold transition-colors">{t('auth.registerLink')}</Link>
         </p>
       </div>
-    </Aurora>
+    </AuthLayout>
   );
 }

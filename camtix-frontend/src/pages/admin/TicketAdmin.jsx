@@ -1,3 +1,4 @@
+import useDialogFocus from '../../components/useDialogFocus';
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
@@ -23,27 +24,28 @@ function TicketModal({ open, mode, form, setForm, onSubmit, onClose, loading, se
   const { t } = useTranslation();
   const firstInputRef = useRef(null);
   useEffect(() => { if (open && firstInputRef.current) firstInputRef.current.focus(); }, [open]);
+  useDialogFocus(open, onClose);
   if (!open) return null;
 
   const handle = (e) => setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   const isEdit = mode === 'edit';
 
-  const inputClass = "w-full px-4 py-2.5 bg-surface-hover border border-border rounded-xl text-sm text-fg placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-colors";
+  const inputClass = "w-full px-4 py-2.5 bg-surface-hover border border-border rounded-xl text-sm text-fg placeholder-slate-400 focus:outline-none focus:border-brand focus:ring-2 focus:ring-blue-100 transition-colors";
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      role="dialog" aria-modal="true" className="admin-dialog fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ background: 'rgba(15, 23, 42, 0.4)', backdropFilter: 'blur(4px)' }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="bg-surface border border-border rounded-2xl w-full max-w-lg shadow-card shadow-slate-200/50 flex flex-col max-h-[90vh]">
+      <form onSubmit={(event) => { event.preventDefault(); onSubmit(); }} className="bg-surface border border-border rounded-2xl w-full max-w-lg shadow-card shadow-slate-200/50 flex flex-col max-h-[90vh]">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-border bg-surface rounded-t-2xl">
           <h2 className="text-lg font-bold text-fg flex items-center gap-2">
             {isEdit ? <Edit className="w-5 h-5 text-brand" /> : <Ticket className="w-5 h-5 text-brand" />}
             {isEdit ? t('admin.editTicket') : t('admin.createTicket')}
           </h2>
-          <button
+          <button type="button" aria-label={t('common.close')}
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-200 text-fg-muted hover:text-fg-secondary transition-colors cursor-pointer"
           >
@@ -53,6 +55,7 @@ function TicketModal({ open, mode, form, setForm, onSubmit, onClose, loading, se
 
         {/* Body */}
         <div className="overflow-y-auto flex-1 px-6 py-5 space-y-4">
+          <p className="admin-form-note">{t('polish.requiredHint')}</p>
           {serverError && (
             <div className="p-3 rounded-xl border border-red-200 bg-red-50 text-red-600 text-xs font-medium flex items-center gap-2 animate-fadeIn">
               <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
@@ -60,12 +63,13 @@ function TicketModal({ open, mode, form, setForm, onSubmit, onClose, loading, se
             </div>
           )}
 
+          <fieldset className="admin-form-section"><legend>01 / {t('polish.ticketSection')}</legend>
           {/* Event selector */}
           <div>
-            <label className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.eventLabel')} <span className="text-red-500">*</span></label>
-            <select
+            <label htmlFor="ticket-field-1" className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.eventLabel')} <span className="text-red-500">*</span></label>
+            <select id="ticket-field-1"
               ref={firstInputRef}
-              name="eventId"
+              name="eventId" required
               value={form.eventId}
               onChange={handle}
               className={inputClass}
@@ -81,9 +85,9 @@ function TicketModal({ open, mode, form, setForm, onSubmit, onClose, loading, se
 
           {/* Ticket Type */}
           <div>
-            <label className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.ticketType')} <span className="text-red-500">*</span></label>
-            <input
-              name="ticketType"
+            <label htmlFor="ticket-field-2" className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.ticketType')} <span className="text-red-500">*</span></label>
+            <input id="ticket-field-2"
+              name="ticketType" required
               value={form.ticketType}
               onChange={handle}
               placeholder="Contoh: VVIP, VIP, CAT 1, Reguler..."
@@ -91,17 +95,19 @@ function TicketModal({ open, mode, form, setForm, onSubmit, onClose, loading, se
             />
           </div>
 
+          </fieldset>
+          <fieldset className="admin-form-section"><legend>02 / {t('polish.ticketPricing')}</legend><p>{t('polish.ticketHint')}</p>
           {/* Price & Stock */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.priceRp')} <span className="text-red-500">*</span></label>
-              <input
+              <label htmlFor="ticket-field-3" className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.priceRp')} <span className="text-red-500">*</span></label>
+              <input id="ticket-field-3"
                 type="number"
-                name="price"
+                name="price" required
                 value={form.price}
                 onChange={handle}
                 min="0"
-                step="1000"
+                step="1"
                 placeholder="0"
                 className={inputClass}
               />
@@ -110,10 +116,10 @@ function TicketModal({ open, mode, form, setForm, onSubmit, onClose, loading, se
               )}
             </div>
             <div>
-              <label className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.stock')} <span className="text-red-500">*</span></label>
-              <input
+              <label htmlFor="ticket-field-4" className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.stock')} <span className="text-red-500">*</span></label>
+              <input id="ticket-field-4"
                 type="number"
-                name="stock"
+                name="stock" required
                 value={form.stock}
                 onChange={handle}
                 min="0"
@@ -125,8 +131,8 @@ function TicketModal({ open, mode, form, setForm, onSubmit, onClose, loading, se
 
           {/* Description */}
           <div>
-            <label className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.description')}</label>
-            <textarea
+            <label htmlFor="ticket-field-5" className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.description')}</label>
+            <textarea id="ticket-field-5"
               name="description"
               value={form.description}
               onChange={handle}
@@ -135,18 +141,18 @@ function TicketModal({ open, mode, form, setForm, onSubmit, onClose, loading, se
               className={`${inputClass} resize-none`}
             />
           </div>
+          </fieldset>
         </div>
 
         {/* Footer */}
         <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-border bg-surface rounded-b-2xl">
-          <button
+          <button type="button" aria-label={t('common.close')}
             onClick={onClose}
             className="px-5 py-2.5 rounded-xl border border-border text-sm font-bold text-fg-secondary hover:bg-slate-100 hover:text-fg transition-colors cursor-pointer bg-surface"
           >
             {t('common.cancel')}
           </button>
-          <button
-            onClick={onSubmit}
+          <button type="submit"
             disabled={loading}
             className="px-6 py-2.5 rounded-xl bg-brand hover:bg-brand-hover disabled:bg-slate-300 disabled:text-fg-muted text-sm font-bold text-white transition-colors cursor-pointer flex items-center gap-2 shadow-card"
           >
@@ -159,7 +165,7 @@ function TicketModal({ open, mode, form, setForm, onSubmit, onClose, loading, se
             {isEdit ? t('admin.saveTicketChanges') : t('admin.createTicketBtn')}
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
@@ -167,10 +173,11 @@ function TicketModal({ open, mode, form, setForm, onSubmit, onClose, loading, se
 // ── Delete Confirm Modal ───────────────────────────────────────────
 function ConfirmDeleteModal({ open, onConfirm, onCancel, loading, ticketType }) {
   const { t } = useTranslation();
+  useDialogFocus(open, onCancel);
   if (!open) return null;
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      role="dialog" aria-modal="true" aria-label="Kelola ticket CamTix" className="admin-dialog fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ background: 'rgba(15, 23, 42, 0.4)', backdropFilter: 'blur(4px)' }}
     >
       <div className="bg-surface border border-red-200 rounded-2xl w-full max-w-sm p-6 text-center shadow-card">
@@ -371,9 +378,9 @@ export default function TicketAdmin() {
 
   // ── Render ───────────────────────────────────────────────────────
   return (
-    <div className="p-6 md:p-8 space-y-6">
+    <div className="admin-page admin-ticket space-y-6">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="admin-page-header flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl font-extrabold text-fg flex items-center gap-2">
             <Ticket className="w-6 h-6 text-brand" /> {t('admin.ticketManagement')}
@@ -397,22 +404,22 @@ export default function TicketAdmin() {
         <div className="p-3 rounded-xl border border-red-200 bg-red-50 text-red-600 text-xs flex items-center gap-2 font-medium animate-fadeIn">
           <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
           <p className="flex-1">{pageError}</p>
-          <button onClick={() => setPageError('')} className="ml-auto text-red-400 hover:text-red-600 font-bold cursor-pointer">✕</button>
+          <button aria-label="Tutup pesan" onClick={() => setPageError('')} className="ml-auto text-red-400 hover:text-red-600 font-bold cursor-pointer">✕</button>
         </div>
       )}
 
       {/* Toolbar */}
-      <div className="flex flex-col sm:flex-row flex-wrap gap-3">
+      <div className="admin-toolbar flex flex-col sm:flex-row flex-wrap gap-3">
         <input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder={t('admin.searchTicketPlaceholder')}
-          className="flex-1 min-w-[200px] px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors shadow-card"
+          placeholder={t('admin.searchTicketPlaceholder')} aria-label={t('admin.searchTicketPlaceholder')}
+          className="flex-1 min-w-[200px] px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg placeholder-slate-400 focus:outline-none focus:border-brand transition-colors shadow-card"
         />
-        <select
+        <select aria-label="Filter konser"
           value={filterEventId}
           onChange={(e) => setFilterEventId(e.target.value)}
-          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-blue-400 transition-colors min-w-[180px] shadow-card"
+          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-brand transition-colors min-w-[180px] shadow-card"
         >
           <option value="">{t('admin.allEvents')}</option>
           {events.map((ev) => (
@@ -421,10 +428,10 @@ export default function TicketAdmin() {
              </option>
           ))}
         </select>
-        <select
+        <select aria-label="Urutkan data"
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-blue-400 transition-colors shadow-card"
+          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-brand transition-colors shadow-card"
         >
           <option value="newest">Terbaru</option>
           <option value="oldest">Terlama</option>
@@ -445,7 +452,7 @@ export default function TicketAdmin() {
       </div>
 
       {/* Table */}
-      <div className="bg-surface rounded-2xl border border-border overflow-hidden shadow-card overflow-x-auto">
+      <div className="admin-data-table bg-surface border border-border overflow-x-auto" tabIndex={0} aria-label="Data CamTix">
         {/* Header row */}
         <div className={`grid ${isOperationalAdmin ? 'grid-cols-[2fr_1fr_auto_auto_auto_auto]' : 'grid-cols-[2fr_1fr_auto_auto_auto]'} gap-4 px-5 py-3 border-b border-border bg-surface text-[10px] font-bold text-fg-muted uppercase tracking-widest min-w-[600px]`}>
           <span>Ticket</span>

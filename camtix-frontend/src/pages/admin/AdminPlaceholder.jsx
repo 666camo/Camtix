@@ -6,8 +6,8 @@ export default function AdminPlaceholder({ title }) {
   const displayTitle = title || t('admin.adminModule');
 
   return (
-    <div className="p-6 md:p-8 space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div className="admin-page admin-placeholder space-y-6">
+      <div className="admin-page-header flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl font-extrabold text-fg">
             {displayTitle}

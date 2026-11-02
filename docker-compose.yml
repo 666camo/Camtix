@@ -132,6 +132,7 @@ services:
       dockerfile: transaction-service/Dockerfile
     container_name: camtix-transaction-service
     environment:
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:5173}
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-transaction-db:5432/camtix_transaction_db
       SPRING_DATASOURCE_USERNAME: ${DB_USER:-postgres}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-postgres}

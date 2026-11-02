@@ -1,0 +1,123 @@
+- generic [ref=f7e3]:
+  - navigation [ref=f7e4]:
+    - generic [ref=f7e5]:
+      - link "CAMTIX" [ref=f7e6] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f7e13]:
+        - generic [ref=f7e14]:
+          - link "Katalog" [ref=f7e15] [cursor=pointer]:
+            - /url: /
+          - link "Cari Konser" [ref=f7e16] [cursor=pointer]:
+            - /url: /search
+        - generic "Pilih Bahasa / Choose Language" [ref=f7e17]:
+          - button "ID" [ref=f7e18] [cursor=pointer]
+          - button "EN" [ref=f7e19] [cursor=pointer]
+        - button "Switch to dark mode" [ref=f7e20] [cursor=pointer]
+        - generic [ref=f7e24]:
+          - link "Masuk" [ref=f7e25] [cursor=pointer]:
+            - /url: /login
+          - link "Daftar" [ref=f7e26] [cursor=pointer]:
+            - /url: /register
+  - main [ref=f7e28]:
+    - generic [ref=f7e30]:
+      - generic [ref=f7e31]:
+        - paragraph [ref=f7e32]: Panggung berikutnya ada di sini
+        - heading "Pilih panggung. Kami urus tiketnya." [level=1] [ref=f7e34]: Pilih panggung.Kami urus tiketnya.
+        - paragraph [ref=f7e35]: Cari konser berdasarkan artis, genre, atau kota—lalu pesan tiketnya langsung dari sini.
+        - link "Jelajahi konser" [ref=f7e36] [cursor=pointer]:
+          - /url: /search
+      - generic [ref=f7e40]:
+        - generic [ref=f7e41]: CAMTIX / LIVE
+        - generic [ref=f7e47]:
+          - text: LIVE
+          - emphasis [ref=f7e49]: LOUD
+          - text: TOGETHER.
+        - generic [ref=f7e52]:
+          - generic [ref=f7e53]: FIND YOUR NEXT SHOW
+          - generic [ref=f7e54]: 01 — CTX
+    - region "Cari Tiket" [ref=f7e55]:
+      - generic [ref=f7e56]:
+        - searchbox "Cari artis, konser, atau kota..." [ref=f7e60]
+        - button "Cari Tiket" [ref=f7e61]
+      - generic "Semua Genre" [ref=f7e64]:
+        - button "Semua" [pressed] [ref=f7e66]
+        - button "Pop / Rock" [ref=f7e67]
+        - button "K-Pop" [ref=f7e68]
+        - button "EDM" [ref=f7e69]
+        - button "Jazz" [ref=f7e70]
+        - button "Festival" [ref=f7e71]
+    - generic [ref=f7e72]:
+      - generic [ref=f7e73]:
+        - generic [ref=f7e74]:
+          - paragraph [ref=f7e75]: Jadwal musik live
+          - heading "Yang akan datang" [level=2] [ref=f7e76]
+          - paragraph [ref=f7e77]: Pilih acara yang ingin kamu alami langsung.
+        - link "Lihat Semua Konser →" [ref=f7e78] [cursor=pointer]:
+          - /url: /search
+      - status [ref=f7e81]:
+        - paragraph [ref=f7e86]: Jadwal konser belum bisa dimuat. Coba lagi sebentar lagi.
+    - generic [ref=f7e87]:
+      - generic [ref=f7e88]:
+        - paragraph [ref=f7e89]: Tiket, tanpa drama
+        - heading "Dari checkout sampai masuk venue." [level=2] [ref=f7e90]
+        - paragraph [ref=f7e91]: Kami menghadirkan standar kenyamanan dan keamanan tertinggi untuk setiap tiket konser yang Anda pesan.
+      - generic [ref=f7e92]:
+        - article [ref=f7e93]:
+          - generic [ref=f7e94]: "01"
+          - generic [ref=f7e98]:
+            - heading "E-Ticket QR Berhologram" [level=3] [ref=f7e99]
+            - paragraph [ref=f7e100]: Setiap tiket dilengkapi kode unik terenkripsi anti-duplikasi yang otomatis dikirim ke email Anda.
+        - article [ref=f7e103]:
+          - generic [ref=f7e104]: "02"
+          - generic [ref=f7e107]:
+            - heading "Pembayaran Instan & Otomatis" [level=3] [ref=f7e108]
+            - paragraph [ref=f7e109]: Dukungan Midtrans Sandbox & QRIS, Virtual Account Bank, dan E-Wallet tanpa perlu tunggu lama.
+        - article [ref=f7e112]:
+          - generic [ref=f7e113]: "03"
+          - generic [ref=f7e119]:
+            - heading "Stok Terhubung Real-Time" [level=3] [ref=f7e120]
+            - paragraph [ref=f7e121]: Sinkronisasi inventaris tiket otomatis memastikan ketersediaan kursi selalu akurat dan terpercaya.
+  - contentinfo [ref=f7e124]:
+    - generic [ref=f7e125]:
+      - generic [ref=f7e126]:
+        - generic [ref=f7e127]:
+          - link "CAMTIX" [ref=f7e128] [cursor=pointer]:
+            - /url: /
+          - paragraph [ref=f7e135]: Platform e-ticketing konser musik resmi terpercaya di Indonesia dengan integrasi pembayaran instan dan keamanan tiket digital bergaransi.
+          - generic [ref=f7e136]:
+            - generic [ref=f7e137] [cursor=pointer]
+            - generic [ref=f7e141] [cursor=pointer]
+            - generic [ref=f7e148] [cursor=pointer]
+        - generic [ref=f7e152]:
+          - heading "Navigasi" [level=4] [ref=f7e153]
+          - list [ref=f7e154]:
+            - listitem [ref=f7e155]:
+              - link "Semua Konser" [ref=f7e156] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=f7e157]:
+              - link "Pencarian Tiket" [ref=f7e158] [cursor=pointer]:
+                - /url: /search
+            - listitem [ref=f7e159]:
+              - link "Riwayat Transaksi" [ref=f7e160] [cursor=pointer]:
+                - /url: /history
+            - listitem [ref=f7e161]:
+              - link "Akun Saya" [ref=f7e162] [cursor=pointer]:
+                - /url: /login
+        - generic [ref=f7e163]:
+          - heading "Bantuan & Layanan" [level=4] [ref=f7e164]
+          - list [ref=f7e165]:
+            - listitem [ref=f7e166]: Tanya Jawab (FAQ)
+            - listitem [ref=f7e167]: Panduan Pembayaran
+            - listitem [ref=f7e168]: Verifikasi Keaslian Tiket
+            - listitem [ref=f7e169]: Hubungi Customer Care
+        - generic [ref=f7e170]:
+          - heading "Informasi Hukum" [level=4] [ref=f7e171]
+          - list [ref=f7e172]:
+            - listitem [ref=f7e173]: Syarat & Ketentuan
+            - listitem [ref=f7e174]: Kebijakan Privasi
+            - listitem [ref=f7e175]: Ketentuan Pembatalan
+      - generic [ref=f7e176]:
+        - paragraph [ref=f7e177]: © 2026 CamTix Ticketing Solutions. Hak Cipta Dilindungi. Platform Resmi Tiket Konser Indonesia.
+        - generic [ref=f7e178]:
+          - generic [ref=f7e179]: Crafted with
+          - generic [ref=f7e182]: for Music Enthusiasts

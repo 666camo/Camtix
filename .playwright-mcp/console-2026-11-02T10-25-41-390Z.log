@@ -1,0 +1,26 @@
+[    5163ms] [ERROR] Failed to log visitor: AxiosError: Network Error
+    at h.onerror (https://camtix.vercel.app/assets/index-C-l8nJNx.js:197:15549) @ https://camtix.vercel.app/assets/index-C-l8nJNx.js:324
+[    5163ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/visitors:0
+[    5160ms] [ERROR] Executing inline script violates the following Content Security Policy directive 'script-src 'self' https://snap-assets.sandbox.midtrans.com https://api.sandbox.midtrans.com https://pay.google.com https://gwk.gopayapi.com/sdk/stable/gp-container.min.js https://www.googletagmanager.com https://o.alicdn.com https://g.alicdn.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-DueWcbxgRVJl6J5x2OBGlMjJ0RI9aTrwDoqaA4GHDhs='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked. @ https://app.sandbox.midtrans.com/snap/v4/popup?origin_host=https://camtix.vercel.app&client_key=SB-Mid-client-camtix#/:0
+[    5221ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/events:0
+[   11204ms] [COUNT] %c%d: 1 @ https://g.alicdn.com/captcha-frontend/FeiLin/1.5.2/feilin066.d3602465f551f6835e4ed4680583de6f57273d1ea9c3483c4e33c7a8c96967ae.js:0
+[   11205ms] [DIR] %c%d font-size:0;color:transparent Error @ https://g.alicdn.com/captcha-frontend/FeiLin/1.5.2/feilin066.d3602465f551f6835e4ed4680583de6f57273d1ea9c3483c4e33c7a8c96967ae.js:0
+[   11205ms] [DIRXML] %c%d font-size:0;color:transparent Error @ https://g.alicdn.com/captcha-frontend/FeiLin/1.5.2/feilin066.d3602465f551f6835e4ed4680583de6f57273d1ea9c3483c4e33c7a8c96967ae.js:0
+[   11206ms] [INFO] %c%d font-size:0;color:transparent NaN @ https://snap-assets.sandbox.midtrans.com/snap/v4/assets/snap-popup-app.sandbox.26f6a1e3e5b84ac74220.js:0
+[   11206ms] [INFO] %c%d font-size:0;color:transparent NaN @ https://snap-assets.sandbox.midtrans.com/snap/v4/assets/snap-popup-app.sandbox.26f6a1e3e5b84ac74220.js:0
+[   11206ms] [LOG] %c%d font-size:0;color:transparent NaN @ https://g.alicdn.com/captcha-frontend/FeiLin/1.5.2/feilin066.d3602465f551f6835e4ed4680583de6f57273d1ea9c3483c4e33c7a8c96967ae.js:0
+[   11206ms] [TABLE] %c%d font-size:0;color:transparent Error @ https://g.alicdn.com/captcha-frontend/FeiLin/1.5.2/feilin066.d3602465f551f6835e4ed4680583de6f57273d1ea9c3483c4e33c7a8c96967ae.js:0
+[   11207ms] [INFO] %c%d font-size:0;color:transparent NaN @ https://snap-assets.sandbox.midtrans.com/snap/v4/assets/snap-popup-app.sandbox.26f6a1e3e5b84ac74220.js:0
+[  621610ms] [ERROR] Failed to log visitor: AxiosError: Network Error
+    at h.onerror (https://camtix.vercel.app/assets/index-C-l8nJNx.js:197:15549) @ https://camtix.vercel.app/assets/index-C-l8nJNx.js:324
+[  621611ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/visitors:0
+[  621611ms] [ERROR] AxiosError: Network Error
+    at h.onerror (https://camtix.vercel.app/assets/index-C-l8nJNx.js:197:15549)
+    at Jb.request (https://camtix.vercel.app/assets/index-C-l8nJNx.js:199:2136)
+    at async Object.searchEvents (https://camtix.vercel.app/assets/index-C-l8nJNx.js:203:6013)
+    at async y (https://camtix.vercel.app/assets/index-C-l8nJNx.js:203:19896) @ https://camtix.vercel.app/assets/index-C-l8nJNx.js:202
+[  621611ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/events/search:0
+[  629988ms] [ERROR] Failed to log visitor: AxiosError: Network Error
+    at h.onerror (https://camtix.vercel.app/assets/index-C-l8nJNx.js:197:15549) @ https://camtix.vercel.app/assets/index-C-l8nJNx.js:324
+[  629988ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/visitors:0
+[  629989ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/events:0

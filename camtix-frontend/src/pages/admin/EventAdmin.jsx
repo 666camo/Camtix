@@ -1,3 +1,4 @@
+import useDialogFocus from '../../components/useDialogFocus';
 import React, { useState, useEffect, useRef } from 'react';
 import eventService from '../../services/eventService';
 import { useAuth } from '../../context/AuthContext';
@@ -43,6 +44,7 @@ function EventModal({ open, mode, form, setForm, onSubmit, onClose, loading, ser
     if (open && firstInputRef.current) firstInputRef.current.focus();
   }, [open]);
 
+  useDialogFocus(open, onClose);
   if (!open) return null;
 
   const handle = (e) => setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -65,22 +67,22 @@ function EventModal({ open, mode, form, setForm, onSubmit, onClose, loading, ser
   };
 
   const isEdit = mode === 'edit';
-  const inputClass = "w-full px-4 py-2.5 bg-surface-hover border border-border rounded-xl text-sm text-fg placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-colors";
+  const inputClass = "w-full px-4 py-2.5 bg-surface-hover border border-border rounded-xl text-sm text-fg placeholder-slate-400 focus:outline-none focus:border-brand focus:ring-2 focus:ring-blue-100 transition-colors";
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      role="dialog" aria-modal="true" className="admin-dialog fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ background: 'rgba(15, 23, 42, 0.4)', backdropFilter: 'blur(4px)' }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="bg-surface border border-border rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-card shadow-slate-200/50">
+      <form onSubmit={(event) => { event.preventDefault(); onSubmit(); }} className="bg-surface border border-border rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-card shadow-slate-200/50">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-border bg-surface rounded-t-2xl">
           <h2 className="text-lg font-bold text-fg flex items-center gap-2">
             {isEdit ? <Edit className="w-5 h-5 text-brand" /> : <Sparkles className="w-5 h-5 text-brand" />}
             {isEdit ? t('admin.editEvent') : t('admin.createEvent')}
           </h2>
-          <button
+          <button type="button" aria-label={t('common.close')}
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-200 text-fg-muted hover:text-fg-secondary transition-colors cursor-pointer"
           >
@@ -90,6 +92,7 @@ function EventModal({ open, mode, form, setForm, onSubmit, onClose, loading, ser
 
         {/* Body */}
         <div className="overflow-y-auto flex-1 px-6 py-5 space-y-4">
+          <p className="admin-form-note">{t('polish.requiredHint')}</p>
           {serverError && (
             <div className="p-3 rounded-xl border border-red-200 bg-red-50 text-red-600 text-xs font-medium flex items-center gap-2 animate-fadeIn">
               <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
@@ -97,13 +100,13 @@ function EventModal({ open, mode, form, setForm, onSubmit, onClose, loading, ser
             </div>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <fieldset className="admin-form-section"><legend>01 / {t('polish.eventIdentity')}</legend><p>{t('polish.eventIdentityHint')}</p><div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Event Name */}
             <div className="md:col-span-2">
-              <label className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.eventName')} <span className="text-red-500">*</span></label>
-              <input
+              <label htmlFor="event-field-1" className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.eventName')} <span className="text-red-500">*</span></label>
+              <input id="event-field-1"
                 ref={firstInputRef}
-                name="eventName"
+                name="eventName" required
                 value={form.eventName}
                 onChange={handle}
                 placeholder="Contoh: Coldplay: Music of the Spheres"
@@ -113,8 +116,8 @@ function EventModal({ open, mode, form, setForm, onSubmit, onClose, loading, ser
 
             {/* Artist Name */}
             <div>
-              <label className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.artistName')}</label>
-              <input
+              <label htmlFor="event-field-2" className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.artistName')}</label>
+              <input id="event-field-2"
                 name="artistName"
                 value={form.artistName}
                 onChange={handle}
@@ -125,8 +128,8 @@ function EventModal({ open, mode, form, setForm, onSubmit, onClose, loading, ser
 
             {/* Category */}
             <div>
-              <label className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.category')}</label>
-              <select
+              <label htmlFor="event-field-3" className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.category')}</label>
+              <select id="event-field-3"
                 name="category"
                 value={form.category}
                 onChange={handle}
@@ -137,11 +140,13 @@ function EventModal({ open, mode, form, setForm, onSubmit, onClose, loading, ser
               </select>
             </div>
 
+          </div></fieldset>
+          <fieldset className="admin-form-section"><legend>02 / {t('polish.eventSchedule')}</legend><p>{t('polish.scheduleHint')}</p><div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* City */}
             <div>
-              <label className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.city')} <span className="text-red-500">*</span></label>
-              <input
-                name="city"
+              <label htmlFor="event-field-4" className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.city')} <span className="text-red-500">*</span></label>
+              <input id="event-field-4"
+                name="city" required
                 value={form.city}
                 onChange={handle}
                 placeholder="Contoh: Jakarta"
@@ -151,8 +156,8 @@ function EventModal({ open, mode, form, setForm, onSubmit, onClose, loading, ser
 
             {/* Location */}
             <div>
-              <label className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.locationVenue')}</label>
-              <input
+              <label htmlFor="event-field-5" className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.locationVenue')}</label>
+              <input id="event-field-5"
                 name="location"
                 value={form.location}
                 onChange={handle}
@@ -163,10 +168,10 @@ function EventModal({ open, mode, form, setForm, onSubmit, onClose, loading, ser
 
             {/* Event Date */}
             <div>
-              <label className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.eventDate')} <span className="text-red-500">*</span></label>
-              <input
+              <label htmlFor="event-field-6" className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.eventDate')} <span className="text-red-500">*</span></label>
+              <input id="event-field-6"
                 type="date"
-                name="eventDate"
+                name="eventDate" required
                 value={form.eventDate}
                 onChange={handle}
                 className={inputClass}
@@ -175,8 +180,8 @@ function EventModal({ open, mode, form, setForm, onSubmit, onClose, loading, ser
 
             {/* Event Time */}
             <div>
-              <label className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.eventTime')}</label>
-              <input
+              <label htmlFor="event-field-7" className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.eventTime')}</label>
+              <input id="event-field-7"
                 type="time"
                 name="eventTime"
                 value={form.eventTime}
@@ -187,8 +192,8 @@ function EventModal({ open, mode, form, setForm, onSubmit, onClose, loading, ser
 
             {/* Status */}
             <div>
-              <label className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.status')}</label>
-              <select
+              <label htmlFor="event-field-8" className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.status')}</label>
+              <select id="event-field-8"
                 name="status"
                 value={form.status}
                 onChange={handle}
@@ -198,14 +203,16 @@ function EventModal({ open, mode, form, setForm, onSubmit, onClose, loading, ser
               </select>
             </div>
 
+          </div></fieldset>
+          <fieldset className="admin-form-section"><legend>03 / {t('polish.eventArtwork')}</legend><p>{t('polish.posterHint')}</p><div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Picture Upload */}
             <div className="md:col-span-2">
-              <label className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.uploadPoster')} <span className="text-[9px] text-fg-muted font-normal lowercase">(Max 5MB)</span></label>
-              <input
+              <label htmlFor="event-field-9" className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.uploadPoster')} <span className="text-[9px] text-fg-muted font-normal lowercase">(Max 5MB)</span></label>
+              <input id="event-field-9"
                 type="file"
                 accept="image/*"
                 onChange={handleFileChange}
-                className="w-full bg-surface-hover border border-border focus:border-blue-400 rounded-xl px-4 py-2.5 text-sm text-fg-secondary focus:outline-none transition-colors file:mr-4 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-brand-subtle file:text-brand hover:file:bg-blue-100 cursor-pointer"
+                className="w-full bg-surface-hover border border-border focus:border-brand rounded-xl px-4 py-2.5 text-sm text-fg-secondary focus:outline-none transition-colors file:mr-4 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-brand-subtle file:text-brand hover:file:bg-blue-100 cursor-pointer"
               />
               {form.picture && (
                 <div className="mt-3 rounded-xl overflow-hidden border border-border h-32 bg-slate-100 flex items-center justify-center">
@@ -216,8 +223,8 @@ function EventModal({ open, mode, form, setForm, onSubmit, onClose, loading, ser
 
             {/* Description */}
             <div className="md:col-span-2">
-              <label className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.description')}</label>
-              <textarea
+              <label htmlFor="event-field-10" className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">{t('admin.description')}</label>
+              <textarea id="event-field-10"
                 name="description"
                 value={form.description}
                 onChange={handle}
@@ -226,19 +233,18 @@ function EventModal({ open, mode, form, setForm, onSubmit, onClose, loading, ser
                 className={`${inputClass} resize-none`}
               />
             </div>
-          </div>
+          </div></fieldset>
         </div>
 
         {/* Footer */}
         <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-border bg-surface rounded-b-2xl">
-          <button
+          <button type="button" aria-label={t('common.close')}
             onClick={onClose}
             className="px-5 py-2.5 rounded-xl border border-border text-sm font-bold text-fg-secondary hover:bg-slate-100 hover:text-fg transition-colors cursor-pointer bg-surface"
           >
             {t('common.cancel')}
           </button>
-          <button
-            onClick={onSubmit}
+          <button type="submit"
             disabled={loading}
             className="px-6 py-2.5 rounded-xl bg-brand hover:bg-brand-hover disabled:bg-slate-300 disabled:text-fg-muted text-sm font-bold text-white transition-colors cursor-pointer flex items-center gap-2 shadow-card"
           >
@@ -251,7 +257,7 @@ function EventModal({ open, mode, form, setForm, onSubmit, onClose, loading, ser
             {isEdit ? t('admin.saveChanges') : t('admin.createEventBtn')}
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
@@ -259,10 +265,11 @@ function EventModal({ open, mode, form, setForm, onSubmit, onClose, loading, ser
 // ── Delete Confirm Modal ───────────────────────────────────────────
 function ConfirmDeleteModal({ open, onConfirm, onCancel, loading, eventName }) {
   const { t } = useTranslation();
+  useDialogFocus(open, onCancel);
   if (!open) return null;
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      role="dialog" aria-modal="true" aria-label="Kelola event CamTix" className="admin-dialog fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ background: 'rgba(15, 23, 42, 0.4)', backdropFilter: 'blur(4px)' }}
     >
       <div className="bg-surface border border-red-200 rounded-2xl w-full max-w-sm p-6 text-center shadow-card">
@@ -449,9 +456,9 @@ export default function EventAdmin() {
 
   // ── Render ───────────────────────────────────────────────────────
   return (
-    <div className="p-6 md:p-8 space-y-6">
+    <div className="admin-page admin-event space-y-6">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="admin-page-header flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl font-extrabold text-fg flex items-center gap-2">
             <Calendar className="w-6 h-6 text-brand" /> {t('admin.eventManagement')}
@@ -475,45 +482,45 @@ export default function EventAdmin() {
         <div className="p-3 rounded-xl border border-red-200 bg-red-50 text-red-600 text-xs flex items-center gap-2 animate-fadeIn">
           <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
           <p className="flex-1">{pageError}</p>
-          <button onClick={() => setPageError('')} className="ml-auto text-red-400 hover:text-red-600 font-bold cursor-pointer">✕</button>
+          <button aria-label="Tutup pesan" onClick={() => setPageError('')} className="ml-auto text-red-400 hover:text-red-600 font-bold cursor-pointer">✕</button>
         </div>
       )}
 
       {/* Toolbar */}
-      <div className="flex flex-col sm:flex-row flex-wrap gap-3">
+      <div className="admin-toolbar flex flex-col sm:flex-row flex-wrap gap-3">
         <input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder={t('admin.searchEventPlaceholder')}
-          className="flex-1 min-w-[200px] px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors shadow-card"
+          placeholder={t('admin.searchEventPlaceholder')} aria-label={t('admin.searchEventPlaceholder')}
+          className="flex-1 min-w-[200px] px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg placeholder-slate-400 focus:outline-none focus:border-brand transition-colors shadow-card"
         />
-        <select
+        <select aria-label="Filter kategori"
           value={filterCategory}
           onChange={(e) => setFilterCategory(e.target.value)}
-          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-blue-400 transition-colors shadow-card"
+          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-brand transition-colors shadow-card"
         >
-          <option value="">{t('admin.allCategories') || 'Semua Kategori'}</option>
+          <option value="">{t('search.allCategories')}</option>
           {CATEGORY_OPTIONS.map(c => <option key={c} value={c}>{c}</option>)}
         </select>
         <input
           type="date"
           value={filterDate}
           onChange={(e) => setFilterDate(e.target.value)}
-          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-blue-400 transition-colors shadow-card"
+          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-brand transition-colors shadow-card"
           title="Filter Tanggal Event"
         />
-        <select
+        <select aria-label="Filter status"
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
-          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-blue-400 transition-colors shadow-card"
+          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-brand transition-colors shadow-card"
         >
           <option value="">{t('admin.allStatus')}</option>
           {STATUS_OPTIONS.map(s => <option key={s} value={s}>{s}</option>)}
         </select>
-        <select
+        <select aria-label="Urutkan data"
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-blue-400 transition-colors shadow-card"
+          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-brand transition-colors shadow-card"
         >
           <option value="newest">Terbaru</option>
           <option value="oldest">Terlama</option>
@@ -532,7 +539,7 @@ export default function EventAdmin() {
       </div>
 
       {/* Table */}
-      <div className="bg-surface rounded-2xl border border-border overflow-hidden shadow-card overflow-x-auto">
+      <div className="admin-data-table bg-surface border border-border overflow-x-auto" tabIndex={0} aria-label="Data CamTix">
         {/* Table Header */}
         <div className={`grid ${isOperationalAdmin ? 'grid-cols-[1fr_auto_auto_auto_auto]' : 'grid-cols-[1fr_auto_auto_auto]'} gap-4 px-5 py-3 border-b border-border bg-surface text-[10px] font-bold text-fg-muted uppercase tracking-widest min-w-[600px]`}>
           <span>Event</span>

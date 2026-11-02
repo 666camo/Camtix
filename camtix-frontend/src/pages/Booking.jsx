@@ -1,3 +1,6 @@
+import EventPoster from '../components/EventPoster';
+import CheckoutSteps from '../components/CheckoutSteps';
+import PageHeading from '../components/PageHeading';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -176,7 +179,7 @@ export default function Booking() {
 
   if (loading) {
     return (
-      <div className="gradient-bg min-h-screen text-fg flex items-center justify-center">
+      <div className="public-page booking-page gradient-bg min-h-screen text-fg flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 rounded-full border-4 border-border border-t-blue-500 animate-spin"></div>
           <p className="text-fg-secondary text-sm font-medium">{t('booking.loading')}</p>
@@ -187,7 +190,7 @@ export default function Booking() {
 
   if (error && !event) {
     return (
-      <div className="gradient-bg min-h-screen text-fg flex items-center justify-center px-6">
+      <div className="public-page booking-page gradient-bg min-h-screen text-fg flex items-center justify-center px-6">
         <div className="glass-effect rounded-2xl p-8 max-w-md w-full border border-border text-center space-y-4">
           <AlertCircle className="w-10 h-10 text-red-500 mx-auto" />
           <h2 className="text-xl font-bold text-red-600">{t('booking.errorTitle')}</h2>
@@ -201,22 +204,11 @@ export default function Booking() {
   }
 
   return (
-    <div className="gradient-bg min-h-screen text-fg pb-20 pt-28 px-6 md:px-12">
-      <div className="max-w-4xl mx-auto space-y-8">
+    <div className="public-page booking-page gradient-bg min-h-screen text-fg pb-20 pt-28 px-6 md:px-12">
+      <div className="max-w-6xl mx-auto space-y-8">
         
-        {/* Title */}
-        <div className="text-center md:text-left">
-          <span className="text-xs font-bold text-brand uppercase tracking-widest bg-brand/10 px-3 py-1 rounded-full border border-border">
-            {t('booking.badge')}
-          </span>
-          <h1 className="text-3xl font-extrabold tracking-tight mt-2 text-fg">
-            {t('booking.title')} <span className="gradient-text">{t('booking.titleHighlight')}</span>
-          </h1>
-          <p className="text-sm text-fg-secondary mt-1">
-            {t('booking.subtitle')}
-          </p>
-        </div>
-
+        <CheckoutSteps current={1} />
+        <PageHeading variant="utility" eyebrow={t('booking.badge')} title={t('booking.title')} accent={t('booking.titleHighlight')} description={t('booking.subtitle')} />
         {error && (
           <div className="p-4 rounded-xl border border-red-200 bg-red-50 text-red-600 text-sm flex items-center gap-2 animate-fadeIn">
             <AlertCircle className="w-4 h-4 text-red-500" />
@@ -251,12 +243,14 @@ export default function Booking() {
                     <button
                       type="button"
                       disabled={numberOfTicket <= 1}
+                      aria-label="Kurangi jumlah tiket"
                       onClick={() => setNumberOfTicket((prev) => Math.max(1, prev - 1))}
                       className="w-12 h-12 rounded-xl bg-surface border border-border flex items-center justify-center font-black text-xl hover:bg-surface-hover cursor-pointer disabled:opacity-40 transition-colors text-fg-secondary"
                     >
                       -
                     </button>
                     <input
+                      aria-label={t('booking.ticketQty')}
                       type="number"
                       value={numberOfTicket}
                       onChange={handleQtyChange}
@@ -268,6 +262,7 @@ export default function Booking() {
                     <button
                       type="button"
                       disabled={ticket && numberOfTicket >= ticket.stock}
+                      aria-label="Tambah jumlah tiket"
                       onClick={() => setNumberOfTicket((prev) => Math.min(ticket ? ticket.stock : 10, prev + 1))}
                       className="w-12 h-12 rounded-xl bg-surface border border-border flex items-center justify-center font-black text-xl hover:bg-surface-hover cursor-pointer disabled:opacity-40 transition-colors text-fg-secondary"
                     >
@@ -307,16 +302,10 @@ export default function Booking() {
           </div>
 
           {/* Pricing Details Panel */}
-          <div className="space-y-6">
+          <aside className="order-summary space-y-6">
             <div className="glass-effect rounded-2xl overflow-hidden border border-border shadow-sm">
               <div className="h-28 overflow-hidden bg-surface-hover relative">
-                {event?.picture && (
-                  <img
-                    src={event.picture}
-                    alt={event.eventName}
-                    className="w-full h-full object-cover"
-                  />
-                )}
+                <EventPoster src={event?.picture} title={event?.eventName} category={event?.category} />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
                 <span className="absolute bottom-3 left-3 bg-surface/90 backdrop-blur-md border border-white/20 text-brand text-[10px] font-bold px-2 py-0.5 rounded-full">
                   {t('booking.category')} {ticket?.ticketType}
@@ -327,7 +316,7 @@ export default function Booking() {
                 <div>
                   <h4 className="text-sm font-extrabold text-fg">{event?.eventName}</h4>
                   <span className="text-[10px] text-fg-secondary mt-1 flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-fg-muted" /> {event?.eventDate} • <MapPin className="w-3.5 h-3.5 text-fg-muted" /> {event?.city}
+                    <Calendar className="w-3.5 h-3.5 text-fg-muted" /> {event?.eventDate} · <MapPin className="w-3.5 h-3.5 text-fg-muted" /> {event?.city}
                   </span>
                 </div>
                 
@@ -348,7 +337,7 @@ export default function Booking() {
                 </div>
               </div>
             </div>
-          </div>
+          </aside>
 
         </div>
 

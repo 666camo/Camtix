@@ -79,9 +79,9 @@ export default function VisitorAdmin() {
   }, [searchQuery, sortBy, pageSize]);
 
   return (
-    <div className="p-6 md:p-8 space-y-6">
+    <div className="admin-page admin-visitor space-y-6">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="admin-page-header flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl font-extrabold text-fg flex items-center gap-2">
             <Eye className="w-6 h-6 text-fg-secondary" /> {t('admin.visitorLog')}
@@ -107,17 +107,17 @@ export default function VisitorAdmin() {
       )}
 
       {/* Search & Sort */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="admin-toolbar flex flex-col sm:flex-row gap-3">
         <input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder={t('admin.searchVisitorPlaceholder')}
-          className="flex-1 px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors shadow-card"
+          placeholder={t('admin.searchVisitorPlaceholder')} aria-label={t('admin.searchVisitorPlaceholder')}
+          className="flex-1 px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg placeholder-slate-400 focus:outline-none focus:border-brand transition-colors shadow-card"
         />
-        <select
+        <select aria-label="Urutkan data"
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-blue-400 transition-colors shadow-card"
+          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-brand transition-colors shadow-card"
         >
           <option value="newest">Terbaru</option>
           <option value="oldest">Terlama</option>
@@ -127,7 +127,7 @@ export default function VisitorAdmin() {
       </div>
 
       {/* Table */}
-      <div className="bg-surface rounded-2xl border border-border overflow-hidden shadow-card overflow-x-auto">
+      <div className="admin-data-table bg-surface border border-border overflow-x-auto" tabIndex={0} aria-label="Data CamTix">
         <div className="grid grid-cols-[auto_2fr_1fr_auto] gap-4 px-5 py-3 border-b border-border bg-surface text-[10px] font-bold text-fg-muted uppercase tracking-widest min-w-[500px]">
           <span>No</span>
           <span>Aktivitas</span>

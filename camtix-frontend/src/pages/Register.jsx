@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import authService from '../services/authService';
-import Aurora from '../components/Aurora';
+import AuthLayout from '../components/AuthLayout';
 import Magnet from '../components/Magnet';
 import { AlertCircle, CheckCircle2, XCircle } from 'lucide-react';
 
@@ -163,13 +163,13 @@ export default function Register() {
   };
 
   return (
-    <Aurora className="pt-28 pb-16 px-6">
-      <div className="glass-effect rounded-2xl p-8 max-w-xl w-full border border-border relative overflow-hidden shadow-2xl">
+    <AuthLayout>
+      <div className="auth-form glass-effect rounded-2xl p-8 max-w-xl w-full border border-border relative overflow-hidden shadow-2xl">
         <div className="absolute -top-10 -right-10 w-32 h-32 bg-brand/10/50 rounded-full blur-2xl -z-10"></div>
 
-        <h2 className="text-3xl font-extrabold text-center mb-2 tracking-tight text-fg">
+        <h1 className="text-3xl font-extrabold text-center mb-2 tracking-tight text-fg">
           {t('auth.registerTitle')} <span className="gradient-text">CamTix</span>
-        </h2>
+        </h1>
         <p className="text-fg-secondary text-sm text-center mb-8">{t('auth.registerSubtitle')}</p>
 
         {error && (
@@ -182,10 +182,10 @@ export default function Register() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
+              <label htmlFor="register-field-1" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
                 {t('auth.firstName')} <span className="text-red-500">*</span>
               </label>
-              <input
+              <input id="register-field-1"
                 type="text"
                 name="firstName"
                 value={formData.firstName}
@@ -199,10 +199,10 @@ export default function Register() {
               )}
             </div>
             <div>
-              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
+              <label htmlFor="register-field-2" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
                 {t('auth.lastName')} <span className="text-red-500">*</span>
               </label>
-              <input
+              <input id="register-field-2"
                 type="text"
                 name="lastName"
                 value={formData.lastName}
@@ -219,10 +219,10 @@ export default function Register() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
+              <label htmlFor="register-field-3" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
                 {t('auth.age')} <span className="text-red-500">*</span>
               </label>
-              <input
+              <input id="register-field-3"
                 type="number"
                 name="age"
                 value={formData.age}
@@ -238,10 +238,10 @@ export default function Register() {
               )}
             </div>
             <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
+              <label htmlFor="register-field-4" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
                 {t('auth.phone')} <span className="text-red-500">*</span>
               </label>
-              <input
+              <input id="register-field-4"
                 type="tel"
                 name="phone"
                 value={formData.phone}
@@ -275,10 +275,10 @@ export default function Register() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
+            <label htmlFor="register-field-5" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
               {t('auth.email')} <span className="text-red-500">*</span>
             </label>
-            <input
+            <input id="register-field-5"
               type="email"
               name="email"
               value={formData.email}
@@ -294,10 +294,10 @@ export default function Register() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
+              <label htmlFor="register-field-6" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
                 {t('auth.passwordMin6')} <span className="text-red-500">*</span>
               </label>
-              <input
+              <input id="register-field-6"
                 type="password"
                 name="password"
                 value={formData.password}
@@ -311,10 +311,10 @@ export default function Register() {
               )}
             </div>
             <div>
-              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
+              <label htmlFor="register-field-7" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
                 Konfirmasi Password <span className="text-red-500">*</span>
               </label>
-              <input
+              <input id="register-field-7"
                 type="password"
                 name="confirmPassword"
                 value={formData.confirmPassword}
@@ -351,6 +351,6 @@ export default function Register() {
           {t('auth.hasAccount')} <Link to="/login" className="text-brand hover:text-brand font-bold transition-colors">{t('auth.loginLink')}</Link>
         </p>
       </div>
-    </Aurora>
+    </AuthLayout>
   );
 }

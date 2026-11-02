@@ -32,7 +32,6 @@ public class PaymentService {
     private final RestTemplate restTemplate;
     private final EmailService emailService;
     private final MidtransService midtransService;
-    private final com.camtix.transactionservice.util.EmailProducer emailProducer;
 
     @org.springframework.beans.factory.annotation.Value("${event.service.url}")
     private String eventServiceUrl;
@@ -143,6 +142,7 @@ public class PaymentService {
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Payment not found with ID: " + id));
 
+        boolean alreadyPaid = "PAID".equalsIgnoreCase(payment.getPaymentStatus());
         payment.setPaymentStatus("PAID");
         payment.setVerifiedAt(LocalDateTime.now());
         if (request.getAdminNote() != null && !request.getAdminNote().trim().isEmpty()) {
@@ -159,7 +159,7 @@ public class PaymentService {
         booking.setBookingStatus("CONFIRMED");
         bookingRepository.save(booking);
 
-        sendETicketNotification(booking);
+        if (!alreadyPaid) sendETicketNotification(booking);
 
         Payment updatedPayment = paymentRepository.save(payment);
         return mapToPaymentResponse(updatedPayment);
@@ -177,6 +177,7 @@ public class PaymentService {
 
     public void sendETicketNotification(Booking booking) {
         String userEmail = "";
+        String customerName = "Teman CamTix";
         try {
             String userUrl = userServiceUrl + "/api/users/" + booking.getUserId();
 
@@ -203,14 +204,25 @@ public class PaymentService {
             if (userRes != null && userRes.get("data") != null) {
                 java.util.Map<?, ?> userData = (java.util.Map<?, ?>) userRes.get("data");
                 userEmail = (String) userData.get("email");
+                Object fullName = userData.get("fullName");
+                if (fullName != null && !fullName.toString().isBlank()) {
+                    customerName = fullName.toString();
+                } else {
+                    String firstName = java.util.Objects.toString(userData.get("firstName"), "");
+                    String lastName = java.util.Objects.toString(userData.get("lastName"), "");
+                    String name = (firstName + " " + lastName).strip();
+                    if (!name.isBlank()) customerName = name;
+                }
             }
         } catch (Exception e) {
             log.error("Failed to call user-service for user ID {}: {}", booking.getUserId(), e.getMessage());
         }
 
         String eventName = "Konser Musik";
-        String eventDate = "-";
-        String city = "-";
+        String eventDate = null;
+        String eventTime = null;
+        String venue = null;
+        String city = null;
         try {
             String eventUrl = eventServiceUrl + "/api/events/" + booking.getEventId();
             java.util.Map<?, ?> eventRes = restTemplate.getForObject(eventUrl, java.util.Map.class);
@@ -218,13 +230,15 @@ public class PaymentService {
                 java.util.Map<?, ?> eventData = (java.util.Map<?, ?>) eventRes.get("data");
                 eventName = (String) eventData.get("eventName");
                 eventDate = (String) eventData.get("eventDate");
+                eventTime = (String) eventData.get("eventTime");
+                venue = (String) eventData.get("location");
                 city = (String) eventData.get("city");
             }
         } catch (Exception e) {
             log.error("Failed to call event-service for event ID {}: {}", booking.getEventId(), e.getMessage());
         }
 
-        String ticketType = "Reguler";
+        String ticketType = null;
         try {
             String ticketUrl = eventServiceUrl + "/api/tickets/" + booking.getTicketId();
             java.util.Map<?, ?> ticketRes = restTemplate.getForObject(ticketUrl, java.util.Map.class);
@@ -237,26 +251,9 @@ public class PaymentService {
         }
 
         if (userEmail != null && !userEmail.isEmpty()) {
-            emailService.sendETicketEmail(
-                    userEmail,
-                    booking.getBookingCode(),
-                    eventName,
-                    eventDate,
-                    city,
-                    ticketType,
-                    booking.getNumberOfTicket(),
-                    booking.getTotalPrice()
-            );
-
-            try {
-                emailProducer.sendEmailMessage(
-                        userEmail,
-                        "CamTix Booking Confirmed: " + booking.getBookingCode(),
-                        "Successfully confirmed payment status for event: " + eventName + "\nTicket: " + ticketType
-                );
-            } catch (Exception ex) {
-                log.warn("Failed to start rabbit background async process (ignore on local): {}", ex.getMessage());
-            }
+            emailService.sendETicketEmail(userEmail, new EmailService.TicketEmail(
+                    customerName, booking.getBookingCode(), eventName, eventDate, eventTime,
+                    venue, city, ticketType, booking.getNumberOfTicket(), booking.getTotalPrice()));
         }
     }
 
@@ -335,6 +332,7 @@ public class PaymentService {
 
         if ("capture".equals(transactionStatus) || "settlement".equals(transactionStatus)) {
             if ("accept".equals(fraudStatus) || "capture".equals(fraudStatus) || fraudStatus == null) {
+                boolean alreadyPaid = "PAID".equalsIgnoreCase(payment.getPaymentStatus());
                 payment.setPaymentStatus("PAID");
                 payment.setVerifiedAt(java.time.LocalDateTime.now());
 
@@ -349,7 +347,7 @@ public class PaymentService {
                     bookingRepository.save(booking);
 
                     try {
-                        sendETicketNotification(booking);
+                        if (!alreadyPaid) sendETicketNotification(booking);
                     } catch (Exception ex) {
                         log.error("Failed to send e-ticket after midtrans settlement: {}", ex.getMessage());
                     }

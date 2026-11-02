@@ -1,3 +1,4 @@
+import useDialogFocus from '../../components/useDialogFocus';
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
@@ -19,6 +20,7 @@ function PaymentMethodModal({ open, mode, form, setForm, onSubmit, onClose, load
   const { t } = useTranslation();
   const firstInputRef = useRef(null);
   useEffect(() => { if (open && firstInputRef.current) firstInputRef.current.focus(); }, [open]);
+  useDialogFocus(open, onClose);
   if (!open) return null;
 
   const handle = (e) => {
@@ -27,21 +29,21 @@ function PaymentMethodModal({ open, mode, form, setForm, onSubmit, onClose, load
   };
 
   const isEdit = mode === 'edit';
-  const inputClass = "w-full px-4 py-2.5 bg-surface-hover border border-border rounded-xl text-sm text-fg placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-colors";
+  const inputClass = "w-full px-4 py-2.5 bg-surface-hover border border-border rounded-xl text-sm text-fg placeholder-slate-400 focus:outline-none focus:border-brand focus:ring-2 focus:ring-blue-100 transition-colors";
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      role="dialog" aria-modal="true" className="admin-dialog fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ background: 'rgba(15, 23, 42, 0.4)', backdropFilter: 'blur(4px)' }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="bg-surface border border-border rounded-2xl w-full max-w-lg shadow-card shadow-slate-200/50 flex flex-col max-h-[90vh]">
+      <form onSubmit={(event) => { event.preventDefault(); onSubmit(); }} className="bg-surface border border-border rounded-2xl w-full max-w-lg shadow-card shadow-slate-200/50 flex flex-col max-h-[90vh]">
         <div className="flex items-center justify-between px-6 py-5 border-b border-border bg-surface rounded-t-2xl">
           <h2 className="text-lg font-bold text-fg flex items-center gap-2">
             {isEdit ? <Edit className="w-5 h-5 text-brand" /> : <CreditCard className="w-5 h-5 text-brand" />}
             {isEdit ? 'Edit Metode Pembayaran' : 'Tambah Metode Pembayaran'}
           </h2>
-          <button
+          <button type="button" aria-label={t('common.close')}
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-200 text-fg-muted hover:text-fg-secondary transition-colors cursor-pointer"
           >
@@ -50,6 +52,7 @@ function PaymentMethodModal({ open, mode, form, setForm, onSubmit, onClose, load
         </div>
 
         <div className="overflow-y-auto flex-1 px-6 py-5 space-y-4">
+          <p className="admin-form-note">{t('polish.requiredHint')}</p>
           {serverError && (
             <div className="p-3 rounded-xl border border-red-200 bg-red-50 text-red-600 text-xs font-medium flex items-center gap-2 animate-fadeIn">
               <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
@@ -57,13 +60,14 @@ function PaymentMethodModal({ open, mode, form, setForm, onSubmit, onClose, load
             </div>
           )}
 
+          <fieldset className="admin-form-section"><legend>01 / {t('polish.paymentIdentity')}</legend>
           <div>
-            <label className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">
+            <label htmlFor="paymentmethod-field-1" className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">
               Nama Metode <span className="text-red-500">*</span>
             </label>
-            <input
+            <input id="paymentmethod-field-1"
               ref={firstInputRef}
-              name="methodName"
+              name="methodName" required
               value={form.methodName}
               onChange={handle}
               placeholder="Contoh: Transfer Bank BCA, GoPay, QRIS..."
@@ -72,11 +76,11 @@ function PaymentMethodModal({ open, mode, form, setForm, onSubmit, onClose, load
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">
+            <label htmlFor="paymentmethod-field-2" className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">
               Provider / Kategori <span className="text-red-500">*</span>
             </label>
-            <input
-              name="provider"
+            <input id="paymentmethod-field-2"
+              name="provider" required
               value={form.provider}
               onChange={handle}
               placeholder="Contoh: BANK, EWALLET, QRIS, MIDTRANS..."
@@ -84,12 +88,14 @@ function PaymentMethodModal({ open, mode, form, setForm, onSubmit, onClose, load
             />
           </div>
 
+          </fieldset>
+          <fieldset className="admin-form-section"><legend>02 / {t('polish.paymentAccount')}</legend><p>{t('polish.accountHint')}</p>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">
+              <label htmlFor="paymentmethod-field-3" className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">
                 Nomor Rekening / Akun
               </label>
-              <input
+              <input id="paymentmethod-field-3"
                 name="accountNumber"
                 value={form.accountNumber}
                 onChange={handle}
@@ -98,10 +104,10 @@ function PaymentMethodModal({ open, mode, form, setForm, onSubmit, onClose, load
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">
+              <label htmlFor="paymentmethod-field-4" className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">
                 Atas Nama
               </label>
-              <input
+              <input id="paymentmethod-field-4"
                 name="accountName"
                 value={form.accountName}
                 onChange={handle}
@@ -112,10 +118,10 @@ function PaymentMethodModal({ open, mode, form, setForm, onSubmit, onClose, load
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">
+            <label htmlFor="paymentmethod-field-5" className="block text-xs font-bold text-fg-secondary mb-1.5 uppercase tracking-wider">
               URL QR Image / Logo
             </label>
-            <input
+            <input id="paymentmethod-field-5"
               name="qrImage"
               value={form.qrImage}
               onChange={handle}
@@ -137,17 +143,17 @@ function PaymentMethodModal({ open, mode, form, setForm, onSubmit, onClose, load
               Status Aktif
             </label>
           </div>
+          </fieldset>
         </div>
 
         <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-border bg-surface rounded-b-2xl">
-          <button
+          <button type="button" aria-label={t('common.close')}
             onClick={onClose}
             className="px-5 py-2.5 rounded-xl border border-border text-sm font-bold text-fg-secondary hover:bg-slate-100 hover:text-fg transition-colors cursor-pointer bg-surface"
           >
             Batal
           </button>
-          <button
-            onClick={onSubmit}
+          <button type="submit"
             disabled={loading}
             className="px-6 py-2.5 rounded-xl bg-brand hover:bg-brand-hover disabled:bg-slate-300 disabled:text-fg-muted text-sm font-bold text-white transition-colors cursor-pointer flex items-center gap-2 shadow-card"
           >
@@ -160,16 +166,17 @@ function PaymentMethodModal({ open, mode, form, setForm, onSubmit, onClose, load
             {isEdit ? 'Simpan Perubahan' : 'Tambah Metode'}
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
 
 function ConfirmDeleteModal({ open, onConfirm, onCancel, loading, methodName }) {
+  useDialogFocus(open, onCancel);
   if (!open) return null;
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      role="dialog" aria-modal="true" aria-label="Kelola paymentmethod CamTix" className="admin-dialog fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ background: 'rgba(15, 23, 42, 0.4)', backdropFilter: 'blur(4px)' }}
     >
       <div className="bg-surface border border-red-200 rounded-2xl w-full max-w-sm p-6 text-center shadow-card">
@@ -348,8 +355,8 @@ export default function PaymentMethodAdmin() {
   const paginatedData = filteredAndSorted.slice(page * pageSize, (page + 1) * pageSize);
 
   return (
-    <div className="p-6 md:p-8 space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div className="admin-page admin-paymentmethod space-y-6">
+      <div className="admin-page-header flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl font-extrabold text-fg flex items-center gap-2">
             <CreditCard className="w-6 h-6 text-brand" /> Metode Pembayaran
@@ -372,31 +379,31 @@ export default function PaymentMethodAdmin() {
         <div className="p-3 rounded-xl border border-red-200 bg-red-50 text-red-600 text-xs flex items-center gap-2 font-medium animate-fadeIn">
           <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
           <p className="flex-1">{pageError}</p>
-          <button onClick={() => setPageError('')} className="ml-auto text-red-400 hover:text-red-600 font-bold cursor-pointer">✕</button>
+          <button aria-label="Tutup pesan" onClick={() => setPageError('')} className="ml-auto text-red-400 hover:text-red-600 font-bold cursor-pointer">✕</button>
         </div>
       )}
 
       {/* Toolbar */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="admin-toolbar flex flex-col sm:flex-row gap-3">
         <input
           value={searchQuery}
           onChange={(e) => { setSearchQuery(e.target.value); setPage(0); }}
-          placeholder="Cari metode pembayaran atau nomor rekening..."
-          className="flex-1 px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors shadow-card"
+          placeholder="Cari metode pembayaran atau nomor rekening..." aria-label="Cari metode pembayaran atau nomor rekening..."
+          className="flex-1 px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg placeholder-slate-400 focus:outline-none focus:border-brand transition-colors shadow-card"
         />
-        <select
+        <select aria-label="Filter keaktifan"
           value={filterActive}
           onChange={(e) => { setFilterActive(e.target.value); setPage(0); }}
-          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-blue-400 transition-colors min-w-[150px] shadow-card"
+          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-brand transition-colors min-w-[150px] shadow-card"
         >
           <option value="">Semua Status</option>
           <option value="true">Aktif</option>
           <option value="false">Nonaktif</option>
         </select>
-        <select
+        <select aria-label="Urutkan data"
           value={sortBy}
           onChange={(e) => { setSortBy(e.target.value); setPage(0); }}
-          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-blue-400 transition-colors min-w-[150px] shadow-card"
+          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-brand transition-colors min-w-[150px] shadow-card"
         >
           <option value="newest">Terbaru</option>
           <option value="oldest">Terlama</option>
@@ -415,7 +422,7 @@ export default function PaymentMethodAdmin() {
       </div>
 
       {/* Table */}
-      <div className="bg-surface rounded-2xl border border-border overflow-hidden shadow-card overflow-x-auto">
+      <div className="admin-data-table bg-surface border border-border overflow-x-auto" tabIndex={0} aria-label="Data CamTix">
         <div className="grid grid-cols-[2fr_1fr_1.5fr_1fr_auto_auto] gap-4 px-5 py-3 border-b border-border bg-surface text-[10px] font-bold text-fg-muted uppercase tracking-widest min-w-[700px]">
           <span>Metode Pembayaran</span>
           <span>Provider</span>

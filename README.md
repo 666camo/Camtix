@@ -1,6 +1,20 @@
 # CamTix - Concert & Event Ticket Booking Platform
 
-CamTix adalah platform pemesanan tiket konser dan event musik modern berskala enterprise dengan arsitektur **Fullstack Microservices** menggunakan **Spring Boot 3 (Java 17)** di sisi backend dan **React 19 + Vite + Tailwind CSS** di sisi frontend.
+CamTix adalah platform pemesanan tiket konser dan event musik modern berskala enterprise berbasis **Fullstack Microservices** yang menggunakan **Spring Boot 3 (Java 17)** pada sisi backend dan **React 19 + Vite + Tailwind CSS** pada sisi frontend.
+
+---
+
+## 📝 Deskripsi Singkat Aplikasi
+
+**CamTix** dirancang untuk memberikan pengalaman pemesanan tiket konser dan event musik yang cepat, aman, dan responsif bagi pengguna, sekaligus menyediakan sistem manajemen terintegrasi untuk pengelola event (admin). 
+
+Aplikasi ini menyajikan solusi transaksi tiket digital end-to-end yang mencakup:
+- **E-Commerce & Katalog Event:** Pengguna dapat menjelajahi daftar konser/event terbaru, melakukan pencarian dengan kata kunci, serta menyaring berdasarkan kota, kategori, dan rentang tanggal.
+- **Pemesanan & Multi-Payment Gateway:** Mendukung alur booking tiket real-time dengan kalkulasi otomatis, integrasi payment gateway **Midtrans** (QRIS, VA, E-Wallet), serta metode transfer bank manual dengan fitur verifikasi bukti pembayaran.
+- **E-Ticket & Invoice Digital:** Setelah pembayaran terverifikasi, pengguna secara otomatis menerima tiket elektronik (E-Ticket) berformat PDF lengkap dengan kode QR unik dan bukti transaksi.
+- **Manajemen Operasional & Admin Dashboard:** Menyediakan panel kontrol terpusat bagi Admin untuk mengelola event, tipe tiket, stok real-time, metode pembayaran, pengguna, serta melihat statistik pendapatan dan aktivitas pengunjung secara real-time.
+
+Dengan arsitektur microservices terpisah (`user-service`, `event-service`, `transaction-service`, dan `api-gateway`), CamTix menjamin keandalan sistem, skalabilitas yang tinggi, serta pemisahan tanggung jawab (*separation of concerns*) yang rapi antar komponen.
 
 ---
 

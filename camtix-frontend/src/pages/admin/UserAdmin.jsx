@@ -1,3 +1,4 @@
+import useDialogFocus from '../../components/useDialogFocus';
 import React, { useState, useEffect } from 'react';
 import userService from '../../services/userService';
 import { useAuth } from '../../context/AuthContext';
@@ -7,6 +8,7 @@ import Pagination from '../../components/Pagination';
 
 function UserModal({ open, userData, onClose, onBan, onUnban, loading, currentUser }) {
   const { t } = useTranslation();
+  useDialogFocus(open && !!userData, onClose);
   if (!open || !userData) return null;
   const isBanned = userData.isBanned;
 
@@ -24,11 +26,11 @@ function UserModal({ open, userData, onClose, onBan, onUnban, loading, currentUs
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+    <div role="dialog" aria-modal="true" aria-label="Kelola user CamTix" className="admin-dialog fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
       <div className="bg-surface rounded-2xl w-full max-w-md shadow-card flex flex-col">
         <div className="flex items-center justify-between px-6 py-4 border-b border-border">
           <h2 className="text-lg font-bold text-fg">{t('admin.userDetail')}</h2>
-          <button onClick={onClose} className="text-fg-muted hover:text-fg-secondary">✕</button>
+          <button aria-label="Tutup dialog" onClick={onClose} className="text-fg-muted hover:text-fg-secondary">✕</button>
         </div>
         <div className="p-6 space-y-4">
           <div className="flex items-center gap-4 border-b border-border pb-4">
@@ -57,12 +59,12 @@ function UserModal({ open, userData, onClose, onBan, onUnban, loading, currentUs
             </div>
             <div className="col-span-2">
               <p className="text-xs text-fg-muted font-semibold uppercase">{t('admin.verificationStatus')}</p>
-              <p className="font-medium text-fg-secondary">{userData.isVerified ? `✅ ${t('admin.verified')}` : `❌ ${t('admin.unverified')}`}</p>
+              <p className="font-medium text-fg-secondary">{userData.isVerified ? t('admin.verified') : t('admin.unverified')}</p>
             </div>
           </div>
         </div>
         <div className="px-6 py-4 border-t border-border bg-surface-hover rounded-b-2xl flex justify-end gap-3">
-          <button onClick={onClose} className="px-4 py-2 border border-border rounded-xl text-sm font-bold text-fg-secondary hover:bg-slate-100 transition-colors bg-surface">{t('common.close')}</button>
+          <button aria-label="Tutup dialog" onClick={onClose} className="px-4 py-2 border border-border rounded-xl text-sm font-bold text-fg-secondary hover:bg-slate-100 transition-colors bg-surface">{t('common.close')}</button>
           {canAction() && (
             isBanned ? (
               <button onClick={() => onUnban(userData.idUser)} disabled={loading} className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold transition-colors disabled:opacity-50">
@@ -184,11 +186,11 @@ export default function UserAdmin() {
   });
 
   return (
-    <div className="p-6 md:p-8 space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div className="admin-page admin-user space-y-6">
+      <div className="admin-page-header flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl font-extrabold text-fg flex items-center gap-2">
-            <span>👥</span> {t('admin.userManagement')}
+            {t('admin.userManagement')}
           </h1>
           <p className="text-sm text-fg-muted mt-1">{t('admin.userSubtitle')}</p>
         </div>
@@ -197,27 +199,27 @@ export default function UserAdmin() {
         </button>
       </div>
 
-      <div className="flex flex-col sm:flex-row flex-wrap gap-3">
+      <div className="admin-toolbar flex flex-col sm:flex-row flex-wrap gap-3">
         <input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder={t('admin.searchUserPlaceholder')}
-          className="flex-1 min-w-[200px] px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg focus:outline-none focus:border-blue-400 shadow-card"
+          placeholder={t('admin.searchUserPlaceholder')} aria-label={t('admin.searchUserPlaceholder')}
+          className="flex-1 min-w-[200px] px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg focus:outline-none focus:border-brand shadow-card"
         />
-        <select
+        <select aria-label="Filter peran"
           value={filterRole}
           onChange={(e) => setFilterRole(e.target.value)}
-          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-blue-400 shadow-card"
+          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-brand shadow-card"
         >
           <option value="">{t('admin.allRoles')}</option>
           <option value="USER">USER</option>
           <option value="ADMIN_CAMTIX">ADMIN CAMTIX</option>
           <option value="ADMIN_APLIKASI">ADMIN APLIKASI</option>
         </select>
-        <select
+        <select aria-label="Urutkan data"
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-blue-400 shadow-card"
+          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-brand shadow-card"
         >
           <option value="newest">Terbaru</option>
           <option value="oldest">Terlama</option>
@@ -226,7 +228,7 @@ export default function UserAdmin() {
         </select>
       </div>
 
-      <div className="bg-surface rounded-2xl border border-border overflow-hidden shadow-card overflow-x-auto">
+      <div className="admin-data-table bg-surface border border-border overflow-x-auto" tabIndex={0} aria-label="Data CamTix">
         <div className="grid grid-cols-[auto_2fr_2fr_1fr_auto] gap-4 px-5 py-3 border-b border-border bg-surface text-[10px] font-bold text-fg-muted uppercase tracking-widest min-w-[600px]">
           <span>ID</span>
           <span>{t('booking.fullName')}</span>

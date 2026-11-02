@@ -1,3 +1,5 @@
+import CheckoutSteps from '../components/CheckoutSteps';
+import PageHeading from '../components/PageHeading';
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -297,7 +299,7 @@ export default function Payment() {
 
   if (loading) {
     return (
-      <div className="gradient-bg min-h-screen text-fg flex items-center justify-center">
+      <div className="public-page payment-page gradient-bg min-h-screen text-fg flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 rounded-full border-4 border-border border-t-blue-500 animate-spin"></div>
           <p className="text-fg-secondary text-sm font-medium">{t('payment.loading')}</p>
@@ -308,7 +310,7 @@ export default function Payment() {
 
   if (error && !booking) {
     return (
-      <div className="gradient-bg min-h-screen text-fg flex items-center justify-center px-6">
+      <div className="public-page payment-page gradient-bg min-h-screen text-fg flex items-center justify-center px-6">
         <div className="glass-effect rounded-2xl p-8 max-w-md w-full border border-border text-center space-y-4">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto" />
           <h2 className="text-xl font-bold text-red-600">{t('payment.errorTitle')}</h2>
@@ -326,22 +328,11 @@ export default function Payment() {
   const isWaiting = payment?.paymentStatus === 'WAITING_CONFIRMATION';
 
   return (
-    <div className="gradient-bg min-h-screen text-fg pb-20 pt-28 px-6 md:px-12">
-      <div className="max-w-4xl mx-auto space-y-8">
+    <div className="public-page payment-page gradient-bg min-h-screen text-fg pb-20 pt-28 px-6 md:px-12">
+      <div className="max-w-6xl mx-auto space-y-8">
         
-        {/* Header */}
-        <div className="text-center md:text-left">
-          <span className="text-xs font-bold text-brand uppercase tracking-widest bg-brand/10 px-3 py-1 rounded-full border border-border">
-            {t('payment.badge')}
-          </span>
-          <h1 className="text-3xl font-extrabold tracking-tight mt-2 text-fg">
-            {t('payment.title')} <span className="gradient-text">{t('payment.titleHighlight')}</span>
-          </h1>
-          <p className="text-sm text-fg-secondary mt-1">
-            {t('payment.subtitle')}
-          </p>
-        </div>
-
+        <CheckoutSteps current={2} />
+        <PageHeading variant="utility" eyebrow={t('payment.badge')} title={t('payment.title')} accent={t('payment.titleHighlight')} description={t('payment.subtitle')} />
         {error && (
           <div className="p-4 rounded-xl border border-red-200 bg-red-50 text-red-600 text-sm flex items-center gap-2 animate-fadeIn">
             <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
@@ -459,9 +450,9 @@ export default function Payment() {
                       return (
                         <label
                           key={m.idPaymentMethod}
-                          className={`flex items-center gap-4 p-4 rounded-xl border transition-all cursor-pointer ${
+                          className={`payment-method flex items-center gap-4 p-4 rounded-sm border transition-all cursor-pointer ${
                             isSelected
-                              ? 'border-brand bg-brand/10/60 shadow-sm ring-2 ring-blue-200'
+                              ? 'border-brand bg-brand-subtle shadow-sm ring-1 ring-brand'
                               : 'border-border bg-surface hover:bg-surface'
                           }`}
                         >
@@ -505,7 +496,7 @@ export default function Payment() {
 
                 {/* ── BRANCH 1: MIDTRANS INSTANT PAYMENT ── */}
                 {isMidtransSelected ? (
-                  <div className="p-6 bg-gradient-to-br from-blue-50 via-indigo-50/40 to-slate-50 rounded-2xl border border-border space-y-5 animate-fadeIn">
+                  <div className="p-6 bg-base rounded-sm border border-border space-y-5 animate-fadeIn">
                     <div className="flex items-start gap-3">
                       <div className="p-2.5 bg-brand text-white rounded-xl shadow-md flex-shrink-0">
                         <Zap className="w-5 h-5 fill-white" />
@@ -523,7 +514,7 @@ export default function Payment() {
                         type="button"
                         onClick={handlePayWithMidtrans}
                         disabled={submitting}
-                        className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-md shadow-card hover:shadow-card active:scale-95 transition-all text-sm flex items-center justify-center gap-2 cursor-pointer"
+                        className="w-full py-4 bg-brand hover:bg-brand-hover text-white font-bold rounded-xl shadow-md shadow-card hover:shadow-card active:scale-95 transition-all text-sm flex items-center justify-center gap-2 cursor-pointer"
                       >
                         {submitting ? (
                           <>
@@ -583,8 +574,8 @@ export default function Payment() {
                     {/* Upload proof form (File Picker) */}
                     <form onSubmit={handleSubmitProof} className="space-y-6 pt-2 border-t border-border">
                       <div>
-                        <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('payment.uploadProofLabel')}</label>
-                        <input
+                        <label htmlFor="payment-field-1" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('payment.uploadProofLabel')}</label>
+                        <input id="payment-field-1"
                           type="file"
                           accept="image/*"
                           onChange={handleFileChange}
@@ -627,7 +618,7 @@ export default function Payment() {
           </div>
 
           {/* Pricing summary */}
-          <div className="space-y-6">
+          <div className="order-summary space-y-6">
             <div className="glass-effect rounded-2xl p-5 border border-border shadow-sm space-y-4">
               <h3 className="text-sm font-bold uppercase tracking-wider text-fg-secondary border-b border-border pb-2 flex items-center gap-1.5">
                 <FileText className="w-4 h-4 text-fg-secondary" /> {t('payment.billingSummary')}

@@ -4,6 +4,7 @@ import { initReactI18next } from 'react-i18next';
 const resources = {
   id: {
     translation: {
+      polish: {"tryAgain": "Coba lagi", "sortOldest": "Terlama ditambahkan", "sortNewest": "Terbaru ditambahkan", "sortSoonest": "Tanggal terdekat", "advancedFilters": "Genre & tanggal", "filterHint": "Persempit pilihan berdasarkan musik dan jadwalmu.", "searchResults": "Hasil pencarian", "results": "acara ditemukan", "clearSearch": "Atur ulang pencarian", "emptyHint": "Coba kata kunci yang lebih singkat, kota lain, atau hapus filter tanggal.", "catalogUnavailable": "Jadwal belum bisa ditampilkan", "catalogRetry": "Koneksi ke katalog sedang terganggu. Coba muat kembali.", "concert": "Konser", "ticketDetails": "Jumlah & kategori", "entryPass": "Siapkan untuk masuk venue", "entryQr": "Kode QR tiket masuk", "confirmed": "Pembayaran terkonfirmasi", "qrPrivacy": "Jaga kerahasiaan kode QR. Siapkan tiket dan identitas pemesan saat memasuki venue.", "eventIdentity": "Informasi konser", "eventSchedule": "Lokasi & jadwal", "eventArtwork": "Poster & deskripsi", "eventIdentityHint": "Nama dan kategori ini akan tampil di katalog pembeli.", "scheduleHint": "Pastikan tanggal, jam, dan lokasi sesuai dengan acara.", "posterHint": "Gunakan gambar beresolusi tinggi. Poster akan ditampilkan utuh; ukuran file maksimal 5 MB.", "requiredHint": "Kolom bertanda * wajib diisi.", "invalidField": "Lengkapi kolom ini dengan nilai yang valid.", "ticketSection": "Kategori tiket", "ticketPricing": "Harga & kuota", "paymentIdentity": "Identitas metode", "paymentAccount": "Rekening & tampilan", "ticketHint": "Harga dalam rupiah. Kuota adalah jumlah tiket yang tersedia.", "accountHint": "Isi data rekening sesuai metode yang dipilih.", "resetGenres": "Lihat semua genre"},
       // Navbar
       nav: {
         catalog: 'Katalog',
@@ -17,11 +18,11 @@ const resources = {
       },
       // Home Page
       home: {
-        badge: 'Temukan Konser Impianmu',
-        title1: 'Tiket Konser Terlengkap di',
-        title2: 'CamTix',
-        subtitle: 'Penyedia e-ticket terpercaya dengan integrasi sistem real-time, pembayaran aman, dan notifikasi e-ticket langsung ke email Anda.',
-        exploreCTA: 'Jelajahi Konser',
+        badge: 'Panggung berikutnya ada di sini',
+        title1: 'Pilih panggung.',
+        title2: 'Kami urus tiketnya.',
+        subtitle: 'Cari konser berdasarkan artis, genre, atau kota—lalu pesan tiketnya langsung dari sini.',
+        exploreCTA: 'Jelajahi konser',
         quickSearchPlaceholder: 'Cari artis, konser, atau kota...',
         searchAction: 'Cari Tiket',
         allGenres: 'Semua Genre',
@@ -29,10 +30,12 @@ const resources = {
         statsTickets: 'Tiket Terbit',
         statsSecurity: 'Jaminan QR Asli',
         statsSatisfaction: 'Kepuasan Pembeli',
-        catalogTitle: 'Katalog Konser Populer',
-        catalogSubtitle: 'Temukan tiket konser terbaik sebelum kehabisan kuota!',
-        searchMore: 'Lihat Semua Konser →',
-        whyChooseTitle: 'Pengalaman Pemesanan Tiket Tanpa Khawatir',
+        catalogKicker: 'Jadwal musik live',
+        catalogTitle: 'Yang akan datang',
+        catalogSubtitle: 'Pilih acara yang ingin kamu alami langsung.',
+        searchMore: 'Lihat semua konser',
+        trustKicker: 'Tiket, tanpa drama',
+        whyChooseTitle: 'Dari checkout sampai masuk venue.',
         whyChooseSubtitle: 'Kami menghadirkan standar kenyamanan dan keamanan tertinggi untuk setiap tiket konser yang Anda pesan.',
         feat1Title: 'E-Ticket QR Berhologram',
         feat1Desc: 'Setiap tiket dilengkapi kode unik terenkripsi anti-duplikasi yang otomatis dikirim ke email Anda.',
@@ -40,8 +43,10 @@ const resources = {
         feat2Desc: 'Dukungan Midtrans Sandbox & QRIS, Virtual Account Bank, dan E-Wallet tanpa perlu tunggu lama.',
         feat3Title: 'Stok Terhubung Real-Time',
         feat3Desc: 'Sinkronisasi inventaris tiket otomatis memastikan ketersediaan kursi selalu akurat dan terpercaya.',
-        loading: 'Memuat konser populer...',
-        errorLoad: 'Gagal memuat katalog konser. Hubungi kami jika masalah berlanjut.',
+        loading: 'Mencari acara untukmu...',
+        errorLoad: 'Jadwal konser belum bisa dimuat. Coba lagi sebentar lagi.',
+        emptyTitle: 'Belum ada konser di sini.',
+        emptyDescription: 'Coba genre lain atau jelajahi semua acara.',
         errorFormat: 'Format data dari server tidak sesuai.',
         noImage: 'NO IMAGE AVAILABLE',
         eventDateLabel: 'Tanggal Event',
@@ -345,7 +350,7 @@ const resources = {
         administrator: 'Administrator',
         // Dashboard
         welcomeBack: 'Selamat datang kembali,',
-        dashboardSubtitle: 'Berikut adalah ringkasan aktivitas platform CamTix hari ini.',
+        dashboardSubtitle: 'Ringkasan konser, transaksi, dan aktivitas platform CamTix.',
         refreshData: 'Perbarui Data',
         totalEvents: 'Total Event',
         eventsSub: 'Event terdaftar di platform',
@@ -597,6 +602,7 @@ const resources = {
   },
   en: {
     translation: {
+      polish: {"tryAgain": "Try again", "sortOldest": "Oldest added", "sortNewest": "Recently added", "sortSoonest": "Soonest date", "advancedFilters": "Genre & dates", "filterHint": "Narrow your choices by music and schedule.", "searchResults": "Search results", "results": "events found", "clearSearch": "Reset search", "emptyHint": "Try a shorter keyword, another city, or clear the date filters.", "catalogUnavailable": "Listings are unavailable", "catalogRetry": "We could not connect to the catalog. Please try loading it again.", "concert": "Concert", "ticketDetails": "Quantity & category", "entryPass": "Ready for venue entry", "entryQr": "Ticket entry QR code", "confirmed": "Payment confirmed", "qrPrivacy": "Keep your QR code private. Have your ticket and booking identification ready at the venue.", "eventIdentity": "Concert information", "eventSchedule": "Venue & schedule", "eventArtwork": "Poster & description", "eventIdentityHint": "This name and category will appear in the concert catalog.", "scheduleHint": "Check that the date, time, and venue match the event.", "posterHint": "Use a high-resolution image. The full poster will be preserved; maximum file size is 5 MB.", "requiredHint": "Fields marked * are required.", "invalidField": "Complete this field with a valid value.", "ticketSection": "Ticket category", "ticketPricing": "Price & availability", "paymentIdentity": "Payment method", "paymentAccount": "Account & appearance", "ticketHint": "Prices are in rupiah. Availability is the number of tickets offered.", "accountHint": "Enter the account details for the selected payment method.", "resetGenres": "View all genres"},
       // Navbar
       nav: {
         catalog: 'Catalog',
@@ -610,11 +616,11 @@ const resources = {
       },
       // Home Page
       home: {
-        badge: 'Find Your Dream Concert',
-        title1: 'The Most Complete Concert Tickets at',
-        title2: 'CamTix',
-        subtitle: 'Your trusted e-ticket provider with real-time system integration, secure payments, and e-ticket notifications directly to your email.',
-        exploreCTA: 'Explore Concerts',
+        badge: 'Your next live show starts here',
+        title1: 'Pick your stage.',
+        title2: 'We’ll handle the ticket.',
+        subtitle: 'Find a show by artist, genre, or city, then book your ticket right here.',
+        exploreCTA: 'Explore concerts',
         quickSearchPlaceholder: 'Search artist, concert, or city...',
         searchAction: 'Search Tickets',
         allGenres: 'All Genres',
@@ -622,10 +628,12 @@ const resources = {
         statsTickets: 'Tickets Issued',
         statsSecurity: 'Holographic QR Security',
         statsSatisfaction: 'Satisfaction Rate',
-        catalogTitle: 'Popular Concert Catalog',
-        catalogSubtitle: 'Find the best concert tickets before tickets run out!',
-        searchMore: 'Browse All Concerts →',
-        whyChooseTitle: 'Worry-Free Concert Ticketing Experience',
+        catalogKicker: 'Live music calendar',
+        catalogTitle: 'Coming up',
+        catalogSubtitle: 'Choose the show you want to experience in person.',
+        searchMore: 'Browse all concerts',
+        trustKicker: 'Tickets, without the drama',
+        whyChooseTitle: 'From checkout to the venue.',
         whyChooseSubtitle: 'We deliver the highest security standards and seamless convenience for every concert ticket you book.',
         feat1Title: 'Holographic QR E-Ticket',
         feat1Desc: 'Every ticket contains an encrypted anti-duplication unique QR code sent directly to your email.',
@@ -633,8 +641,10 @@ const resources = {
         feat2Desc: 'Seamless support for Midtrans Sandbox, QRIS, Bank Virtual Accounts, and E-Wallets without manual delays.',
         feat3Title: 'Real-Time Inventory Sync',
         feat3Desc: 'Automated live seat inventory updates eliminate the risk of overbooking or seat discrepancies.',
-        loading: 'Loading popular concerts...',
-        errorLoad: 'Failed to load concert catalog. Contact us if the issue persists.',
+        loading: 'Finding shows for you...',
+        errorLoad: 'Concert listings are unavailable right now. Please try again shortly.',
+        emptyTitle: 'No concerts here yet.',
+        emptyDescription: 'Try another genre or browse all events.',
         errorFormat: 'Server data format is invalid.',
         noImage: 'NO IMAGE AVAILABLE',
         eventDateLabel: 'Event Date',
@@ -938,7 +948,7 @@ const resources = {
         administrator: 'Administrator',
         // Dashboard
         welcomeBack: 'Welcome back,',
-        dashboardSubtitle: "Here is a summary of today's CamTix platform activity.",
+        dashboardSubtitle: "An overview of shows, transactions, and activity across CamTix.",
         refreshData: 'Refresh Data',
         totalEvents: 'Total Events',
         eventsSub: 'Events registered on platform',

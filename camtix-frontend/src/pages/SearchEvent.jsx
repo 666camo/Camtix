@@ -1,21 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import CatalogState from '../components/CatalogState';
+import EventPoster from '../components/EventPoster';
+import PageHeading from '../components/PageHeading';
+import { useCallback, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import eventService from '../services/eventService';
-import { Info, Search, MapPin } from 'lucide-react';
+import { Search, MapPin } from 'lucide-react';
 import Pagination from '../components/Pagination';
 
 export default function SearchEvent() {
   const { t } = useTranslation();
-  const [query, setQuery] = useState({
-    keyword: '',
+  const [initialQuery] = useState(() => ({
+    keyword: new URLSearchParams(window.location.search).get('keyword') || '',
     city: '',
     category: '',
     startDate: '',
     endDate: ''
-  });
+  }));
+  const [query, setQuery] = useState(initialQuery);
   const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   // Sorting and pagination state
@@ -27,39 +31,38 @@ export default function SearchEvent() {
   const [cities, setCities] = useState(['Jakarta', 'Bandung', 'Surabaya', 'Semarang', 'Tangerang', 'Bali']);
   const [categories, setCategories] = useState(['Pop/Rock', 'R&B/Pop', 'Country/Pop', 'K-Pop', 'Electronic', 'Jazz']);
 
-  const handleSearch = async (e, isInitial = false) => {
-    if (e) e.preventDefault();
-    setLoading(true);
-    setError('');
+  const fetchEvents = useCallback(async (values, isInitial = false) => {
 
     const params = {};
-    if (query.keyword.trim() !== '') {
-      params.eventName = query.keyword.trim();
-      params.artistName = query.keyword.trim();
+    if (values.keyword.trim() !== '') {
+      params.eventName = values.keyword.trim();
+      params.artistName = values.keyword.trim();
     }
-    if (query.city !== '') {
-      params.city = query.city;
+    if (values.city !== '') {
+      params.city = values.city;
     }
-    if (query.category !== '') {
-      params.category = query.category;
+    if (values.category !== '') {
+      params.category = values.category;
     }
 
     try {
       const response = await eventService.searchEvents(params);
+      setError('');
       if (response && response.data) {
         let results = response.data;
 
-        if (query.startDate) {
-          const start = new Date(query.startDate);
+        if (values.startDate) {
+          const start = new Date(values.startDate);
           results = results.filter(evt => new Date(evt.eventDate) >= start);
         }
-        if (query.endDate) {
-          const end = new Date(query.endDate);
+        if (values.endDate) {
+          const end = new Date(values.endDate);
           end.setHours(23, 59, 59, 999);
           results = results.filter(evt => new Date(evt.eventDate) <= end);
         }
 
         setEvents(results);
+        setPage(0);
         if (isInitial) {
           const formatName = (str) => {
             if (!str) return '';
@@ -81,11 +84,17 @@ export default function SearchEvent() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [t]);
 
-  useEffect(() => {
-    handleSearch(null, true);
-  }, []);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- Starts an async server request; responses update state.
+  useEffect(() => { fetchEvents(initialQuery, true); }, [fetchEvents, initialQuery]);
+
+  const handleSearch = (event, isInitial = false, values = query) => {
+    event?.preventDefault();
+    setLoading(true);
+    setError('');
+    return fetchEvents(values, isInitial);
+  };
 
   const handleChange = (e) => {
     setQuery({
@@ -127,37 +136,28 @@ export default function SearchEvent() {
   const totalPages = Math.ceil(sortedEvents.length / pageSize);
   const paginatedEvents = sortedEvents.slice(page * pageSize, (page + 1) * pageSize);
 
-  useEffect(() => {
-    setPage(0);
-  }, [sortBy, pageSize, events]);
+  const resetFilters = () => {
+    const cleared = { keyword: '', city: '', category: '', startDate: '', endDate: '' };
+    setQuery(cleared);
+    handleSearch(null, false, cleared);
+  };
 
   const inputClass = "w-full bg-surface border border-border focus:border-brand rounded-xl px-4 py-3 text-sm text-fg focus:outline-none focus:ring-2 focus:ring-brand/20 transition-all";
 
   return (
-    <div className="gradient-bg min-h-screen text-fg pb-20 pt-28 px-6 md:px-12">
+    <div className="public-page searchevent-page gradient-bg min-h-screen text-fg pb-20 pt-28 px-6 md:px-12">
       <div className="max-w-7xl mx-auto space-y-8">
         
-        {/* Title */}
-        <div className="text-center md:text-left">
-          <span className="text-xs font-bold text-brand uppercase tracking-widest bg-brand/10 px-3 py-1 rounded-full border border-border">
-            {t('search.badge')}
-          </span>
-          <h1 className="text-3xl font-extrabold tracking-tight mt-2 text-fg">
-            {t('search.title')} <span className="gradient-text">{t('search.titleHighlight')}</span>
-          </h1>
-          <p className="text-sm text-fg-secondary mt-1">
-            {t('search.subtitle')}
-          </p>
-        </div>
-
+        <PageHeading eyebrow={t('search.badge')} title={t('search.title')} accent={t('search.titleHighlight')} description={t('search.subtitle')} />
         {/* Filter Bar */}
-        <div className="glass-effect rounded-2xl p-6 border border-border relative overflow-hidden">
+        <div className="search-filters glass-effect p-6 border border-border">
           <div className="absolute top-0 right-0 w-32 h-32 bg-brand/10 rounded-full blur-2xl -z-10"></div>
           
-          <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-6 gap-4 items-end">
-            <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('search.keywordLabel')}</label>
-              <input
+          <form onSubmit={(event) => { handleSearch(event); if (window.matchMedia('(max-width: 767px)').matches) event.currentTarget.querySelector('details').open = false; }} className="search-form">
+            <div className="search-primary">
+            <div className="search-keyword">
+              <label htmlFor="searchevent-field-1" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('search.keywordLabel')}</label>
+              <input id="searchevent-field-1"
                 type="text"
                 name="keyword"
                 value={query.keyword}
@@ -166,10 +166,9 @@ export default function SearchEvent() {
                 className={inputClass}
               />
             </div>
-
             <div>
-              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('search.cityLabel')}</label>
-              <select
+              <label htmlFor="searchevent-field-2" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('search.cityLabel')}</label>
+              <select id="searchevent-field-2"
                 name="city"
                 value={query.city}
                 onChange={handleChange}
@@ -181,10 +180,15 @@ export default function SearchEvent() {
                 ))}
               </select>
             </div>
-
+              <button type="submit" disabled={loading} className="search-submit">{loading ? t('search.searching') : t('home.searchAction')}<Search size={16} aria-hidden="true" /></button>
+            </div>
+            <details className="search-advanced">
+              <summary>{t('polish.advancedFilters')}<span>{[query.category, query.startDate, query.endDate].filter(Boolean).length || '+'}</span></summary>
+              <p>{t('polish.filterHint')}</p>
+              <div className="search-advanced-fields">
             <div>
-              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('search.categoryLabel')}</label>
-              <select
+              <label htmlFor="searchevent-field-3" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('search.categoryLabel')}</label>
+              <select id="searchevent-field-3"
                 name="category"
                 value={query.category}
                 onChange={handleChange}
@@ -196,10 +200,9 @@ export default function SearchEvent() {
                 ))}
               </select>
             </div>
-
             <div>
-              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('search.startDate')}</label>
-              <input
+              <label htmlFor="searchevent-field-4" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('search.startDate')}</label>
+              <input id="searchevent-field-4"
                 type="date"
                 name="startDate"
                 value={query.startDate}
@@ -207,85 +210,32 @@ export default function SearchEvent() {
                 className={inputClass}
               />
             </div>
-
             <div>
-              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('search.endDate')}</label>
-              <input
+              <label htmlFor="searchevent-field-5" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('search.endDate')}</label>
+              <input id="searchevent-field-5"
                 type="date"
+                min={query.startDate || undefined}
                 name="endDate"
                 value={query.endDate}
                 onChange={handleChange}
                 className={inputClass}
               />
             </div>
-
-            <div className="md:col-span-6 flex flex-col sm:flex-row justify-between items-center gap-4 mt-2">
-              <div className="flex items-center gap-2 w-full sm:w-auto">
-                <span className="text-xs font-semibold text-fg-secondary whitespace-nowrap">Urutkan:</span>
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="bg-surface border border-border rounded-xl px-3 py-2 text-xs font-bold text-fg-secondary focus:outline-none focus:ring-1 focus:ring-brand cursor-pointer"
-                >
-                  <option value="newest">Terbaru Ditambahkan</option>
-                  <option value="oldest">Terlama Ditambahkan</option>
-                  <option value="date_soonest">Tanggal Terdekat</option>
-                  <option value="az">Nama Event: A - Z</option>
-                  <option value="za">Nama Event: Z - A</option>
-                </select>
               </div>
-
-              <div className="flex gap-3 w-full sm:w-auto justify-end">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setQuery({ keyword: '', city: '', category: '', startDate: '', endDate: '' });
-                    setTimeout(() => handleSearch(), 100);
-                  }}
-                  className="px-6 py-3 bg-surface rounded-xl text-sm font-semibold hover:bg-surface-hover border border-border text-fg-secondary transition-colors cursor-pointer"
-                >
-                  {t('search.resetFilter')}
-                </button>
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="px-8 py-3 bg-brand hover:bg-brand-hover disabled:bg-slate-300 disabled:text-fg-secondary text-white font-bold rounded-xl shadow-sm shadow-card hover:shadow-card active:scale-95 transition-all text-sm cursor-pointer flex items-center gap-2"
-                >
-                  {loading ? (
-                    <>
-                      <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin"></span>
-                      <span>{t('search.searching')}</span>
-                    </>
-                  ) : (
-                    <span>{t('search.applyFilter')}</span>
-                  )}
-                </button>
-              </div>
-            </div>
+              <div className="search-filter-actions"><button type="button" onClick={resetFilters}>{t('search.resetFilter')}</button><button type="submit" disabled={loading}>{t('search.applyFilter')}</button></div>
+            </details>
           </form>
         </div>
 
-        {/* Results Info Alerts */}
-        {error && (
-          <div className="p-4 rounded-xl border border-red-200 bg-red-50 text-red-600 text-sm flex items-center gap-2 animate-fadeIn">
-            <Info className="w-4 h-4 text-red-500 flex-shrink-0" />
-            <p>{error}</p>
-          </div>
-        )}
-
         {/* Search Results Catalog */}
         <div>
+          <div className="search-results-heading"><p aria-live="polite">{loading ? t('search.searching') : `${events.length} ${t('polish.results')}`}</p><div><label htmlFor="search-sort">{t('polish.searchResults')}</label><select id="search-sort" value={sortBy} onChange={(event) => { setSortBy(event.target.value); setPage(0); }}><option value="newest">{t('polish.sortNewest')}</option><option value="oldest">{t('polish.sortOldest')}</option><option value="date_soonest">{t('polish.sortSoonest')}</option><option value="az">A – Z</option><option value="za">Z – A</option></select></div></div>
           {loading ? (
-            <div className="py-24 flex flex-col items-center justify-center gap-3">
-              <div className="w-10 h-10 rounded-full border-4 border-border border-t-blue-500 animate-spin"></div>
-              <p className="text-sm text-fg-secondary">{t('search.loading')}</p>
-            </div>
+            <CatalogState loading title={t('search.loading')} />
+          ) : error ? (
+            <CatalogState title={t('polish.catalogUnavailable')} description={t('polish.catalogRetry')} onRetry={() => handleSearch()} />
           ) : events.length === 0 ? (
-            <div className="glass-effect rounded-2xl py-20 text-center text-fg-secondary border border-border">
-              <Search className="w-10 h-10 text-fg-muted mx-auto mb-3" />
-              <p className="text-base font-bold text-fg-secondary">{t('search.noResult')}</p>
-              <p className="text-xs text-fg-muted mt-1">{t('search.noResultSub')}</p>
-            </div>
+            <CatalogState title={t('search.noResult')} description={t('polish.emptyHint')} onRetry={resetFilters} actionLabel={t('polish.clearSearch')} />
           ) : (
             <div className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -294,19 +244,9 @@ export default function SearchEvent() {
                   const displayStatus = evt.status === 'CANCELLED' ? 'CANCELLED' : expired ? 'FINISHED' : (evt.status || 'UPCOMING');
 
                   return (
-                    <div key={evt.idEvent} className="glass-effect rounded-2xl overflow-hidden hover:scale-[1.02] hover:shadow-xl transition-all duration-300 flex flex-col group border border-border">
-                      <div className="relative h-48 overflow-hidden bg-surface-hover">
-                        {evt.picture ? (
-                          <img 
-                            src={evt.picture} 
-                            alt={evt.eventName} 
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-fg-muted font-bold bg-surface-hover">
-                            {t('home.noImage')}
-                          </div>
-                        )}
+                    <div key={evt.idEvent} className="search-event-card flex flex-col group">
+                      <div className="search-event-poster relative overflow-hidden bg-surface-hover">
+                        <EventPoster src={evt.picture} title={evt.eventName} category={evt.category} />
                         <span className="absolute top-4 left-4 bg-surface/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-brand border border-border">
                           {evt.category || 'Event'}
                         </span>
@@ -319,7 +259,7 @@ export default function SearchEvent() {
                           {displayStatus}
                         </span>
                       </div>
-                      <div className="p-6 flex-1 flex flex-col">
+                      <div className="search-event-info flex-1 flex flex-col">
                         <span className="text-[10px] text-brand uppercase tracking-widest font-bold mb-1 flex items-center gap-1">
                           <MapPin className="w-3.5 h-3.5 text-brand" /> {evt.city} • {evt.location || t('home.location')}
                         </span>
@@ -359,7 +299,7 @@ export default function SearchEvent() {
                   totalItems={sortedEvents.length}
                   pageSize={pageSize}
                   onPageChange={setPage}
-                  onPageSizeChange={setPageSize}
+                  onPageSizeChange={(size) => { setPageSize(size); setPage(0); }}
                   pageSizeOptions={[6, 9, 18, 30]}
                 />
               </div>

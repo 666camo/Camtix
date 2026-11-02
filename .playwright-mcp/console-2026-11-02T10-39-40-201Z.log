@@ -1,0 +1,63 @@
+[    1233ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=04395a12:14337
+[    1827ms] [ERROR] Failed to log visitor: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=9fbb8ee0:2120:16) @ http://127.0.0.1:5173/@vite/client:524
+[    1829ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/visitors:0
+[    1829ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/events:0
+[    1830ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/events:0
+[    1835ms] [ERROR] Failed to log visitor: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=9fbb8ee0:2120:16) @ http://127.0.0.1:5173/@vite/client:524
+[    1836ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/visitors:0
+[    2107ms] [ERROR] Executing inline script violates the following Content Security Policy directive 'script-src 'self' https://snap-assets.sandbox.midtrans.com https://api.sandbox.midtrans.com https://pay.google.com https://gwk.gopayapi.com/sdk/stable/gp-container.min.js https://www.googletagmanager.com https://o.alicdn.com https://g.alicdn.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-DueWcbxgRVJl6J5x2OBGlMjJ0RI9aTrwDoqaA4GHDhs='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked. @ https://app.sandbox.midtrans.com/snap/v4/popup?origin_host=http://127.0.0.1:5173&client_key=SB-Mid-client-camtix#/:0
+[    7455ms] [COUNT] %c%d: 1 @ https://g.alicdn.com/captcha-frontend/FeiLin/1.5.2/feilin066.d3602465f551f6835e4ed4680583de6f57273d1ea9c3483c4e33c7a8c96967ae.js:0
+[    7456ms] [DIR] %c%d font-size:0;color:transparent Error @ https://g.alicdn.com/captcha-frontend/FeiLin/1.5.2/feilin066.d3602465f551f6835e4ed4680583de6f57273d1ea9c3483c4e33c7a8c96967ae.js:0
+[    7456ms] [DIRXML] %c%d font-size:0;color:transparent Error @ https://g.alicdn.com/captcha-frontend/FeiLin/1.5.2/feilin066.d3602465f551f6835e4ed4680583de6f57273d1ea9c3483c4e33c7a8c96967ae.js:0
+[    7457ms] [INFO] %c%d font-size:0;color:transparent NaN @ https://snap-assets.sandbox.midtrans.com/snap/v4/assets/snap-popup-app.sandbox.26f6a1e3e5b84ac74220.js:0
+[    7458ms] [INFO] %c%d font-size:0;color:transparent NaN @ https://snap-assets.sandbox.midtrans.com/snap/v4/assets/snap-popup-app.sandbox.26f6a1e3e5b84ac74220.js:0
+[    7458ms] [LOG] %c%d font-size:0;color:transparent NaN @ https://g.alicdn.com/captcha-frontend/FeiLin/1.5.2/feilin066.d3602465f551f6835e4ed4680583de6f57273d1ea9c3483c4e33c7a8c96967ae.js:0
+[    7458ms] [TABLE] %c%d font-size:0;color:transparent Error @ https://g.alicdn.com/captcha-frontend/FeiLin/1.5.2/feilin066.d3602465f551f6835e4ed4680583de6f57273d1ea9c3483c4e33c7a8c96967ae.js:0
+[    7459ms] [INFO] %c%d font-size:0;color:transparent NaN @ https://snap-assets.sandbox.midtrans.com/snap/v4/assets/snap-popup-app.sandbox.26f6a1e3e5b84ac74220.js:0
+[   44269ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/events:0
+[   46620ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=04395a12:14337
+[   46843ms] [ERROR] Executing inline script violates the following Content Security Policy directive 'script-src 'self' https://snap-assets.sandbox.midtrans.com https://api.sandbox.midtrans.com https://pay.google.com https://gwk.gopayapi.com/sdk/stable/gp-container.min.js https://www.googletagmanager.com https://o.alicdn.com https://g.alicdn.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-DueWcbxgRVJl6J5x2OBGlMjJ0RI9aTrwDoqaA4GHDhs='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked. @ https://app.sandbox.midtrans.com/snap/v4/popup?origin_host=http://127.0.0.1:5173&client_key=SB-Mid-client-camtix#/:0
+[   46859ms] [ERROR] Failed to log visitor: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=9fbb8ee0:2120:16) @ http://127.0.0.1:5173/@vite/client:524
+[   46860ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/visitors:0
+[   46861ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/events:0
+[   46861ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/events:0
+[   46862ms] [ERROR] Failed to log visitor: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=9fbb8ee0:2120:16) @ http://127.0.0.1:5173/@vite/client:524
+[   46863ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/visitors:0
+[   47413ms] [COUNT] %c%d: 1 @ https://g.alicdn.com/captcha-frontend/FeiLin/1.5.2/feilin066.d3602465f551f6835e4ed4680583de6f57273d1ea9c3483c4e33c7a8c96967ae.js:0
+[   47414ms] [DIR] %c%d font-size:0;color:transparent Error @ https://g.alicdn.com/captcha-frontend/FeiLin/1.5.2/feilin066.d3602465f551f6835e4ed4680583de6f57273d1ea9c3483c4e33c7a8c96967ae.js:0
+[   47414ms] [DIRXML] %c%d font-size:0;color:transparent Error @ https://g.alicdn.com/captcha-frontend/FeiLin/1.5.2/feilin066.d3602465f551f6835e4ed4680583de6f57273d1ea9c3483c4e33c7a8c96967ae.js:0
+[   47415ms] [INFO] %c%d font-size:0;color:transparent NaN @ https://snap-assets.sandbox.midtrans.com/snap/v4/assets/snap-popup-app.sandbox.26f6a1e3e5b84ac74220.js:0
+[   47415ms] [INFO] %c%d font-size:0;color:transparent NaN @ https://snap-assets.sandbox.midtrans.com/snap/v4/assets/snap-popup-app.sandbox.26f6a1e3e5b84ac74220.js:0
+[   47416ms] [LOG] %c%d font-size:0;color:transparent NaN @ https://g.alicdn.com/captcha-frontend/FeiLin/1.5.2/feilin066.d3602465f551f6835e4ed4680583de6f57273d1ea9c3483c4e33c7a8c96967ae.js:0
+[   47416ms] [TABLE] %c%d font-size:0;color:transparent Error @ https://g.alicdn.com/captcha-frontend/FeiLin/1.5.2/feilin066.d3602465f551f6835e4ed4680583de6f57273d1ea9c3483c4e33c7a8c96967ae.js:0
+[   47420ms] [INFO] %c%d font-size:0;color:transparent NaN @ https://snap-assets.sandbox.midtrans.com/snap/v4/assets/snap-popup-app.sandbox.26f6a1e3e5b84ac74220.js:0
+[   60823ms] [ERROR] Failed to log visitor: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=9fbb8ee0:2120:16) @ http://127.0.0.1:5173/@vite/client:524
+[   60826ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/visitors:0
+[   60827ms] [ERROR] AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=9fbb8ee0:2120:16)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=9fbb8ee0:2792:37)
+    at async Object.searchEvents (http://127.0.0.1:5173/src/services/eventService.js:17:20)
+    at async handleSearch (http://127.0.0.1:5173/src/pages/SearchEvent.jsx:60:21) @ http://127.0.0.1:5173/@vite/client:524
+[   60827ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/events/search:0
+[   60828ms] [ERROR] AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=9fbb8ee0:2120:16)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=9fbb8ee0:2792:37)
+    at async Object.searchEvents (http://127.0.0.1:5173/src/services/eventService.js:17:20)
+    at async handleSearch (http://127.0.0.1:5173/src/pages/SearchEvent.jsx:60:21) @ http://127.0.0.1:5173/@vite/client:524
+[   60828ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/events/search:0
+[   64828ms] [ERROR] Failed to log visitor: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=9fbb8ee0:2120:16) @ http://127.0.0.1:5173/@vite/client:524
+[   64830ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/visitors:0
+[   64832ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/events:0
+[   64841ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/events:0
+[  792740ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/src/pages/Booking.jsx?t=1793616772740:0
+[  792741ms] [ERROR] [vite] Failed to reload /src/pages/Booking.jsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:524
+[  792821ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/src/pages/Payment.jsx?t=1793616772743:0
+[  792823ms] [ERROR] [vite] Failed to reload /src/pages/Payment.jsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:524
+[  848452ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/src/pages/Payment.jsx?t=1793616772743:0
+[  848452ms] [ERROR] [vite] Failed to reload /src/App.jsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:524

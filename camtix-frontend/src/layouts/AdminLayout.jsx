@@ -1,131 +1,85 @@
-import React, { useState } from 'react';
-import { Outlet, NavLink, Link, useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Outlet, NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import LanguageSwitcher from '../components/LanguageSwitcher';
-import { 
-  LayoutDashboard, 
-  Calendar, 
-  Ticket, 
-  Users, 
-  Eye, 
-  FileText, 
-  CreditCard, 
-  LogOut, 
-  Settings,
-  Menu,
-  X
-} from 'lucide-react';
+import { LayoutDashboard, Calendar, Ticket, Users, Eye, FileText, CreditCard, LogOut, Settings, Menu, X, ArrowUpRight, Music } from 'lucide-react';
+import '../Admin.css';
 
 export default function AdminLayout() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const handleLogout = () => {
-    logout();
-    toast.success(t('auth.logoutSuccess'));
-    navigate('/login');
-  };
-
-  const navItems = [
-    { name: t('admin.dashboard'), path: '/admin', icon: LayoutDashboard, exact: true },
-    { name: t('admin.events'), path: '/admin/events', icon: Calendar },
-    { name: t('admin.tickets'), path: '/admin/tickets', icon: Ticket },
-    { name: t('admin.users'), path: '/admin/users', icon: Users },
-    { name: t('admin.visitors'), path: '/admin/visitors', icon: Eye },
-    { name: t('admin.bookings'), path: '/admin/bookings', icon: FileText },
-    { name: t('admin.payments'), path: '/admin/payments', icon: CreditCard },
-    { name: 'Payment Methods', path: '/admin/payment-methods', icon: Settings },
+  const sidebarRef = useRef(null);
+  const menuRef = useRef(null);
+  const english = i18n.language.startsWith('en');
+  const groups = [
+    { label: english ? 'Overview' : 'Ringkasan', items: [{ name: t('admin.dashboard'), path: '/admin', icon: LayoutDashboard, exact: true }] },
+    { label: english ? 'Shows & tickets' : 'Panggung & tiket', items: [
+      { name: t('admin.events'), path: '/admin/events', icon: Calendar },
+      { name: t('admin.tickets'), path: '/admin/tickets', icon: Ticket },
+    ] },
+    { label: english ? 'Transactions' : 'Transaksi', items: [
+      { name: t('admin.bookings'), path: '/admin/bookings', icon: FileText },
+      { name: t('admin.payments'), path: '/admin/payments', icon: CreditCard },
+      { name: english ? 'Payment methods' : 'Metode pembayaran', path: '/admin/payment-methods', icon: Settings },
+    ] },
+    { label: english ? 'People & activity' : 'Pengguna & aktivitas', items: [
+      { name: t('admin.users'), path: '/admin/users', icon: Users },
+      { name: t('admin.visitors'), path: '/admin/visitors', icon: Eye },
+    ] },
   ];
+  const active = groups.flatMap(group => group.items).find(item => item.path === location.pathname);
+
+  useEffect(() => {
+    if (!sidebarOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const focusable = () => [...sidebarRef.current.querySelectorAll('a, button')];
+    const focusFrame = requestAnimationFrame(() => focusable()[0]?.focus());
+    const onKey = (event) => {
+      if (event.key === 'Escape') { setSidebarOpen(false); menuRef.current?.focus(); }
+      if (event.key !== 'Tab') return;
+      const items = focusable();
+      if (event.shiftKey && document.activeElement === items[0]) { event.preventDefault(); items.at(-1)?.focus(); }
+      else if (!event.shiftKey && document.activeElement === items.at(-1)) { event.preventDefault(); items[0]?.focus(); }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => { cancelAnimationFrame(focusFrame); document.body.style.overflow = previousOverflow; document.removeEventListener('keydown', onKey); };
+  }, [sidebarOpen]);
+
+  const handleLogout = () => { logout(); toast.success(t('auth.logoutSuccess')); navigate('/login'); };
 
   return (
-    <div className="admin-shell light min-h-screen bg-surface-hover text-fg flex">
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black/40 z-20 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-
-      <aside className={`w-72 bg-surface border-r border-border flex flex-col fixed inset-y-0 shadow-card z-30 transition-transform duration-200 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
-        <div className="p-6 border-b border-border flex items-center justify-between">
-          <Link to="/" className="text-2xl font-extrabold tracking-wider gradient-text">
-            CAMTIX <span className="text-xs text-brand border border-border bg-brand-subtle px-2 py-0.5 rounded-full ml-1">ADMIN</span>
-          </Link>
-          <button onClick={() => setSidebarOpen(false)} className="lg:hidden p-1 text-fg-muted hover:text-fg-secondary">
-            <X className="w-5 h-5" />
-          </button>
+    <div className="admin-shell light admin-workspace">
+      {sidebarOpen && <button type="button" className="admin-scrim" aria-label={english ? 'Close navigation' : 'Tutup navigasi'} onClick={() => setSidebarOpen(false)} />}
+      <aside id="admin-navigation" ref={sidebarRef} className={`admin-sidebar ${sidebarOpen ? 'is-open' : ''}`}>
+        <div className="admin-brand-row">
+          <Link to="/" className="admin-brand"><Music size={22} aria-hidden="true" /><span>CAMTIX<small>BACKSTAGE / ADMIN</small></span></Link>
+          <button type="button" className="admin-sidebar-close" aria-label={english ? 'Close navigation' : 'Tutup navigasi'} onClick={() => { setSidebarOpen(false); menuRef.current?.focus(); }}><X size={20} /></button>
         </div>
-
-        <div className="flex-1 overflow-y-auto p-4 space-y-1">
-          <div className="text-[10px] font-bold text-fg-muted uppercase tracking-widest mb-3 ml-2 mt-2">
-            {t('admin.navMenu')}
-          </div>
-          {navItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              end={item.exact}
-              onClick={() => setSidebarOpen(false)}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                  isActive
-                    ? 'bg-brand-subtle text-brand border border-border shadow-card'
-                    : 'text-fg-secondary hover:bg-surface-hover hover:text-brand'
-                }`
-              }
-            >
-              <item.icon className="w-5 h-5" />
-              {item.name}
-            </NavLink>
-          ))}
-        </div>
-
-        <div className="p-4 border-t border-border bg-surface">
-          <div className="flex items-center gap-3 px-2 mb-4">
-            <div className="w-10 h-10 rounded-full bg-blue-100 border border-border flex items-center justify-center text-brand font-bold text-sm">
-              {user?.fullName?.charAt(0) || 'A'}
-            </div>
-            <div className="flex-1 overflow-hidden">
-              <p className="text-xs font-bold text-fg truncate">{user?.fullName || t('admin.administrator')}</p>
-              <p className="text-[10px] text-fg-muted truncate">{user?.role || 'ADMIN'}</p>
-            </div>
-          </div>
-          <button
-            onClick={handleLogout}
-            className="w-full py-2.5 bg-surface border border-border hover:bg-red-50 hover:text-red-600 hover:border-red-200 text-fg-secondary text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-card"
-          >
-            <LogOut className="w-4 h-4" /> {t('admin.logoutSystem')}
-          </button>
+        <nav className="admin-navigation" aria-label={t('admin.navMenu')}>
+          {groups.map(group => <div className="admin-nav-group" key={group.label}>
+            <p>{group.label}</p>
+            {group.items.map(item => <NavLink key={item.path} to={item.path} end={item.exact} onClick={() => setSidebarOpen(false)} className={({isActive}) => `admin-nav-link ${isActive ? 'is-active' : ''}`}><item.icon size={18} aria-hidden="true" /><span>{item.name}</span></NavLink>)}
+          </div>)}
+        </nav>
+        <div className="admin-sidebar-footer">
+          <div className="admin-profile"><span>{user?.fullName?.charAt(0) || 'A'}</span><div><strong>{user?.fullName || t('admin.administrator')}</strong><small>{user?.role || 'ADMIN'}</small></div></div>
+          <button type="button" onClick={handleLogout}><LogOut size={16} aria-hidden="true" />{t('admin.logoutSystem')}</button>
         </div>
       </aside>
-
-      <main className="flex-1 lg:ml-72 flex flex-col min-h-screen bg-surface">
-        <header className="bg-surface/80 backdrop-blur-md border-b border-border px-4 lg:px-8 py-4 sticky top-0 z-10 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-1.5 text-fg-secondary hover:text-brand hover:bg-slate-100 rounded-lg">
-              <Menu className="w-5 h-5" />
-            </button>
-            <h2 className="text-sm font-bold text-fg-secondary flex items-center gap-2">
-              <Settings className="w-4 h-4 text-fg-muted" /> {t('admin.portalTitle')}
-            </h2>
-          </div>
-          <div className="flex items-center gap-4">
-            <LanguageSwitcher />
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-card shadow-emerald-500/50"></span>
-              <span className="text-xs font-semibold text-fg-muted hidden sm:inline">{t('admin.systemOnline')}</span>
-            </div>
-          </div>
+      <div className="admin-main">
+        <header className="admin-topbar">
+          <div className="admin-topbar-title"><button type="button" ref={menuRef} className="admin-menu-button" aria-label={english ? 'Open navigation' : 'Buka navigasi'} aria-controls="admin-navigation" aria-expanded={sidebarOpen} onClick={() => setSidebarOpen(true)}><Menu size={21} /></button><span>BACKSTAGE <span className="admin-breadcrumb-slash">/</span> <strong>{active?.name || t('admin.dashboard')}</strong></span></div>
+          <div className="admin-topbar-actions"><LanguageSwitcher /><Link to="/" className="admin-view-site"><span>{english ? 'View site' : 'Lihat situs'}</span><ArrowUpRight size={17} aria-hidden="true" /></Link></div>
         </header>
-
-        <div className="p-2 flex-1">
-          <Outlet />
-        </div>
-      </main>
+        <main id="admin-content" className="admin-content"><Outlet /></main>
+        <footer className="admin-workspace-footer"><span>CAMTIX / BACKSTAGE</span><span>LIVE LOUD TOGETHER.</span></footer>
+      </div>
     </div>
   );
 }

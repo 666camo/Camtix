@@ -48,28 +48,30 @@ import ProtectedRoute from './components/ProtectedRoute';
 import RouteTracker from './components/RouteTracker';
 import ErrorBoundary from './layouts/ErrorBoundary';
 import './App.css';
+import './PublicPages.css';
+import './Polish.css';
 
 function Footer() {
   const { t } = useTranslation();
 
   return (
-    <footer className="bg-[var(--bg-elevated)] text-fg-secondary pt-14 pb-10 border-t border-border">
+    <footer className="public-footer pt-14 pb-10">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 pb-10 border-b border-border">
 
           <div className="lg:col-span-2 space-y-3">
-            <Link to="/" className="inline-flex items-center gap-2 text-xl font-800 tracking-tight text-fg">
-              <span className="p-1.5 rounded-lg bg-brand text-white">
+            <Link to="/" className="inline-flex items-center gap-2 text-xl font-800 tracking-tight">
+              <span className="footer-brand-mark p-1.5">
                 <Music className="w-4 h-4" />
               </span>
-              <span>CAMTIX</span>
+              <span className="footer-brand-name">CAMTIX</span>
             </Link>
             <p className="text-xs text-fg-muted leading-relaxed max-w-xs">
               {t('footer.about')}
             </p>
             <div className="flex items-center gap-2 pt-1">
               {[Globe, Share2, Mail].map((Icon, i) => (
-                <span key={i} className="p-2 rounded-lg bg-surface border border-border text-fg-muted hover:text-fg hover:border-border-strong transition-colors cursor-pointer">
+                <span key={i} className="footer-social transition-colors cursor-pointer">
                   <Icon className="w-3.5 h-3.5" />
                 </span>
               ))}
@@ -77,7 +79,7 @@ function Footer() {
           </div>
 
           <div className="space-y-3">
-            <h4 className="text-[11px] font-700 uppercase tracking-widest text-fg">
+            <h4 className="footer-heading text-[11px] font-700 uppercase tracking-widest">
               {t('footer.quickLinks')}
             </h4>
             <ul className="space-y-1.5 text-xs">
@@ -95,7 +97,7 @@ function Footer() {
           </div>
 
           <div className="space-y-3">
-            <h4 className="text-[11px] font-700 uppercase tracking-widest text-fg">
+            <h4 className="footer-heading text-[11px] font-700 uppercase tracking-widest">
               {t('footer.supportTitle')}
             </h4>
             <ul className="space-y-1.5 text-xs">
@@ -106,7 +108,7 @@ function Footer() {
           </div>
 
           <div className="space-y-3">
-            <h4 className="text-[11px] font-700 uppercase tracking-widest text-fg">
+            <h4 className="footer-heading text-[11px] font-700 uppercase tracking-widest">
               {t('footer.legalTitle')}
             </h4>
             <ul className="space-y-1.5 text-xs">
@@ -193,18 +195,15 @@ function PublicLayout() {
           </Link>
 
           <div className="hidden md:flex items-center gap-5">
-            <div className="flex items-center gap-0.5 bg-surface p-1 rounded-full border border-border">
+            <div className="public-nav-links">
               {navLinks.map((link) => {
                 const active = location.pathname === link.path;
                 return (
                   <Link
                     key={link.path}
                     to={link.path}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-600 transition-all ${
-                      active
-                        ? 'bg-brand text-white'
-                        : 'text-fg-secondary hover:text-fg'
-                    }`}
+                    aria-current={active ? 'page' : undefined}
+                    className={`public-nav-link ${active ? 'is-active' : ''}`}
                   >
                     {link.name}
                   </Link>
@@ -236,7 +235,7 @@ function PublicLayout() {
                 </Link>
                 <Link
                   to="/register"
-                  className="px-4 py-2 bg-brand hover:bg-brand-hover text-white text-xs font-600 rounded-xl transition-colors"
+                  className="px-4 py-2 bg-brand hover:bg-brand-hover text-white text-xs font-600 rounded-sm transition-colors"
                 >
                   {t('nav.register')}
                 </Link>

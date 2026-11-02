@@ -1,3 +1,4 @@
+import EventPoster from '../components/EventPoster';
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -68,22 +69,20 @@ export default function EventDetail() {
 
   if (loading) {
     return (
-      <div className="gradient-bg min-h-screen text-fg flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 rounded-full border-4 border-border border-t-blue-500 animate-spin"></div>
-          <p className="text-fg-secondary text-sm font-medium">{t('detail.loading')}</p>
-        </div>
+      <div className="public-page eventdetail-page gradient-bg min-h-screen text-fg flex items-center justify-center">
+        <div className="detail-loading" role="status" aria-busy="true" aria-label={t('detail.loading')}><div aria-hidden="true" /><div aria-hidden="true"><span /><span /><span /></div><span className="sr-only">{t('detail.loading')}</span></div>
       </div>
     );
   }
 
-  if (error && !event) {
+  if (!event) {
     return (
-      <div className="gradient-bg min-h-screen text-fg flex items-center justify-center px-6">
+      <div className="public-page eventdetail-page gradient-bg min-h-screen text-fg flex items-center justify-center px-6">
         <div className="glass-effect rounded-2xl p-8 max-w-md w-full border border-border text-center space-y-4">
-          <p className="text-4xl">⚠️</p>
+          <AlertCircle className="w-10 h-10 text-brand mx-auto" aria-hidden="true" />
           <h2 className="text-xl font-bold text-red-600">{t('detail.errorTitle')}</h2>
-          <p className="text-sm text-fg-secondary">{error}</p>
+          <p className="text-sm text-fg-secondary">{error || t('polish.catalogUnavailable')}</p>
+          <button type="button" className="state-retry" onClick={fetchDetails}>{t('polish.tryAgain')}</button>
           <Link to="/" className="inline-block px-6 py-2.5 bg-brand hover:bg-brand-hover text-white rounded-xl text-sm font-bold transition-all">
             {t('detail.backCatalog')}
           </Link>
@@ -93,19 +92,15 @@ export default function EventDetail() {
   }
 
   return (
-    <div className="gradient-bg min-h-screen text-fg pb-20 pt-28 px-6 md:px-12">
+    <div className="public-page eventdetail-page gradient-bg min-h-screen text-fg pb-20 pt-28 px-6 md:px-12">
       <div className="max-w-6xl mx-auto space-y-10">
         
         {/* Cover Hero Banner */}
-        <div className="relative rounded-3xl overflow-hidden h-[300px] md:h-[400px] border border-border shadow-xl">
-          <img
-            src={event?.picture || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=1200'}
-            alt={event?.eventName}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
+        <div className="detail-cover">
+          <EventPoster src={event?.picture} title={event?.eventName} category={event?.category} eager />
+          <div className="detail-cover-shade"></div>
           
-          <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-10 md:right-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+          <div className="detail-cover-copy">
             <div>
               <div className="flex flex-wrap items-center gap-2 mb-3">
                 <span className="px-3 py-1 rounded-full border border-white/30 bg-surface/20 text-xs font-semibold text-white backdrop-blur-md inline-block">
@@ -188,7 +183,7 @@ export default function EventDetail() {
           </div>
 
           {/* Ticket buying panel */}
-          <div className="space-y-6">
+          <div className="ticket-selection space-y-6">
             <h3 className="text-xl font-bold flex items-center gap-2 text-fg">
               <Ticket className="w-5 h-5 text-fg" /> {t('detail.selectTicket')}
             </h3>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Tiket {{eventName}} | CamTix</title>
+  <style>
+    body { margin: 0; padding: 0; }
+    table { border-collapse: collapse; }
+    @media only screen and (max-width: 480px) {
+      .email-shell { padding: 16px 8px !important; }
+      .email-pad { padding: 24px 20px !important; }
+      .detail-cell { display: block !important; width: 100% !important; box-sizing: border-box; padding-bottom: 16px !important; }
+      .event-title { font-size: 26px !important; line-height: 1.15 !important; }
+    }
+  </style>
+</head>
+<body style="word-wrap:break-word;overflow-wrap:anywhere;margin:0;padding:0;background-color:#eee8de;color:#191a20;font-family:Arial,Helvetica,sans-serif;">
+  <div style="display:none;font-size:1px;line-height:1px;color:#eee8de;max-height:0;max-width:0;opacity:0;overflow:hidden;">Pembayaran terkonfirmasi. Tiket {{eventName}} dengan kode {{bookingCode}} sudah siap.</div>
+  <table role="presentation" width="100%" bgcolor="#eee8de" style="width:100%;table-layout:fixed;background-color:#eee8de;">
+    <tr><td class="email-shell" align="center" style="padding:32px 12px;">
+      <!--[if mso]><table role="presentation" width="600" align="center"><tr><td><![endif]-->
+      <table role="presentation" width="100%" bgcolor="#fffdf8" style="width:100%;table-layout:fixed;max-width:600px;background-color:#fffdf8;border:1px solid #d7d1c6;">
+        <tr><td class="email-pad" bgcolor="#191a20" style="padding:28px 32px;background-color:#191a20;border-top:4px solid #e66b52;">
+          <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:0;color:#f6f1e8;font-size:26px;font-weight:bold;letter-spacing:1px;">CAMTIX</p>
+          <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:8px 0 0;color:#c8c5bd;font-size:11px;letter-spacing:2px;">LIVE LOUD TOGETHER.</p>
+        </td></tr>
+        <tr><td class="email-pad" style="padding:28px 32px 20px;">
+          <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:0 0 12px;color:#176f56;font-size:11px;font-weight:bold;letter-spacing:1.3px;">PEMBAYARAN TERKONFIRMASI</p>
+          <h1 style="word-wrap:break-word;overflow-wrap:anywhere;margin:0 0 14px;font-size:25px;line-height:1.2;letter-spacing:-0.5px;">Tiketmu sudah siap.</h1>
+          <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:0;color:#595950;font-size:15px;line-height:1.7;">Halo {{customerName}},<br>Terima kasih sudah memesan di CamTix. Simpan email ini dan siapkan kode QR saat memasuki venue.</p>
+        </td></tr>
+        <tr><td class="email-pad" style="padding:8px 32px 24px;">
+          <table role="presentation" width="100%" style="width:100%;table-layout:fixed;border:1px solid #d7d1c6;">
+            <tr><td style="padding:24px 20px;border-top:3px solid #176f56;">
+              <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:0 0 10px;color:#777168;font-size:11px;font-weight:bold;letter-spacing:1px;">KONSER PILIHANMU</p>
+              <h2 class="event-title" style="word-wrap:break-word;overflow-wrap:anywhere;margin:0;color:#191a20;font-family:'Arial Narrow',Arial,Helvetica,sans-serif;font-size:30px;line-height:1.15;word-wrap:break-word;overflow-wrap:anywhere;word-break:break-word;">{{eventName}}</h2>
+            </td></tr>
+            <tr><td style="padding:0 20px;">
+              <table role="presentation" width="100%" style="width:100%;table-layout:fixed;border-top:1px solid #e4ded3;table-layout:fixed;">
+                <tr>
+                  <td class="detail-cell" width="60%" valign="top" style="padding:20px 12px 18px 0;">
+                    <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:0 0 6px;color:#777168;font-size:11px;letter-spacing:0.5px;">TANGGAL KONSER</p>
+                    <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:0;color:#191a20;font-size:14px;font-weight:bold;line-height:1.6;">{{eventDate}}</p>
+                  </td>
+                  <td class="detail-cell" width="40%" valign="top" style="padding:20px 0 18px;">
+                    <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:0 0 6px;color:#777168;font-size:11px;letter-spacing:0.5px;">JAM ACARA</p>
+                    <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:0;color:#191a20;font-size:14px;font-weight:bold;line-height:1.6;">{{eventTime}}</p>
+                    <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:3px 0 0;color:#595950;font-size:12px;line-height:1.5;">Waktu lokal venue</p>
+                  </td>
+                </tr>
+                <tr><td colspan="2" style="padding:0 0 20px;">
+                  <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:0 0 6px;color:#777168;font-size:11px;letter-spacing:0.5px;">LOKASI VENUE</p>
+                  <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:0;color:#191a20;font-size:14px;font-weight:bold;line-height:1.6;">{{venue}}</p>
+                  <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:3px 0 0;color:#595950;font-size:13px;line-height:1.5;">{{city}}</p>
+                </td></tr>
+                <tr>
+                  <td class="detail-cell" width="60%" valign="top" style="padding:0 12px 20px 0;">
+                    <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:0 0 6px;color:#777168;font-size:11px;letter-spacing:0.5px;">KATEGORI TIKET</p>
+                    <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:0;color:#176f56;font-size:14px;font-weight:bold;line-height:1.6;">{{ticketType}}</p>
+                  </td>
+                  <td class="detail-cell" width="40%" valign="top" style="padding:0 0 20px;">
+                    <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:0 0 6px;color:#777168;font-size:11px;letter-spacing:0.5px;">JUMLAH TIKET</p>
+                    <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:0;color:#191a20;font-size:14px;font-weight:bold;line-height:1.6;">{{quantity}} tiket</p>
+                  </td>
+                </tr>
+                <tr><td colspan="2" style="padding:16px 0 20px;border-top:1px solid #e4ded3;">
+                  <table role="presentation" width="100%" style="width:100%;table-layout:fixed;"><tr>
+                    <td style="color:#595950;font-size:13px;">Total pembayaran</td>
+                    <td align="right" style="color:#176f56;font-size:18px;font-weight:bold;">{{totalPrice}}</td>
+                  </tr></table>
+                </td></tr>
+              </table>
+            </td></tr>
+            <tr><td align="center" bgcolor="#f6f1e8" style="padding:24px 16px;background-color:#f6f1e8;border-top:1px dashed #aaa498;">
+              <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:0 0 14px;color:#595950;font-size:11px;letter-spacing:1px;">KODE MASUK VENUE</p>
+              <img src="cid:camtix-ticket-qr" width="180" height="180" alt="QR tiket. Kode booking: {{bookingCode}}" style="display:block;width:180px;height:180px;margin:0 auto;background-color:#ffffff;border:1px solid #d7d1c6;">
+              <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:14px 0 0;color:#191a20;font-family:Consolas,'Courier New',monospace;font-size:17px;font-weight:bold;letter-spacing:0.7px;word-break:break-all;">{{bookingCode}}</p>
+              <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:8px 0 0;color:#595950;font-size:12px;line-height:1.6;">QR tidak terlihat? Buka tiket melalui akun CamTix.</p>
+            </td></tr>
+          </table>
+        </td></tr>
+        <tr><td align="center" style="padding:0 20px 28px;">
+          <table role="presentation"><tr><td align="center" bgcolor="#176f56" style="background-color:#176f56;border:1px solid #176f56;"><a href="{{ticketUrl}}" style="display:inline-block;padding:14px 26px;color:#ffffff;font-size:14px;font-weight:bold;text-decoration:none;line-height:20px;">Buka tiket saya</a></td></tr></table>
+        </td></tr>
+        <tr><td class="email-pad" style="padding:20px 32px;background-color:#f6f1e8;border-top:1px solid #e4ded3;">
+          <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:0 0 8px;color:#191a20;font-size:13px;font-weight:bold;">Sebelum berangkat</p>
+          <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:0;color:#595950;font-size:13px;line-height:1.7;">Siapkan tiket dan identitas pemesan. Jaga kerahasiaan QR serta kode booking; hindari membagikannya di media sosial.</p>
+        </td></tr>
+        <tr><td style="padding:22px 24px;text-align:center;border-top:1px solid #e4ded3;">
+          <p style="word-wrap:break-word;overflow-wrap:anywhere;margin:0;color:#777168;font-size:11px;line-height:1.7;">Email otomatis untuk pesanan {{bookingCode}}.<br>&copy; {{year}} CamTix Ticketing Solutions.</p>
+        </td></tr>
+      </table>
+      <!--[if mso]></td></tr></table><![endif]-->
+    </td></tr>
+  </table>
+</body>
+</html>

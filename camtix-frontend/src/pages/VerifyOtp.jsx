@@ -1,3 +1,4 @@
+import AuthLayout from '../components/AuthLayout';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -95,12 +96,12 @@ export default function VerifyOtp() {
   };
 
   return (
-    <div className="gradient-bg min-h-screen flex items-center justify-center px-6">
-      <div className="glass-effect rounded-2xl p-8 max-w-md w-full border border-border relative overflow-hidden">
+    <AuthLayout>
+      <div className="auth-form glass-effect rounded-2xl p-8 max-w-md w-full border border-border relative overflow-hidden">
         {/* Accent */}
         <div className="absolute -top-10 -left-10 w-32 h-32 bg-brand/10 rounded-full blur-2xl -z-10"></div>
         
-        <h2 className="text-3xl font-extrabold text-center mb-2 tracking-tight text-fg">{t('auth.otpTitle')} <span className="gradient-text">OTP</span></h2>
+        <h1 className="text-3xl font-extrabold text-center mb-2 tracking-tight text-fg">{t('auth.otpTitle')} <span className="gradient-text">OTP</span></h1>
         <p className="text-fg-secondary text-sm text-center mb-8">{t('auth.otpSubtitle')}</p>
 
         {error && (
@@ -119,8 +120,8 @@ export default function VerifyOtp() {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('auth.email')}</label>
-            <input
+            <label htmlFor="verifyotp-field-1" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('auth.email')}</label>
+            <input id="verifyotp-field-1"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -168,6 +169,6 @@ export default function VerifyOtp() {
           </button>
         </form>
       </div>
-    </div>
+    </AuthLayout>
   );
 }

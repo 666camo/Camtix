@@ -1,4 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import ETicket from '../components/ETicket';
+import useDialogFocus from '../components/useDialogFocus';
+import PageHeading from '../components/PageHeading';
+import { useCallback, useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
@@ -13,21 +16,12 @@ import {
   AlertCircle, 
   ClipboardList, 
   MapPin, 
-  Calendar, 
-  Clock, 
-  User, 
   Mail, 
-  ShieldCheck, 
-  Music, 
-  Sparkles, 
   Ticket,
   Download,
   Printer,
   Loader2,
-  Eye,
   X,
-  Share2,
-  CheckCircle2
 } from 'lucide-react';
 
 export default function OrderHistory() {
@@ -51,15 +45,16 @@ export default function OrderHistory() {
   const [sendingEmailId, setSendingEmailId] = useState(null);
 
   const ticketContentRef = useRef(null);
+  useDialogFocus(ticketModalOpen, () => setTicketModalOpen(false), '.ticket-dialog');
 
   // Generate Base64 QR code locally
   const generateQrCode = async (text) => {
     try {
       return await QRCode.toDataURL(text, {
         width: 300,
-        margin: 1,
+        margin: 4,
         color: {
-          dark: '#0f172a',
+          dark: '#191a20',
           light: '#ffffff'
         }
       });
@@ -128,7 +123,9 @@ export default function OrderHistory() {
           scrollY: 0,
           scrollX: 0,
           letterRendering: true,
-          backgroundColor: '#ffffff'
+          backgroundColor: '#ffffff',
+          windowWidth: 1200,
+          onclone: (document) => document.getElementById('ticket-pdf-rendered-card')?.classList.add('ticket-export')
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
@@ -149,13 +146,12 @@ export default function OrderHistory() {
     window.print();
   };
 
-  const fetchHistory = async (showToast = false) => {
+  const fetchHistory = useCallback(async (showToast = false) => {
     if (!user) return;
-    setLoading(true);
-    setError('');
     try {
       // 1. Fetch user bookings
       const bookingsRes = await bookingService.getBookingsByUserId(user.idUser);
+      setError('');
       const bookingsData = bookingsRes?.data || [];
       setBookings(bookingsData);
 
@@ -169,7 +165,7 @@ export default function OrderHistory() {
           });
           setEventsMap(mapping);
         }
-      } catch (evtErr) {
+      } catch {
         console.log("Offline catalog event mapper loaded fallback.");
       }
 
@@ -204,15 +200,16 @@ export default function OrderHistory() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, t]);
 
   useEffect(() => {
     if (!user) {
       navigate('/login');
       return;
     }
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Starts an async server request; responses update state.
     fetchHistory();
-  }, [user]);
+  }, [user, navigate, fetchHistory]);
 
   const formatRupiah = (value) => {
     return new Intl.NumberFormat('id-ID', {
@@ -235,7 +232,7 @@ export default function OrderHistory() {
         hour: '2-digit',
         minute: '2-digit'
       }) + tzSuffix;
-    } catch (e) {
+    } catch {
       return isoString;
     }
   };
@@ -276,7 +273,7 @@ export default function OrderHistory() {
 
   if (loading) {
     return (
-      <div className="gradient-bg min-h-screen text-fg flex items-center justify-center">
+      <div className="public-page orderhistory-page gradient-bg min-h-screen text-fg flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 rounded-full border-4 border-border border-t-blue-500 animate-spin"></div>
           <p className="text-fg-secondary text-sm font-medium">{t('history.loading')}</p>
@@ -288,25 +285,15 @@ export default function OrderHistory() {
   const printEvent = activePrintBooking ? eventsMap[activePrintBooking.eventId] : null;
 
   return (
-    <div className="gradient-bg min-h-screen text-fg pb-20 pt-28 px-6 md:px-12">
+    <div className="public-page orderhistory-page gradient-bg min-h-screen text-fg pb-20 pt-28 px-6 md:px-12">
       <div className="max-w-6xl mx-auto space-y-8">
         
         {/* Title */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-border pb-6">
-          <div>
-            <span className="text-xs font-bold text-brand uppercase tracking-widest bg-brand/10 px-3 py-1 rounded-full border border-border">
-              {t('history.badge')}
-            </span>
-            <h1 className="text-3xl font-extrabold tracking-tight mt-2 text-fg">
-              {t('history.title')} <span className="gradient-text">{t('history.titleHighlight')}</span>
-            </h1>
-            <p className="text-sm text-fg-secondary mt-1">
-              {t('history.subtitle')}
-            </p>
-          </div>
+          <PageHeading variant="utility" eyebrow={t('history.badge')} title={t('history.title')} accent={t('history.titleHighlight')} description={t('history.subtitle')} />
           
           <button
-            onClick={() => fetchHistory(true)}
+            onClick={() => { setLoading(true); setError(''); fetchHistory(true); }}
             className="px-4 py-2.5 bg-surface rounded-xl text-xs font-bold hover:bg-surface border border-border text-fg-secondary transition-colors flex items-center gap-2 cursor-pointer shadow-sm active:scale-95"
           >
             <RefreshCw className="w-3.5 h-3.5 text-fg-secondary" />
@@ -354,7 +341,7 @@ export default function OrderHistory() {
           </div>
 
           {/* Table */}
-          <div className="overflow-x-auto rounded-xl border border-border bg-surface">
+          <div className="history-table overflow-x-auto border border-border bg-surface">
             {filteredBookings.length === 0 ? (
               <div className="py-16 text-center text-fg-secondary text-sm font-semibold">
                 {t('history.noData')}
@@ -426,7 +413,7 @@ export default function OrderHistory() {
                               <button
                                 onClick={() => openTicketModal(b)}
                                 title="Lihat E-Tiket & Cetak"
-                                className="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-lg transition-all inline-flex items-center gap-1.5 shadow-sm shadow-card active:scale-95 cursor-pointer text-xs"
+                                className="px-3 py-1.5 bg-brand hover:bg-brand-hover text-white font-bold rounded-lg transition-all inline-flex items-center gap-1.5 shadow-sm shadow-card active:scale-95 cursor-pointer text-xs"
                               >
                                 <Ticket className="w-3.5 h-3.5" />
                                 <span>Lihat Tiket</span>
@@ -508,13 +495,14 @@ export default function OrderHistory() {
       {/* ── INTERACTIVE E-TICKET PREVIEW MODAL ── */}
       {ticketModalOpen && activePrintBooking && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/70 backdrop-blur-md overflow-y-auto"
+          role="dialog" aria-modal="true" aria-label="Pratinjau e-tiket CamTix"
+          className="ticket-dialog fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/70 backdrop-blur-md overflow-y-auto"
           onClick={(e) => { if (e.target === e.currentTarget) setTicketModalOpen(false); }}
         >
-          <div className="relative w-full max-w-4xl my-auto space-y-4 animate-fadeIn">
+          <div className="ticket-modal relative w-full max-w-4xl my-auto space-y-4">
             
             {/* Modal Control Bar */}
-            <div className="flex flex-wrap items-center justify-between gap-3 p-3 sm:p-4 bg-surface/90 backdrop-blur-md rounded-2xl border border-white/40 shadow-xl">
+            <div className="ticket-modal-toolbar">
               <div className="flex items-center gap-2 pl-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-xs font-bold text-fg">Pratinjau E-Tiket Resmi CamTix</span>
@@ -525,7 +513,7 @@ export default function OrderHistory() {
                 <button
                   onClick={() => downloadTicketPdf(activePrintBooking)}
                   disabled={downloadingPdf}
-                  className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 text-white font-bold rounded-xl text-xs transition-all flex items-center gap-1.5 shadow-md shadow-indigo-500/20 active:scale-95 cursor-pointer"
+                  className="px-4 py-2 bg-brand hover:bg-brand-hover disabled:opacity-50 text-white font-bold rounded-xl text-xs transition-all flex items-center gap-1.5 shadow-md shadow-indigo-500/20 active:scale-95 cursor-pointer"
                 >
                   {downloadingPdf ? (
                     <>
@@ -561,6 +549,7 @@ export default function OrderHistory() {
 
                 {/* Close Button */}
                 <button
+                  aria-label="Tutup pratinjau tiket"
                   onClick={() => setTicketModalOpen(false)}
                   className="p-2 rounded-xl bg-surface-hover hover:bg-surface-hover text-fg-secondary transition-colors cursor-pointer"
                 >
@@ -569,170 +558,7 @@ export default function OrderHistory() {
               </div>
             </div>
 
-            {/* ── ACTUAL VIP CONCERT BOARDING PASS (CAPTURED FOR PDF) ── */}
-            <div 
-              id="ticket-pdf-rendered-card"
-              ref={ticketContentRef}
-              className="border-2 border-slate-900 rounded-3xl overflow-hidden shadow-2xl bg-surface text-fg w-full"
-            >
-              {/* Header */}
-              <div className="bg-slate-950 text-white p-5 sm:p-6 flex items-center justify-between border-b-2 border-slate-900">
-                <div className="flex items-center gap-3">
-                  <span className="p-2 rounded-xl bg-brand text-white shadow-md">
-                    <Music className="w-5 h-5" />
-                  </span>
-                  <div>
-                    <h1 className="text-xl sm:text-2xl font-black tracking-wider uppercase text-white flex items-center gap-2">
-                      CAMTIX <span className="text-[10px] bg-brand/100/30 text-indigo-300 border border-indigo-400/40 px-2 py-0.5 rounded-full font-bold tracking-widest">OFFICIAL E-TICKET</span>
-                    </h1>
-                    <p className="text-[10px] text-fg-muted tracking-widest font-semibold uppercase mt-0.5">
-                      Verified Digital Concert Admission Pass
-                    </p>
-                  </div>
-                </div>
-
-                <div className="text-right hidden sm:block">
-                  <span className="inline-flex items-center gap-1 px-3 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[11px] font-black uppercase tracking-wider">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                    AUTHENTIC & VALID
-                  </span>
-                  <p className="text-[10px] text-fg-muted font-mono mt-0.5">ID: #{activePrintBooking.idBooking}</p>
-                </div>
-              </div>
-
-              {/* Main Ticket Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_240px]">
-                
-                {/* Left info column */}
-                <div className="p-5 sm:p-6 space-y-4">
-                  
-                  {/* Event Title & Poster Preview */}
-                  <div className="flex items-start gap-4">
-                    {printEvent?.picture ? (
-                      <img 
-                        src={printEvent.picture} 
-                        alt={printEvent.eventName}
-                        crossOrigin="anonymous"
-                        className="w-20 h-24 rounded-2xl object-cover border border-border flex-shrink-0 shadow-sm"
-                      />
-                    ) : (
-                      <div className="w-20 h-24 rounded-2xl bg-brand/10 border border-indigo-100 flex flex-col items-center justify-center text-indigo-500 flex-shrink-0">
-                        <Music className="w-7 h-7" />
-                        <span className="text-[8px] font-bold uppercase mt-1">CamTix</span>
-                      </div>
-                    )}
-
-                    <div className="space-y-1">
-                      <span className="inline-block px-2.5 py-0.5 rounded-full bg-brand/10 text-brand border border-border text-[10px] font-black uppercase tracking-wider">
-                        {printEvent?.category || 'Live Concert'} • VIP Pass
-                      </span>
-                      <h2 className="text-lg sm:text-xl font-black text-fg leading-tight">
-                        {printEvent?.eventName || `Concert Event #${activePrintBooking.eventId}`}
-                      </h2>
-                      {printEvent?.artistName && (
-                        <p className="text-xs font-bold text-brand uppercase tracking-widest">
-                          By {printEvent.artistName}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Event Schedule & Location Card */}
-                  <div className="grid grid-cols-2 gap-3 p-3.5 rounded-2xl bg-surface border border-border text-xs">
-                    <div className="space-y-0.5">
-                      <span className="text-[9px] font-black uppercase tracking-wider text-fg-muted block flex items-center gap-1">
-                        <Calendar className="w-3 h-3 text-brand" /> TANGGAL EVENT
-                      </span>
-                      <strong className="text-xs font-black text-fg block">
-                        {printEvent?.eventDate || '-'}
-                      </strong>
-                      <span className="text-[10px] text-fg-secondary font-semibold block">
-                        Waktu: {printEvent?.eventTime || '19:00'} WIB
-                      </span>
-                    </div>
-
-                    <div className="space-y-0.5">
-                      <span className="text-[9px] font-black uppercase tracking-wider text-fg-muted block flex items-center gap-1">
-                        <MapPin className="w-3 h-3 text-rose-500" /> LOKASI VENUE
-                      </span>
-                      <strong className="text-xs font-black text-fg block">
-                        {printEvent?.city || 'Jakarta'}
-                      </strong>
-                      <span className="text-[10px] text-fg-secondary font-semibold block line-clamp-1">
-                        {printEvent?.location || 'Stadium Arena'}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Customer Details & Pricing */}
-                  <div className="grid grid-cols-3 gap-2 pt-2 text-xs border-t border-border">
-                    <div>
-                      <span className="text-[9px] font-bold text-fg-muted uppercase tracking-wider block">PEMESAN</span>
-                      <strong className="text-fg font-bold block truncate text-[11px]">{user?.fullName || 'Customer'}</strong>
-                    </div>
-                    <div>
-                      <span className="text-[9px] font-bold text-fg-muted uppercase tracking-wider block">KUANTITAS</span>
-                      <strong className="text-fg font-bold block text-[11px]">{activePrintBooking.numberOfTicket} Tiket</strong>
-                    </div>
-                    <div>
-                      <span className="text-[9px] font-bold text-fg-muted uppercase tracking-wider block">TOTAL BAYAR</span>
-                      <strong className="text-brand font-black block text-[11px]">{formatRupiah(activePrintBooking.totalPrice)}</strong>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Perforated Divider */}
-                <div className="border-t-2 md:border-t-0 md:border-l-2 border-dashed border-border relative flex md:flex-col justify-between" />
-
-                {/* Right QR Stub */}
-                <div className="bg-surface/90 p-5 flex flex-col items-center justify-between text-center space-y-3">
-                  <div className="space-y-0.5">
-                    <span className="text-[9px] font-extrabold uppercase tracking-widest text-fg-muted block">
-                      GATE CHECKPOINT PASS
-                    </span>
-                    <p className="text-xs font-mono font-black text-brand bg-brand/10 px-2 py-0.5 rounded-lg border border-border">
-                      {activePrintBooking.bookingCode}
-                    </p>
-                  </div>
-
-                  {/* High-res Base64 QR Code */}
-                  <div className="p-2 bg-surface rounded-2xl border-2 border-slate-900 shadow-sm flex flex-col items-center">
-                    {activeQrDataUrl ? (
-                      <img 
-                        src={activeQrDataUrl} 
-                        alt="Entry QR Code"
-                        className="w-28 h-28 object-contain"
-                      />
-                    ) : (
-                      <div className="w-28 h-28 bg-surface-hover flex items-center justify-center text-[10px] text-fg-muted">
-                        Generating QR...
-                      </div>
-                    )}
-                    <span className="text-[7px] font-bold text-fg-muted uppercase tracking-widest mt-1">
-                      Scan at Gate Checkpoint
-                    </span>
-                  </div>
-
-                  <div className="space-y-0.5">
-                    <span className="inline-block px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[9px] font-black uppercase">
-                      CONFIRMED (PAID)
-                    </span>
-                    <p className="text-[8px] text-fg-muted">Tgl: {formatDate(activePrintBooking.bookingDate)}</p>
-                  </div>
-                </div>
-
-              </div>
-
-              {/* Ticket Footer Disclaimer */}
-              <div className="bg-surface-hover p-3 border-t-2 border-slate-900 text-center text-[9px] text-fg-secondary leading-tight">
-                <p className="font-semibold text-fg-secondary">
-                  Tunjukkan QR Code ini pada scanner gate masuk venue. Tiket ini sah dan dilindungi hak cipta oleh CamTix Ticketing Solutions.
-                </p>
-                <p className="text-[8px] text-fg-muted mt-0.5">
-                  Dilarang membagikan barcode/QR kepada pihak lain. 1 Tiket berlaku untuk 1 kali scan masuk gate.
-                </p>
-              </div>
-            </div>
+            <ETicket booking={activePrintBooking} event={printEvent} user={user} qr={activeQrDataUrl} confirmed={getBookingState(activePrintBooking).isPaidConfirmed} ticketRef={ticketContentRef} />
 
           </div>
         </div>

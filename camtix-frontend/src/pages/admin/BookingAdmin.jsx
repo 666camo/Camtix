@@ -21,6 +21,7 @@ export default function BookingAdmin() {
   const [eventsMap, setEventsMap] = useState({});
   const [usersMap, setUsersMap] = useState({});
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
@@ -30,8 +31,9 @@ export default function BookingAdmin() {
 
   const fetchData = async () => {
     setLoading(true);
+    setError('');
     try {
-      const bRes = await bookingService.getAllBookings().catch(() => null);
+      const bRes = await bookingService.getAllBookings();
       if (bRes && bRes.data) {
         setBookings(bRes.data);
       }
@@ -46,11 +48,13 @@ export default function BookingAdmin() {
       const uRes = await userService.getAllUsers().catch(() => null);
       if (uRes && uRes.data) {
         const map = {};
-        uRes.data.forEach(u => { map[u.idUser] = `${u.firstName} ${u.lastName}`; });
+        const users = Array.isArray(uRes.data) ? uRes.data : (uRes.data.content || []);
+        users.forEach(u => { map[u.idUser] = u.fullName || `${u.firstName || ''} ${u.lastName || ''}`.trim(); });
         setUsersMap(map);
       }
 
     } catch (err) {
+      setError(t('admin.loadError'));
       console.error(err);
     } finally {
       setLoading(false);
@@ -88,8 +92,8 @@ export default function BookingAdmin() {
   }, [searchQuery, filterStatus, sortBy, pageSize]);
 
   return (
-    <div className="p-6 md:p-8 space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div className="admin-page admin-booking space-y-6">
+      <div className="admin-page-header flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl font-extrabold text-fg flex items-center gap-2">
             <ClipboardList className="w-5 h-5 text-fg-secondary" /> {t('admin.bookingDataTitle')}
@@ -102,27 +106,29 @@ export default function BookingAdmin() {
         </button>
       </div>
 
-      <div className="flex flex-col sm:flex-row flex-wrap gap-3">
+      {error && <p role="alert" className="p-3 border border-red-200 bg-red-50 text-red-700 text-sm">{error}</p>}
+
+      <div className="admin-toolbar flex flex-col sm:flex-row flex-wrap gap-3">
         <input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder={t('admin.searchBookingPlaceholder')}
-          className="flex-1 min-w-[200px] px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg focus:outline-none focus:border-blue-400 shadow-card"
+          placeholder={t('admin.searchBookingPlaceholder')} aria-label={t('admin.searchBookingPlaceholder')}
+          className="flex-1 min-w-[200px] px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg focus:outline-none focus:border-brand shadow-card"
         />
-        <select
+        <select aria-label="Filter status"
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
-          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-blue-400 shadow-card"
+          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-brand shadow-card"
         >
           <option value="">{t('admin.allStatus')}</option>
           <option value="PENDING">PENDING</option>
           <option value="CONFIRMED">CONFIRMED</option>
           <option value="CANCELLED">CANCELLED</option>
         </select>
-        <select
+        <select aria-label="Urutkan data"
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-blue-400 shadow-card"
+          className="px-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-fg-secondary focus:outline-none focus:border-brand shadow-card"
         >
           <option value="newest">Terbaru</option>
           <option value="oldest">Terlama</option>
@@ -131,7 +137,7 @@ export default function BookingAdmin() {
         </select>
       </div>
 
-      <div className="bg-surface rounded-2xl border border-border overflow-hidden shadow-card overflow-x-auto">
+      <div className="admin-data-table bg-surface border border-border overflow-x-auto" tabIndex={0} aria-label="Data CamTix">
         <div className="grid grid-cols-[auto_1fr_1fr_auto_auto_auto] gap-4 px-5 py-3 border-b border-border bg-surface text-[10px] font-bold text-fg-muted uppercase tracking-widest min-w-[700px]">
           <span>{t('admin.colBookingDate')}</span>
           <span>{t('admin.colBookingInfo')}</span>

@@ -5,7 +5,6 @@ import { useAuth } from '../../context/AuthContext';
 import eventService from '../../services/eventService';
 import userService from '../../services/userService';
 import api from '../../services/api';
-import SpotlightCard from '../../components/SpotlightCard';
 import {
   Calendar,
   Users,
@@ -19,34 +18,17 @@ import {
   AlertTriangle
 } from 'lucide-react';
 
-function StatCard({ label, value, icon: Icon, colorClass, loading, sub, spotlightColor }) {
-  return (
-    <SpotlightCard 
-      spotlightColor={spotlightColor || 'rgba(59, 130, 246, 0.08)'} 
-      bgColor="bg-surface" 
-      borderClass="border-border/80" 
-      className="rounded-2xl"
-    >
-      <div className={`p-6 relative overflow-hidden group transition-all h-full ${colorClass}`}>
-        <div className="absolute -top-4 -right-4 w-20 h-20 bg-surface-hover rounded-full group-hover:scale-125 transition-transform duration-500 -z-10"></div>
-        <div className="flex items-start justify-between mb-4">
-          <span className="text-fg-muted"><Icon className="w-6 h-6" /></span>
-        </div>
-        <div className="text-3xl font-black text-fg mb-1">
-          {loading ? (
-            <span className="inline-block w-16 h-8 bg-slate-200 rounded animate-pulse"></span>
-          ) : value}
-        </div>
-        <p className="text-xs font-semibold text-fg-muted uppercase tracking-widest">{label}</p>
-        {sub && <p className="text-[10px] text-fg-muted mt-1">{sub}</p>}
-      </div>
-    </SpotlightCard>
-  );
+function StatCard({ label, value, icon: Icon, loading, sub }) {
+  return <article className="admin-stat">
+    <div className="admin-stat-top"><span>{label}</span><Icon size={19} aria-hidden="true" /></div>
+    <div className="admin-stat-value" aria-live="polite">{loading ? <span className="admin-stat-skeleton" /> : (value ?? '—')}</div>
+    {sub && <p>{sub}</p>}
+  </article>;
 }
 
 function RecentCard({ title, icon: Icon, children, linkTo, linkLabel }) {
   return (
-    <div className="bg-surface rounded-2xl border border-border overflow-hidden shadow-card">
+    <div className="admin-recent bg-surface border border-border overflow-hidden">
       <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-surface">
         <h3 className="text-sm font-bold flex items-center gap-2 text-fg">
           <Icon className="w-4 h-4 text-fg-muted" /> {title}
@@ -79,6 +61,7 @@ export default function Dashboard() {
   const [recentBookings, setRecentBookings] = useState([]);
   const [recentPayments, setRecentPayments] = useState([]);
   const [recentEvents, setRecentEvents] = useState([]);
+  const [eventCounts, setEventCounts] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -95,11 +78,13 @@ export default function Dashboard() {
         api.get('/api/visitors'),
       ]);
 
+      if (results.some(result => result.status === 'rejected')) setError(t('admin.loadError'));
+
       const eventsData = results[0].status === 'fulfilled' && results[0].value?.data
         ? results[0].value.data : [];
 
-      const usersData = results[1].status === 'fulfilled' && results[1].value?.data
-        ? results[1].value.data : [];
+      const usersPayload = results[1].status === 'fulfilled' ? results[1].value?.data : null;
+      const usersData = Array.isArray(usersPayload) ? usersPayload : (usersPayload?.content || []);
 
       const bookingsData = results[2].status === 'fulfilled' && results[2].value?.data?.data
         ? results[2].value.data.data : [];
@@ -114,14 +99,15 @@ export default function Dashboard() {
       const totalRevenue = paidPayments.reduce((sum, p) => sum + (parseFloat(p.totalPayment) || 0), 0);
 
       setStats({
-        totalEvents: eventsData.length,
-        totalUsers: usersData.length,
-        totalBookings: bookingsData.length,
-        totalPaidPayments: paidPayments.length,
-        totalRevenue,
-        totalVisitors: visitorsData.length,
+        totalEvents: results[0].status === 'fulfilled' ? eventsData.length : null,
+        totalUsers: results[1].status === 'fulfilled' ? (usersPayload?.totalElements ?? usersData.length) : null,
+        totalBookings: results[2].status === 'fulfilled' ? bookingsData.length : null,
+        totalPaidPayments: results[3].status === 'fulfilled' ? paidPayments.length : null,
+        totalRevenue: results[3].status === 'fulfilled' ? totalRevenue : null,
+        totalVisitors: results[4].status === 'fulfilled' ? visitorsData.length : null,
       });
 
+      setEventCounts(Object.fromEntries(['UPCOMING', 'ONGOING', 'FINISHED'].map(status => [status, eventsData.filter(event => event.status === status).length])));
       setRecentEvents([...eventsData].reverse().slice(0, 5));
       setRecentBookings([...bookingsData].reverse().slice(0, 5));
       setRecentPayments([...paymentsData].reverse().slice(0, 5));
@@ -156,16 +142,16 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="p-6 md:p-8 space-y-8">
+    <div className="admin-page admin-dashboard space-y-8">
       {/* Page header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="admin-page-header flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight text-fg">
             {t('admin.welcomeBack')}{' '}
             <span className="text-brand">
               {user?.fullName?.split(' ')[0] || 'Admin'}
             </span>{' '}
-            👋
+
           </h1>
           <p className="text-sm text-fg-muted mt-1">
             {t('admin.dashboardSubtitle')}
@@ -188,68 +174,56 @@ export default function Dashboard() {
       )}
 
       {/* KPI Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="admin-stats-grid">
         <StatCard
           label={t('admin.totalEvents')}
           value={stats.totalEvents}
           icon={Calendar}
           loading={loading}
-          colorClass="shadow-blue-100/50"
           sub={t('admin.eventsSub')}
-          spotlightColor="rgba(59, 130, 246, 0.08)"
         />
         <StatCard
           label={t('admin.totalUsers')}
           value={stats.totalUsers}
           icon={Users}
           loading={loading}
-          colorClass="shadow-blue-100/50"
           sub={t('admin.usersSub')}
-          spotlightColor="rgba(59, 130, 246, 0.08)"
         />
         <StatCard
           label={t('admin.totalBookings')}
           value={stats.totalBookings}
           icon={FileText}
           loading={loading}
-          colorClass="shadow-blue-100/50"
           sub={t('admin.bookingsSub')}
-          spotlightColor="rgba(59, 130, 246, 0.08)"
         />
         <StatCard
           label={t('admin.paidPayments')}
           value={stats.totalPaidPayments}
           icon={CheckCircle2}
           loading={loading}
-          colorClass="shadow-emerald-100/50"
           sub={t('admin.paidPaymentsSub')}
-          spotlightColor="rgba(16, 185, 129, 0.08)"
         />
         <StatCard
           label={t('admin.totalRevenue')}
-          value={loading ? '—' : formatRupiah(stats.totalRevenue)}
+          value={loading || stats.totalRevenue === null ? '—' : formatRupiah(stats.totalRevenue)}
           icon={DollarSign}
           loading={false}
-          colorClass="shadow-emerald-100/50"
           sub={t('admin.revenueSub')}
-          spotlightColor="rgba(16, 185, 129, 0.08)"
         />
         <StatCard
           label={t('admin.totalVisitors')}
           value={stats.totalVisitors}
           icon={Eye}
           loading={loading}
-          colorClass="shadow-slate-200/50"
           sub={t('admin.visitorsSub')}
-          spotlightColor="rgba(100, 116, 139, 0.08)"
         />
       </div>
 
       {/* Event Status Breakdown */}
       {!loading && recentEvents.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="admin-event-breakdown">
           {['UPCOMING', 'ONGOING', 'FINISHED'].map((status) => {
-            const count = recentEvents.filter(e => e.status === status).length;
+            const count = eventCounts[status] || 0;
             const colors = {
               UPCOMING: 'text-brand border-border bg-brand-subtle',
               ONGOING: 'text-emerald-700 border-emerald-200 bg-emerald-50',
@@ -266,7 +240,7 @@ export default function Dashboard() {
       )}
 
       {/* Recent activity tables */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="admin-recent-grid">
 
         {/* Recent Bookings */}
         <RecentCard
@@ -336,7 +310,7 @@ export default function Dashboard() {
               <div key={e.idEvent} className="flex items-center justify-between px-6 py-3.5 hover:bg-surface-hover transition-colors">
                 <div className="overflow-hidden">
                   <p className="text-xs font-bold text-fg-secondary truncate">{e.eventName}</p>
-                  <p className="text-[10px] text-fg-muted mt-0.5">📍 {e.city} • {e.eventDate}</p>
+                  <p className="text-[10px] text-fg-muted mt-0.5">{e.city} • {e.eventDate}</p>
                 </div>
                 <span className={`text-[10px] font-extrabold px-2.5 py-1 rounded-full border flex-shrink-0 ml-3 ${
                   e.status === 'UPCOMING' ? 'text-brand bg-brand-subtle border-border' :
@@ -351,7 +325,7 @@ export default function Dashboard() {
         </RecentCard>
 
         {/* Quick Actions */}
-        <div className="bg-surface rounded-2xl border border-border shadow-card p-6 space-y-4">
+        <div className="admin-quick-actions bg-surface border border-border p-6 space-y-4">
           <h3 className="text-sm font-bold flex items-center gap-2 text-fg">
             <Zap className="w-4 h-4 text-amber-500 animate-pulse" /> {t('admin.quickActions')}
           </h3>

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import authService from '../services/authService';
-import Aurora from '../components/Aurora';
+import AuthLayout from '../components/AuthLayout';
 import Magnet from '../components/Magnet';
 import { AlertCircle, CheckCircle, ArrowRight, KeyRound } from 'lucide-react';
 
@@ -35,9 +35,9 @@ export default function ForgotPassword() {
   };
 
   return (
-    <Aurora className="px-6 py-20">
-      <div className="glass-effect rounded-2xl p-8 max-w-md w-full border border-border relative overflow-hidden shadow-2xl">
-        <h2 className="text-3xl font-extrabold text-center mb-2 tracking-tight text-fg">{t('auth.forgotTitle')}</h2>
+    <AuthLayout>
+      <div className="auth-form glass-effect rounded-2xl p-8 max-w-md w-full border border-border relative overflow-hidden shadow-2xl">
+        <h1 className="text-3xl font-extrabold text-center mb-2 tracking-tight text-fg">{t('auth.forgotTitle')}</h1>
         <p className="text-fg-secondary text-sm text-center mb-8">{t('auth.forgotSubtitle')}</p>
 
         {error && (
@@ -79,8 +79,8 @@ export default function ForgotPassword() {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('auth.accountEmail')}</label>
-              <input
+              <label htmlFor="forgotpassword-field-1" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('auth.accountEmail')}</label>
+              <input id="forgotpassword-field-1"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -117,6 +117,6 @@ export default function ForgotPassword() {
           </form>
         )}
       </div>
-    </Aurora>
+    </AuthLayout>
   );
 }
