@@ -12,9 +12,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
@@ -48,8 +45,8 @@ class TicketNotificationTest {
 
     @Test
     void assemblesFullTicketAndSendsOnlyOneNotification() {
-        when(restTemplate.exchange(eq("http://users/api/users/2"), eq(HttpMethod.GET), any(HttpEntity.class), eq(Map.class)))
-                .thenReturn(ResponseEntity.ok(Map.of("data", Map.of("email", "preview@example.com", "firstName", "Nadia", "lastName", "Putri"))));
+        when(restTemplate.getForObject("http://users/api/internal/users/2/ticket-recipient", Map.class))
+                .thenReturn(Map.of("data", Map.of("email", "preview@example.com", "firstName", "Nadia", "lastName", "Putri")));
         when(restTemplate.getForObject("http://events/api/events/3", Map.class))
                 .thenReturn(Map.of("data", Map.of("eventName", "Live Session", "eventDate", "2027-05-20", "eventTime", "19:00", "location", "Music Hall", "city", "Jakarta")));
         when(restTemplate.getForObject("http://events/api/tickets/4", Map.class))

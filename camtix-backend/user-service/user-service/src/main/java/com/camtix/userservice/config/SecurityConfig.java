@@ -52,6 +52,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/visitors").permitAll()
+                        // This narrow route authenticates its internal key in the controller.
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/internal/users/*/ticket-recipient").permitAll()
                         .requestMatchers("/api/users/**").hasAnyRole("ADMIN_CAMTIX", "ADMIN_APLIKASI")
                         .requestMatchers("/api/visitors/**").hasAnyRole("ADMIN_CAMTIX", "ADMIN_APLIKASI")
                         .requestMatchers("/actuator/health").permitAll()

@@ -61,6 +61,7 @@ services:
       dockerfile: user-service/Dockerfile
     container_name: camtix-user-service
     environment:
+      INTERNAL_API_KEY: ${INTERNAL_API_KEY:?INTERNAL_API_KEY is required}
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-user-db:5432/camtix_user_db
       SPRING_DATASOURCE_USERNAME: ${DB_USER:-postgres}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-postgres}

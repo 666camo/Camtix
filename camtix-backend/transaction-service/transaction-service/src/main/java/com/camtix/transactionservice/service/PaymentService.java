@@ -179,28 +179,9 @@ public class PaymentService {
         String userEmail = "";
         String customerName = "Teman CamTix";
         try {
-            String userUrl = userServiceUrl + "/api/users/" + booking.getUserId();
-
-            org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
-            org.springframework.web.context.request.ServletRequestAttributes attributes =
-                (org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.getRequestAttributes();
-            if (attributes != null) {
-                jakarta.servlet.http.HttpServletRequest requestContext = attributes.getRequest();
-                String authHeader = requestContext.getHeader("Authorization");
-                if (authHeader != null) {
-                    headers.set("Authorization", authHeader);
-                }
-            }
-
-            org.springframework.http.HttpEntity<Void> entity = new org.springframework.http.HttpEntity<>(headers);
-            org.springframework.http.ResponseEntity<java.util.Map> responseEntity = restTemplate.exchange(
-                userUrl,
-                org.springframework.http.HttpMethod.GET,
-                entity,
-                java.util.Map.class
-            );
-
-            java.util.Map<?, ?> userRes = responseEntity.getBody();
+            String userUrl = userServiceUrl + "/api/internal/users/" + booking.getUserId() + "/ticket-recipient";
+            // RestTemplate supplies the internal API key independently of the buyer's JWT.
+            java.util.Map<?, ?> userRes = restTemplate.getForObject(userUrl, java.util.Map.class);
             if (userRes != null && userRes.get("data") != null) {
                 java.util.Map<?, ?> userData = (java.util.Map<?, ?>) userRes.get("data");
                 userEmail = (String) userData.get("email");
