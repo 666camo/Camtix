@@ -142,24 +142,24 @@ export default function Login() {
   const getInputClass = (fieldName) => {
     const hasError = touched[fieldName] && validationErrors[fieldName];
     const isValid = touched[fieldName] && !validationErrors[fieldName];
-    return `w-full bg-slate-50 border ${
+    return `w-full bg-surface border ${
       hasError
         ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
         : isValid
         ? 'border-emerald-400 focus:border-emerald-500 focus:ring-emerald-100'
-        : 'border-slate-200 focus:border-blue-400 focus:ring-blue-100'
-    } rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 transition-all`;
+        : 'border-border focus:border-brand focus:ring-brand/20'
+    } rounded-xl px-4 py-3 text-sm text-fg focus:outline-none focus:ring-2 transition-all`;
   };
 
   return (
     <Aurora className="px-6">
-      <div className="glass-effect rounded-2xl p-8 max-w-md w-full border border-slate-200 relative overflow-hidden shadow-2xl">
-        <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-100/50 rounded-full blur-2xl -z-10"></div>
+      <div className="glass-effect rounded-2xl p-8 max-w-md w-full border border-border relative overflow-hidden shadow-2xl">
+        <div className="absolute -top-10 -right-10 w-32 h-32 bg-brand/10/50 rounded-full blur-2xl -z-10"></div>
 
-        <h2 className="text-3xl font-extrabold text-center mb-2 tracking-tight text-slate-800">
+        <h2 className="text-3xl font-extrabold text-center mb-2 tracking-tight text-fg">
           {t('auth.loginTitle')} <span className="gradient-text">CamTix</span>
         </h2>
-        <p className="text-slate-500 text-sm text-center mb-8">{t('auth.loginSubtitle')}</p>
+        <p className="text-fg-secondary text-sm text-center mb-8">{t('auth.loginSubtitle')}</p>
 
         {error && (
           <div className="mb-6 p-4 rounded-xl border border-red-200 bg-red-50 text-red-600 text-sm flex items-center gap-2 animate-fadeIn">
@@ -170,7 +170,7 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
               {t('auth.email')} <span className="text-red-500">*</span>
             </label>
             <input
@@ -187,7 +187,7 @@ export default function Login() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
               {t('auth.password')} <span className="text-red-500">*</span>
             </label>
             <input
@@ -205,7 +205,7 @@ export default function Login() {
 
           <div className="flex justify-between items-center text-xs">
             <span />
-            <Link to="/forgot-password" className="text-blue-600 hover:text-blue-700 font-bold transition-colors">
+            <Link to="/forgot-password" className="text-brand hover:text-brand font-bold transition-colors">
               {t('auth.forgotPassword')}
             </Link>
           </div>
@@ -214,7 +214,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-bold rounded-xl shadow-sm shadow-blue-500/20 hover:shadow-blue-500/30 active:scale-[0.98] transition-all mt-4 text-sm flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-4 bg-brand hover:bg-brand-hover disabled:bg-surface-hover disabled:text-fg-muted text-white font-bold rounded-xl shadow-sm shadow-card hover:shadow-card active:scale-[0.98] transition-all mt-4 text-sm flex items-center justify-center gap-2 cursor-pointer"
             >
               {loading ? (
                 <>
@@ -229,15 +229,15 @@ export default function Login() {
         </form>
 
         <div className="my-5 flex items-center justify-between">
-          <span className="w-1/5 border-b border-slate-200"></span>
-          <span className="text-xs text-slate-400 uppercase font-medium">{t('auth.orLoginWith')}</span>
-          <span className="w-1/5 border-b border-slate-200"></span>
+          <span className="w-1/5 border-b border-border"></span>
+          <span className="text-xs text-fg-muted uppercase font-medium">{t('auth.orLoginWith')}</span>
+          <span className="w-1/5 border-b border-border"></span>
         </div>
 
         <div id="googleButton" className="w-full flex justify-center mb-6"></div>
 
-        <p className="text-center text-xs text-slate-500 mt-2 leading-relaxed">
-          {t('auth.noAccount')} <Link to="/register" className="text-blue-600 hover:text-blue-700 font-bold transition-colors">{t('auth.registerLink')}</Link>
+        <p className="text-center text-xs text-fg-secondary mt-2 leading-relaxed">
+          {t('auth.noAccount')} <Link to="/register" className="text-brand hover:text-brand font-bold transition-colors">{t('auth.registerLink')}</Link>
         </p>
       </div>
     </Aurora>

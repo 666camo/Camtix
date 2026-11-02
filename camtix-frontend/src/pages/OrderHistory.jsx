@@ -276,10 +276,10 @@ export default function OrderHistory() {
 
   if (loading) {
     return (
-      <div className="gradient-bg min-h-screen text-slate-800 flex items-center justify-center">
+      <div className="gradient-bg min-h-screen text-fg flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 rounded-full border-4 border-blue-100 border-t-blue-500 animate-spin"></div>
-          <p className="text-slate-500 text-sm font-medium">{t('history.loading')}</p>
+          <div className="w-12 h-12 rounded-full border-4 border-border border-t-blue-500 animate-spin"></div>
+          <p className="text-fg-secondary text-sm font-medium">{t('history.loading')}</p>
         </div>
       </div>
     );
@@ -288,28 +288,28 @@ export default function OrderHistory() {
   const printEvent = activePrintBooking ? eventsMap[activePrintBooking.eventId] : null;
 
   return (
-    <div className="gradient-bg min-h-screen text-slate-800 pb-20 pt-28 px-6 md:px-12">
+    <div className="gradient-bg min-h-screen text-fg pb-20 pt-28 px-6 md:px-12">
       <div className="max-w-6xl mx-auto space-y-8">
         
         {/* Title */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-200 pb-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-border pb-6">
           <div>
-            <span className="text-xs font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
+            <span className="text-xs font-bold text-brand uppercase tracking-widest bg-brand/10 px-3 py-1 rounded-full border border-border">
               {t('history.badge')}
             </span>
-            <h1 className="text-3xl font-extrabold tracking-tight mt-2 text-slate-800">
+            <h1 className="text-3xl font-extrabold tracking-tight mt-2 text-fg">
               {t('history.title')} <span className="gradient-text">{t('history.titleHighlight')}</span>
             </h1>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-fg-secondary mt-1">
               {t('history.subtitle')}
             </p>
           </div>
           
           <button
             onClick={() => fetchHistory(true)}
-            className="px-4 py-2.5 bg-white rounded-xl text-xs font-bold hover:bg-slate-50 border border-slate-200 text-slate-700 transition-colors flex items-center gap-2 cursor-pointer shadow-sm active:scale-95"
+            className="px-4 py-2.5 bg-surface rounded-xl text-xs font-bold hover:bg-surface border border-border text-fg-secondary transition-colors flex items-center gap-2 cursor-pointer shadow-sm active:scale-95"
           >
-            <RefreshCw className="w-3.5 h-3.5 text-slate-600" />
+            <RefreshCw className="w-3.5 h-3.5 text-fg-secondary" />
             <span>{t('history.syncStatus')}</span>
           </button>
         </div>
@@ -322,12 +322,12 @@ export default function OrderHistory() {
         )}
 
         {/* Content Table Area */}
-        <div className="glass-effect rounded-2xl p-6 border border-slate-200 space-y-6">
+        <div className="glass-effect rounded-2xl p-6 border border-border space-y-6">
           
           {/* Filters */}
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <h3 className="text-lg font-bold flex items-center gap-2 text-slate-800">
-              <ClipboardList className="w-5 h-5 text-slate-700" /> {t('history.transactionList')}
+            <h3 className="text-lg font-bold flex items-center gap-2 text-fg">
+              <ClipboardList className="w-5 h-5 text-fg-secondary" /> {t('history.transactionList')}
             </h3>
             
             <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
@@ -336,13 +336,13 @@ export default function OrderHistory() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t('history.searchPlaceholder')}
-                className="w-full md:w-64 bg-slate-50 border border-slate-200 focus:border-blue-400 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none transition-colors"
+                className="w-full md:w-64 bg-surface border border-border focus:border-brand rounded-xl px-4 py-2.5 text-xs text-fg focus:outline-none transition-colors"
               />
               
               <select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
-                className="bg-slate-50 border border-slate-200 focus:border-blue-400 rounded-xl px-4 py-2.5 text-xs text-slate-700 focus:outline-none transition-colors"
+                className="bg-surface border border-border focus:border-brand rounded-xl px-4 py-2.5 text-xs text-fg-secondary focus:outline-none transition-colors"
               >
                 <option value="ALL">{t('history.allStatus')}</option>
                 <option value="PENDING">{t('history.pendingStatus')}</option>
@@ -354,15 +354,15 @@ export default function OrderHistory() {
           </div>
 
           {/* Table */}
-          <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+          <div className="overflow-x-auto rounded-xl border border-border bg-surface">
             {filteredBookings.length === 0 ? (
-              <div className="py-16 text-center text-slate-500 text-sm font-semibold">
+              <div className="py-16 text-center text-fg-secondary text-sm font-semibold">
                 {t('history.noData')}
               </div>
             ) : (
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-50 text-xs font-semibold text-slate-600 uppercase tracking-wider border-b border-slate-200">
+                  <tr className="bg-surface text-xs font-semibold text-fg-secondary uppercase tracking-wider border-b border-border">
                     <th className="px-6 py-4">{t('history.bookingCode')}</th>
                     <th className="px-6 py-4">{t('history.concertDetail')}</th>
                     <th className="px-6 py-4">{t('history.bookingTime')}</th>
@@ -378,26 +378,26 @@ export default function OrderHistory() {
                     const { isWaitingApproval, isPaidConfirmed, isCancelled } = getBookingState(b);
                     
                     return (
-                      <tr key={b.idBooking} className="hover:bg-slate-50/50 transition-colors">
-                        <td className="px-6 py-4 font-mono font-bold text-blue-600">
+                      <tr key={b.idBooking} className="hover:bg-surface/50 transition-colors">
+                        <td className="px-6 py-4 font-mono font-bold text-brand">
                           {b.bookingCode}
                         </td>
                         <td className="px-6 py-4">
-                          <div className="font-extrabold text-slate-800">
+                          <div className="font-extrabold text-fg">
                             {evtDetails?.eventName || `Event ID: ${b.eventId}`}
                           </div>
-                          <div className="text-[10px] text-slate-500 mt-0.5 flex items-center gap-1">
-                            <MapPin className="w-3 h-3 text-slate-400" />
+                          <div className="text-[10px] text-fg-secondary mt-0.5 flex items-center gap-1">
+                            <MapPin className="w-3 h-3 text-fg-muted" />
                             <span>{evtDetails?.city || '-'} • {t('history.categoryPrefix')} #{b.ticketId}</span>
                           </div>
                         </td>
-                        <td className="px-6 py-4 text-slate-500 font-medium">
+                        <td className="px-6 py-4 text-fg-secondary font-medium">
                           {formatDate(b.bookingDate)}
                         </td>
-                        <td className="px-6 py-4 font-bold text-slate-700">
+                        <td className="px-6 py-4 font-bold text-fg-secondary">
                           {b.numberOfTicket} {t('history.ticketsUnit')}
                         </td>
-                        <td className="px-6 py-4 font-bold text-blue-600">
+                        <td className="px-6 py-4 font-bold text-brand">
                           {formatRupiah(b.totalPrice)}
                         </td>
                         <td className="px-6 py-4">
@@ -406,7 +406,7 @@ export default function OrderHistory() {
                               CONFIRMED
                             </span>
                           ) : isWaitingApproval ? (
-                            <span className="px-2.5 py-1 rounded-full text-[9px] font-extrabold border bg-blue-50 text-blue-700 border-blue-200 animate-pulse whitespace-nowrap">
+                            <span className="px-2.5 py-1 rounded-full text-[9px] font-extrabold border bg-brand/10 text-brand border-border animate-pulse whitespace-nowrap">
                               MENUNGGU VERIFIKASI
                             </span>
                           ) : isCancelled ? (
@@ -426,7 +426,7 @@ export default function OrderHistory() {
                               <button
                                 onClick={() => openTicketModal(b)}
                                 title="Lihat E-Tiket & Cetak"
-                                className="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-lg transition-all inline-flex items-center gap-1.5 shadow-sm shadow-blue-500/20 active:scale-95 cursor-pointer text-xs"
+                                className="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-lg transition-all inline-flex items-center gap-1.5 shadow-sm shadow-card active:scale-95 cursor-pointer text-xs"
                               >
                                 <Ticket className="w-3.5 h-3.5" />
                                 <span>Lihat Tiket</span>
@@ -437,7 +437,7 @@ export default function OrderHistory() {
                                 onClick={() => handleResendEmail(b)}
                                 disabled={sendingEmailId === b.idBooking}
                                 title={t('history.sendEmail')}
-                                className="p-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+                                className="p-1.5 bg-brand/10 hover:bg-brand/10 text-brand border border-border rounded-lg transition-colors cursor-pointer disabled:opacity-50"
                               >
                                 {sendingEmailId === b.idBooking ? (
                                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -449,16 +449,16 @@ export default function OrderHistory() {
                           ) : isWaitingApproval ? (
                             <Link
                               to={`/payment/${b.idBooking}`}
-                              className="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-bold rounded-lg transition-all inline-block shadow-sm"
+                              className="px-3 py-1.5 bg-brand/10 hover:bg-brand/10 text-brand border border-border font-bold rounded-lg transition-all inline-block shadow-sm"
                             >
                               {t('history.viewStatus')}
                             </Link>
                           ) : isCancelled ? (
-                            <span className="text-[10px] text-slate-400 italic font-semibold">{t('history.closed')}</span>
+                            <span className="text-[10px] text-fg-muted italic font-semibold">{t('history.closed')}</span>
                           ) : (
                             <Link
                               to={`/payment/${b.idBooking}`}
-                              className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-all inline-block shadow-sm"
+                              className="px-3 py-1.5 bg-brand hover:bg-brand-hover text-white font-bold rounded-lg transition-all inline-block shadow-sm"
                             >
                               {t('history.payNow')}
                             </Link>
@@ -514,10 +514,10 @@ export default function OrderHistory() {
           <div className="relative w-full max-w-4xl my-auto space-y-4 animate-fadeIn">
             
             {/* Modal Control Bar */}
-            <div className="flex flex-wrap items-center justify-between gap-3 p-3 sm:p-4 bg-white/90 backdrop-blur-md rounded-2xl border border-white/40 shadow-xl">
+            <div className="flex flex-wrap items-center justify-between gap-3 p-3 sm:p-4 bg-surface/90 backdrop-blur-md rounded-2xl border border-white/40 shadow-xl">
               <div className="flex items-center gap-2 pl-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-xs font-bold text-slate-800">Pratinjau E-Tiket Resmi CamTix</span>
+                <span className="text-xs font-bold text-fg">Pratinjau E-Tiket Resmi CamTix</span>
               </div>
 
               <div className="flex items-center gap-2">
@@ -543,7 +543,7 @@ export default function OrderHistory() {
                 {/* Print Dialog Button */}
                 <button
                   onClick={handlePrint}
-                  className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                  className="px-3.5 py-2 bg-surface-hover hover:bg-surface-hover text-fg-secondary font-bold rounded-xl text-xs transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   <span>Cetak</span>
@@ -553,7 +553,7 @@ export default function OrderHistory() {
                 <button
                   onClick={() => handleResendEmail(activePrintBooking)}
                   disabled={sendingEmailId === activePrintBooking.idBooking}
-                  className="px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-bold rounded-xl text-xs transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  className="px-3.5 py-2 bg-brand/10 hover:bg-brand/10 text-brand border border-border font-bold rounded-xl text-xs transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
                 >
                   <Mail className="w-3.5 h-3.5" />
                   <span>Kirim Email</span>
@@ -562,7 +562,7 @@ export default function OrderHistory() {
                 {/* Close Button */}
                 <button
                   onClick={() => setTicketModalOpen(false)}
-                  className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors cursor-pointer"
+                  className="p-2 rounded-xl bg-surface-hover hover:bg-surface-hover text-fg-secondary transition-colors cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -573,19 +573,19 @@ export default function OrderHistory() {
             <div 
               id="ticket-pdf-rendered-card"
               ref={ticketContentRef}
-              className="border-2 border-slate-900 rounded-3xl overflow-hidden shadow-2xl bg-white text-slate-900 w-full"
+              className="border-2 border-slate-900 rounded-3xl overflow-hidden shadow-2xl bg-surface text-fg w-full"
             >
               {/* Header */}
               <div className="bg-slate-950 text-white p-5 sm:p-6 flex items-center justify-between border-b-2 border-slate-900">
                 <div className="flex items-center gap-3">
-                  <span className="p-2 rounded-xl bg-indigo-600 text-white shadow-md">
+                  <span className="p-2 rounded-xl bg-brand text-white shadow-md">
                     <Music className="w-5 h-5" />
                   </span>
                   <div>
                     <h1 className="text-xl sm:text-2xl font-black tracking-wider uppercase text-white flex items-center gap-2">
-                      CAMTIX <span className="text-[10px] bg-indigo-500/30 text-indigo-300 border border-indigo-400/40 px-2 py-0.5 rounded-full font-bold tracking-widest">OFFICIAL E-TICKET</span>
+                      CAMTIX <span className="text-[10px] bg-brand/100/30 text-indigo-300 border border-indigo-400/40 px-2 py-0.5 rounded-full font-bold tracking-widest">OFFICIAL E-TICKET</span>
                     </h1>
-                    <p className="text-[10px] text-slate-400 tracking-widest font-semibold uppercase mt-0.5">
+                    <p className="text-[10px] text-fg-muted tracking-widest font-semibold uppercase mt-0.5">
                       Verified Digital Concert Admission Pass
                     </p>
                   </div>
@@ -596,7 +596,7 @@ export default function OrderHistory() {
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                     AUTHENTIC & VALID
                   </span>
-                  <p className="text-[10px] text-slate-400 font-mono mt-0.5">ID: #{activePrintBooking.idBooking}</p>
+                  <p className="text-[10px] text-fg-muted font-mono mt-0.5">ID: #{activePrintBooking.idBooking}</p>
                 </div>
               </div>
 
@@ -613,24 +613,24 @@ export default function OrderHistory() {
                         src={printEvent.picture} 
                         alt={printEvent.eventName}
                         crossOrigin="anonymous"
-                        className="w-20 h-24 rounded-2xl object-cover border border-slate-200 flex-shrink-0 shadow-sm"
+                        className="w-20 h-24 rounded-2xl object-cover border border-border flex-shrink-0 shadow-sm"
                       />
                     ) : (
-                      <div className="w-20 h-24 rounded-2xl bg-indigo-50 border border-indigo-100 flex flex-col items-center justify-center text-indigo-500 flex-shrink-0">
+                      <div className="w-20 h-24 rounded-2xl bg-brand/10 border border-indigo-100 flex flex-col items-center justify-center text-indigo-500 flex-shrink-0">
                         <Music className="w-7 h-7" />
                         <span className="text-[8px] font-bold uppercase mt-1">CamTix</span>
                       </div>
                     )}
 
                     <div className="space-y-1">
-                      <span className="inline-block px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200 text-[10px] font-black uppercase tracking-wider">
+                      <span className="inline-block px-2.5 py-0.5 rounded-full bg-brand/10 text-brand border border-border text-[10px] font-black uppercase tracking-wider">
                         {printEvent?.category || 'Live Concert'} • VIP Pass
                       </span>
-                      <h2 className="text-lg sm:text-xl font-black text-slate-950 leading-tight">
+                      <h2 className="text-lg sm:text-xl font-black text-fg leading-tight">
                         {printEvent?.eventName || `Concert Event #${activePrintBooking.eventId}`}
                       </h2>
                       {printEvent?.artistName && (
-                        <p className="text-xs font-bold text-indigo-600 uppercase tracking-widest">
+                        <p className="text-xs font-bold text-brand uppercase tracking-widest">
                           By {printEvent.artistName}
                         </p>
                       )}
@@ -638,65 +638,65 @@ export default function OrderHistory() {
                   </div>
 
                   {/* Event Schedule & Location Card */}
-                  <div className="grid grid-cols-2 gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs">
+                  <div className="grid grid-cols-2 gap-3 p-3.5 rounded-2xl bg-surface border border-border text-xs">
                     <div className="space-y-0.5">
-                      <span className="text-[9px] font-black uppercase tracking-wider text-slate-400 block flex items-center gap-1">
-                        <Calendar className="w-3 h-3 text-indigo-600" /> TANGGAL EVENT
+                      <span className="text-[9px] font-black uppercase tracking-wider text-fg-muted block flex items-center gap-1">
+                        <Calendar className="w-3 h-3 text-brand" /> TANGGAL EVENT
                       </span>
-                      <strong className="text-xs font-black text-slate-900 block">
+                      <strong className="text-xs font-black text-fg block">
                         {printEvent?.eventDate || '-'}
                       </strong>
-                      <span className="text-[10px] text-slate-500 font-semibold block">
+                      <span className="text-[10px] text-fg-secondary font-semibold block">
                         Waktu: {printEvent?.eventTime || '19:00'} WIB
                       </span>
                     </div>
 
                     <div className="space-y-0.5">
-                      <span className="text-[9px] font-black uppercase tracking-wider text-slate-400 block flex items-center gap-1">
+                      <span className="text-[9px] font-black uppercase tracking-wider text-fg-muted block flex items-center gap-1">
                         <MapPin className="w-3 h-3 text-rose-500" /> LOKASI VENUE
                       </span>
-                      <strong className="text-xs font-black text-slate-900 block">
+                      <strong className="text-xs font-black text-fg block">
                         {printEvent?.city || 'Jakarta'}
                       </strong>
-                      <span className="text-[10px] text-slate-500 font-semibold block line-clamp-1">
+                      <span className="text-[10px] text-fg-secondary font-semibold block line-clamp-1">
                         {printEvent?.location || 'Stadium Arena'}
                       </span>
                     </div>
                   </div>
 
                   {/* Customer Details & Pricing */}
-                  <div className="grid grid-cols-3 gap-2 pt-2 text-xs border-t border-slate-100">
+                  <div className="grid grid-cols-3 gap-2 pt-2 text-xs border-t border-border">
                     <div>
-                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">PEMESAN</span>
-                      <strong className="text-slate-800 font-bold block truncate text-[11px]">{user?.fullName || 'Customer'}</strong>
+                      <span className="text-[9px] font-bold text-fg-muted uppercase tracking-wider block">PEMESAN</span>
+                      <strong className="text-fg font-bold block truncate text-[11px]">{user?.fullName || 'Customer'}</strong>
                     </div>
                     <div>
-                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">KUANTITAS</span>
-                      <strong className="text-slate-800 font-bold block text-[11px]">{activePrintBooking.numberOfTicket} Tiket</strong>
+                      <span className="text-[9px] font-bold text-fg-muted uppercase tracking-wider block">KUANTITAS</span>
+                      <strong className="text-fg font-bold block text-[11px]">{activePrintBooking.numberOfTicket} Tiket</strong>
                     </div>
                     <div>
-                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">TOTAL BAYAR</span>
-                      <strong className="text-indigo-600 font-black block text-[11px]">{formatRupiah(activePrintBooking.totalPrice)}</strong>
+                      <span className="text-[9px] font-bold text-fg-muted uppercase tracking-wider block">TOTAL BAYAR</span>
+                      <strong className="text-brand font-black block text-[11px]">{formatRupiah(activePrintBooking.totalPrice)}</strong>
                     </div>
                   </div>
                 </div>
 
                 {/* Perforated Divider */}
-                <div className="border-t-2 md:border-t-0 md:border-l-2 border-dashed border-slate-300 relative flex md:flex-col justify-between" />
+                <div className="border-t-2 md:border-t-0 md:border-l-2 border-dashed border-border relative flex md:flex-col justify-between" />
 
                 {/* Right QR Stub */}
-                <div className="bg-slate-50/90 p-5 flex flex-col items-center justify-between text-center space-y-3">
+                <div className="bg-surface/90 p-5 flex flex-col items-center justify-between text-center space-y-3">
                   <div className="space-y-0.5">
-                    <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-400 block">
+                    <span className="text-[9px] font-extrabold uppercase tracking-widest text-fg-muted block">
                       GATE CHECKPOINT PASS
                     </span>
-                    <p className="text-xs font-mono font-black text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-lg border border-indigo-200">
+                    <p className="text-xs font-mono font-black text-brand bg-brand/10 px-2 py-0.5 rounded-lg border border-border">
                       {activePrintBooking.bookingCode}
                     </p>
                   </div>
 
                   {/* High-res Base64 QR Code */}
-                  <div className="p-2 bg-white rounded-2xl border-2 border-slate-900 shadow-sm flex flex-col items-center">
+                  <div className="p-2 bg-surface rounded-2xl border-2 border-slate-900 shadow-sm flex flex-col items-center">
                     {activeQrDataUrl ? (
                       <img 
                         src={activeQrDataUrl} 
@@ -704,11 +704,11 @@ export default function OrderHistory() {
                         className="w-28 h-28 object-contain"
                       />
                     ) : (
-                      <div className="w-28 h-28 bg-slate-100 flex items-center justify-center text-[10px] text-slate-400">
+                      <div className="w-28 h-28 bg-surface-hover flex items-center justify-center text-[10px] text-fg-muted">
                         Generating QR...
                       </div>
                     )}
-                    <span className="text-[7px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+                    <span className="text-[7px] font-bold text-fg-muted uppercase tracking-widest mt-1">
                       Scan at Gate Checkpoint
                     </span>
                   </div>
@@ -717,18 +717,18 @@ export default function OrderHistory() {
                     <span className="inline-block px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[9px] font-black uppercase">
                       CONFIRMED (PAID)
                     </span>
-                    <p className="text-[8px] text-slate-400">Tgl: {formatDate(activePrintBooking.bookingDate)}</p>
+                    <p className="text-[8px] text-fg-muted">Tgl: {formatDate(activePrintBooking.bookingDate)}</p>
                   </div>
                 </div>
 
               </div>
 
               {/* Ticket Footer Disclaimer */}
-              <div className="bg-slate-100 p-3 border-t-2 border-slate-900 text-center text-[9px] text-slate-500 leading-tight">
-                <p className="font-semibold text-slate-700">
+              <div className="bg-surface-hover p-3 border-t-2 border-slate-900 text-center text-[9px] text-fg-secondary leading-tight">
+                <p className="font-semibold text-fg-secondary">
                   Tunjukkan QR Code ini pada scanner gate masuk venue. Tiket ini sah dan dilindungi hak cipta oleh CamTix Ticketing Solutions.
                 </p>
-                <p className="text-[8px] text-slate-400 mt-0.5">
+                <p className="text-[8px] text-fg-muted mt-0.5">
                   Dilarang membagikan barcode/QR kepada pihak lain. 1 Tiket berlaku untuk 1 kali scan masuk gate.
                 </p>
               </div>

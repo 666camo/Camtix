@@ -23,22 +23,22 @@ function StatCard({ label, value, icon: Icon, colorClass, loading, sub, spotligh
   return (
     <SpotlightCard 
       spotlightColor={spotlightColor || 'rgba(59, 130, 246, 0.08)'} 
-      bgColor="bg-white" 
-      borderClass="border-slate-200/80" 
+      bgColor="bg-surface" 
+      borderClass="border-border/80" 
       className="rounded-2xl"
     >
       <div className={`p-6 relative overflow-hidden group transition-all h-full ${colorClass}`}>
-        <div className="absolute -top-4 -right-4 w-20 h-20 bg-slate-50 rounded-full group-hover:scale-125 transition-transform duration-500 -z-10"></div>
+        <div className="absolute -top-4 -right-4 w-20 h-20 bg-surface-hover rounded-full group-hover:scale-125 transition-transform duration-500 -z-10"></div>
         <div className="flex items-start justify-between mb-4">
-          <span className="text-slate-500"><Icon className="w-6 h-6" /></span>
+          <span className="text-fg-muted"><Icon className="w-6 h-6" /></span>
         </div>
-        <div className="text-3xl font-black text-slate-800 mb-1">
+        <div className="text-3xl font-black text-fg mb-1">
           {loading ? (
             <span className="inline-block w-16 h-8 bg-slate-200 rounded animate-pulse"></span>
           ) : value}
         </div>
-        <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">{label}</p>
-        {sub && <p className="text-[10px] text-slate-400 mt-1">{sub}</p>}
+        <p className="text-xs font-semibold text-fg-muted uppercase tracking-widest">{label}</p>
+        {sub && <p className="text-[10px] text-fg-muted mt-1">{sub}</p>}
       </div>
     </SpotlightCard>
   );
@@ -46,13 +46,13 @@ function StatCard({ label, value, icon: Icon, colorClass, loading, sub, spotligh
 
 function RecentCard({ title, icon: Icon, children, linkTo, linkLabel }) {
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-      <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/50">
-        <h3 className="text-sm font-bold flex items-center gap-2 text-slate-800">
-          <Icon className="w-4 h-4 text-slate-500" /> {title}
+    <div className="bg-surface rounded-2xl border border-border overflow-hidden shadow-card">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-surface">
+        <h3 className="text-sm font-bold flex items-center gap-2 text-fg">
+          <Icon className="w-4 h-4 text-fg-muted" /> {title}
         </h3>
         {linkTo && (
-          <Link to={linkTo} className="text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors">
+          <Link to={linkTo} className="text-xs font-bold text-brand hover:text-brand transition-colors">
             {linkLabel} →
           </Link>
         )}
@@ -149,10 +149,10 @@ export default function Dashboard() {
 
   const paymentStatusColor = (s) => {
     if (s === 'PAID') return 'text-emerald-700 bg-emerald-50 border-emerald-200';
-    if (s === 'WAITING_CONFIRMATION') return 'text-blue-700 bg-blue-50 border-blue-200';
+    if (s === 'WAITING_CONFIRMATION') return 'text-brand bg-brand-subtle border-border';
     if (s === 'PENDING') return 'text-amber-700 bg-amber-50 border-amber-200';
     if (s === 'REJECTED') return 'text-red-700 bg-red-50 border-red-200';
-    return 'text-slate-600 bg-slate-100 border-slate-300';
+    return 'text-fg-secondary bg-slate-100 border-slate-300';
   };
 
   return (
@@ -160,23 +160,23 @@ export default function Dashboard() {
       {/* Page header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-slate-800">
+          <h1 className="text-2xl font-extrabold tracking-tight text-fg">
             {t('admin.welcomeBack')}{' '}
-            <span className="text-blue-600">
+            <span className="text-brand">
               {user?.fullName?.split(' ')[0] || 'Admin'}
             </span>{' '}
             👋
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-fg-muted mt-1">
             {t('admin.dashboardSubtitle')}
           </p>
         </div>
         <button
           onClick={fetchDashboardData}
           disabled={loading}
-          className="flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-50 disabled:opacity-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 shadow-sm transition-colors cursor-pointer"
+          className="flex items-center gap-2 px-4 py-2.5 bg-surface hover:bg-surface-hover disabled:opacity-50 border border-border rounded-xl text-xs font-bold text-fg-secondary shadow-card transition-colors cursor-pointer"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-blue-600' : 'text-slate-500'}`} />
+          <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-brand' : 'text-fg-muted'}`} />
           {t('admin.refreshData')}
         </button>
       </div>
@@ -251,9 +251,9 @@ export default function Dashboard() {
           {['UPCOMING', 'ONGOING', 'FINISHED'].map((status) => {
             const count = recentEvents.filter(e => e.status === status).length;
             const colors = {
-              UPCOMING: 'text-blue-700 border-blue-200 bg-blue-50',
+              UPCOMING: 'text-brand border-border bg-brand-subtle',
               ONGOING: 'text-emerald-700 border-emerald-200 bg-emerald-50',
-              FINISHED: 'text-slate-600 border-slate-200 bg-slate-50',
+              FINISHED: 'text-fg-secondary border-border bg-surface-hover',
             };
             return (
               <div key={status} className={`flex items-center justify-between px-5 py-3.5 rounded-xl border ${colors[status]}`}>
@@ -276,15 +276,15 @@ export default function Dashboard() {
           linkLabel={t('admin.viewAll')}
         >
           {loading ? (
-            <div className="p-6 text-center text-slate-400 text-sm">{t('common.loading')}</div>
+            <div className="p-6 text-center text-fg-muted text-sm">{t('common.loading')}</div>
           ) : recentBookings.length === 0 ? (
-            <div className="p-6 text-center text-slate-400 text-sm">{t('admin.noBookingData')}</div>
+            <div className="p-6 text-center text-fg-muted text-sm">{t('admin.noBookingData')}</div>
           ) : (
             recentBookings.map((b) => (
-              <div key={b.idBooking} className="flex items-center justify-between px-6 py-3.5 hover:bg-slate-50 transition-colors">
+              <div key={b.idBooking} className="flex items-center justify-between px-6 py-3.5 hover:bg-surface-hover transition-colors">
                 <div>
-                  <p className="text-xs font-bold font-mono text-blue-600">{b.bookingCode}</p>
-                  <p className="text-[10px] text-slate-500 mt-0.5">{b.numberOfTicket} {t('history.ticketsUnit')} • {formatRupiah(b.totalPrice)}</p>
+                  <p className="text-xs font-bold font-mono text-brand">{b.bookingCode}</p>
+                  <p className="text-[10px] text-fg-muted mt-0.5">{b.numberOfTicket} {t('history.ticketsUnit')} • {formatRupiah(b.totalPrice)}</p>
                 </div>
                 <span className={`text-[10px] font-extrabold px-2.5 py-1 rounded-full border ${bookingStatusColor(b.bookingStatus)}`}>
                   {b.bookingStatus}
@@ -302,15 +302,15 @@ export default function Dashboard() {
           linkLabel={t('admin.viewAll')}
         >
           {loading ? (
-            <div className="p-6 text-center text-slate-400 text-sm">{t('common.loading')}</div>
+            <div className="p-6 text-center text-fg-muted text-sm">{t('common.loading')}</div>
           ) : recentPayments.length === 0 ? (
-            <div className="p-6 text-center text-slate-400 text-sm">{t('admin.noPaymentData')}</div>
+            <div className="p-6 text-center text-fg-muted text-sm">{t('admin.noPaymentData')}</div>
           ) : (
             recentPayments.map((p) => (
-              <div key={p.idPayment} className="flex items-center justify-between px-6 py-3.5 hover:bg-slate-50 transition-colors">
+              <div key={p.idPayment} className="flex items-center justify-between px-6 py-3.5 hover:bg-surface-hover transition-colors">
                 <div>
-                  <p className="text-xs font-bold text-slate-700">Booking #{p.bookingId}</p>
-                  <p className="text-[10px] text-slate-500 mt-0.5">{formatRupiah(p.totalPayment)}</p>
+                  <p className="text-xs font-bold text-fg-secondary">Booking #{p.bookingId}</p>
+                  <p className="text-[10px] text-fg-muted mt-0.5">{formatRupiah(p.totalPayment)}</p>
                 </div>
                 <span className={`text-[10px] font-extrabold px-2.5 py-1 rounded-full border ${paymentStatusColor(p.paymentStatus)}`}>
                   {p.paymentStatus}
@@ -328,20 +328,20 @@ export default function Dashboard() {
           linkLabel={t('admin.manageEvents')}
         >
           {loading ? (
-            <div className="p-6 text-center text-slate-400 text-sm">{t('common.loading')}</div>
+            <div className="p-6 text-center text-fg-muted text-sm">{t('common.loading')}</div>
           ) : recentEvents.length === 0 ? (
-            <div className="p-6 text-center text-slate-400 text-sm">{t('admin.noEventData')}</div>
+            <div className="p-6 text-center text-fg-muted text-sm">{t('admin.noEventData')}</div>
           ) : (
             recentEvents.map((e) => (
-              <div key={e.idEvent} className="flex items-center justify-between px-6 py-3.5 hover:bg-slate-50 transition-colors">
+              <div key={e.idEvent} className="flex items-center justify-between px-6 py-3.5 hover:bg-surface-hover transition-colors">
                 <div className="overflow-hidden">
-                  <p className="text-xs font-bold text-slate-700 truncate">{e.eventName}</p>
-                  <p className="text-[10px] text-slate-500 mt-0.5">📍 {e.city} • {e.eventDate}</p>
+                  <p className="text-xs font-bold text-fg-secondary truncate">{e.eventName}</p>
+                  <p className="text-[10px] text-fg-muted mt-0.5">📍 {e.city} • {e.eventDate}</p>
                 </div>
                 <span className={`text-[10px] font-extrabold px-2.5 py-1 rounded-full border flex-shrink-0 ml-3 ${
-                  e.status === 'UPCOMING' ? 'text-blue-700 bg-blue-50 border-blue-200' :
+                  e.status === 'UPCOMING' ? 'text-brand bg-brand-subtle border-border' :
                   e.status === 'ONGOING' ? 'text-emerald-700 bg-emerald-50 border-emerald-200' :
-                  'text-slate-600 bg-slate-100 border-slate-300'
+                  'text-fg-secondary bg-slate-100 border-slate-300'
                 }`}>
                   {e.status}
                 </span>
@@ -351,8 +351,8 @@ export default function Dashboard() {
         </RecentCard>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
-          <h3 className="text-sm font-bold flex items-center gap-2 text-slate-800">
+        <div className="bg-surface rounded-2xl border border-border shadow-card p-6 space-y-4">
+          <h3 className="text-sm font-bold flex items-center gap-2 text-fg">
             <Zap className="w-4 h-4 text-amber-500 animate-pulse" /> {t('admin.quickActions')}
           </h3>
           <div className="grid grid-cols-2 gap-3">
@@ -365,9 +365,9 @@ export default function Dashboard() {
               <Link
                 key={action.path}
                 to={action.path}
-                className="flex flex-col items-center justify-center gap-2 p-4 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 rounded-xl text-xs font-bold text-slate-600 hover:text-blue-700 transition-all text-center cursor-pointer"
+                className="flex flex-col items-center justify-center gap-2 p-4 bg-surface-hover hover:bg-brand-subtle border border-border hover:border-border rounded-xl text-xs font-bold text-fg-secondary hover:text-brand transition-all text-center cursor-pointer"
               >
-                <action.icon className="w-5 h-5 text-slate-500 group-hover:text-blue-600" />
+                <action.icon className="w-5 h-5 text-fg-muted group-hover:text-brand" />
                 <span>{action.label}</span>
               </Link>
             ))}

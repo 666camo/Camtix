@@ -1,11 +1,9 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Globe } from 'lucide-react';
 
 export default function LanguageSwitcher() {
   const { i18n } = useTranslation();
 
-  const setLanguage = (lang) => {
+  const set = (lang) => {
     if (i18n.language !== lang) {
       i18n.changeLanguage(lang);
       localStorage.setItem('camtix-lang', lang);
@@ -15,38 +13,31 @@ export default function LanguageSwitcher() {
   const isID = i18n.language === 'id';
 
   return (
-    <div 
-      className="inline-flex items-center gap-1 p-1 bg-slate-100/90 hover:bg-slate-100 rounded-full border border-slate-200/90 shadow-sm transition-all select-none"
+    <div
+      className="inline-flex items-center gap-0.5 p-0.5 bg-surface rounded-lg border border-border select-none"
       title="Pilih Bahasa / Choose Language"
     >
-      <div className="pl-1.5 pr-0.5 text-slate-400">
-        <Globe className="w-3.5 h-3.5 text-indigo-500" />
-      </div>
-      
       <button
         type="button"
-        onClick={() => setLanguage('id')}
-        className={`px-2.5 py-1 rounded-full text-[11px] font-extrabold transition-all cursor-pointer flex items-center gap-1 ${
+        onClick={() => set('id')}
+        className={`px-2.5 py-1 rounded-md text-[11px] font-700 transition-colors cursor-pointer ${
           isID
-            ? 'bg-white text-indigo-600 shadow-sm shadow-indigo-950/5 scale-100'
-            : 'text-slate-500 hover:text-slate-800'
+            ? 'bg-brand text-white'
+            : 'text-fg-secondary hover:text-fg'
         }`}
       >
-        <span>🇮🇩</span>
-        <span>ID</span>
+        ID
       </button>
-
       <button
         type="button"
-        onClick={() => setLanguage('en')}
-        className={`px-2.5 py-1 rounded-full text-[11px] font-extrabold transition-all cursor-pointer flex items-center gap-1 ${
+        onClick={() => set('en')}
+        className={`px-2.5 py-1 rounded-md text-[11px] font-700 transition-colors cursor-pointer ${
           !isID
-            ? 'bg-white text-indigo-600 shadow-sm shadow-indigo-950/5 scale-100'
-            : 'text-slate-500 hover:text-slate-800'
+            ? 'bg-brand text-white'
+            : 'text-fg-secondary hover:text-fg'
         }`}
       >
-        <span>🇬🇧</span>
-        <span>EN</span>
+        EN
       </button>
     </div>
   );

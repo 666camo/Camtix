@@ -297,10 +297,10 @@ export default function Payment() {
 
   if (loading) {
     return (
-      <div className="gradient-bg min-h-screen text-slate-800 flex items-center justify-center">
+      <div className="gradient-bg min-h-screen text-fg flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 rounded-full border-4 border-blue-100 border-t-blue-500 animate-spin"></div>
-          <p className="text-slate-500 text-sm font-medium">{t('payment.loading')}</p>
+          <div className="w-12 h-12 rounded-full border-4 border-border border-t-blue-500 animate-spin"></div>
+          <p className="text-fg-secondary text-sm font-medium">{t('payment.loading')}</p>
         </div>
       </div>
     );
@@ -308,12 +308,12 @@ export default function Payment() {
 
   if (error && !booking) {
     return (
-      <div className="gradient-bg min-h-screen text-slate-800 flex items-center justify-center px-6">
-        <div className="glass-effect rounded-2xl p-8 max-w-md w-full border border-slate-200 text-center space-y-4">
+      <div className="gradient-bg min-h-screen text-fg flex items-center justify-center px-6">
+        <div className="glass-effect rounded-2xl p-8 max-w-md w-full border border-border text-center space-y-4">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto" />
           <h2 className="text-xl font-bold text-red-600">{t('payment.errorTitle')}</h2>
-          <p className="text-sm text-slate-500">{error}</p>
-          <Link to="/" className="inline-block px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold transition-all">
+          <p className="text-sm text-fg-secondary">{error}</p>
+          <Link to="/" className="inline-block px-6 py-2.5 bg-brand hover:bg-brand-hover text-white rounded-xl text-sm font-bold transition-all">
             {t('payment.backCatalog')}
           </Link>
         </div>
@@ -326,18 +326,18 @@ export default function Payment() {
   const isWaiting = payment?.paymentStatus === 'WAITING_CONFIRMATION';
 
   return (
-    <div className="gradient-bg min-h-screen text-slate-800 pb-20 pt-28 px-6 md:px-12">
+    <div className="gradient-bg min-h-screen text-fg pb-20 pt-28 px-6 md:px-12">
       <div className="max-w-4xl mx-auto space-y-8">
         
         {/* Header */}
         <div className="text-center md:text-left">
-          <span className="text-xs font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
+          <span className="text-xs font-bold text-brand uppercase tracking-widest bg-brand/10 px-3 py-1 rounded-full border border-border">
             {t('payment.badge')}
           </span>
-          <h1 className="text-3xl font-extrabold tracking-tight mt-2 text-slate-800">
+          <h1 className="text-3xl font-extrabold tracking-tight mt-2 text-fg">
             {t('payment.title')} <span className="gradient-text">{t('payment.titleHighlight')}</span>
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-fg-secondary mt-1">
             {t('payment.subtitle')}
           </p>
         </div>
@@ -366,7 +366,7 @@ export default function Payment() {
               <div className="glass-effect rounded-2xl p-8 border border-emerald-200 bg-emerald-50 text-center space-y-4">
                 <Sparkles className="w-12 h-12 text-emerald-500 mx-auto" />
                 <h3 className="text-xl font-bold text-emerald-600">{t('payment.paidTitle')}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed font-normal">
+                <p className="text-sm text-fg-secondary leading-relaxed font-normal">
                   {t('payment.paidDesc')}
                 </p>
                 <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
@@ -377,7 +377,7 @@ export default function Payment() {
                   <button
                     onClick={handleResendETicketEmail}
                     disabled={resendingEmail}
-                    className="px-5 py-2.5 bg-white hover:bg-slate-50 border border-emerald-300 text-emerald-800 font-bold rounded-xl text-sm transition-all shadow-sm inline-flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                    className="px-5 py-2.5 bg-surface hover:bg-surface border border-emerald-300 text-emerald-800 font-bold rounded-xl text-sm transition-all shadow-sm inline-flex items-center gap-2 cursor-pointer disabled:opacity-50"
                   >
                     {resendingEmail ? (
                       <>
@@ -400,21 +400,21 @@ export default function Payment() {
               <div className="glass-effect rounded-2xl p-8 border border-amber-200 bg-amber-50 text-center space-y-4">
                 <Clock className="w-12 h-12 text-amber-500 mx-auto animate-pulse" />
                 <h3 className="text-xl font-bold text-amber-600">{t('payment.waitingTitle')}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed font-normal">
+                <p className="text-sm text-fg-secondary leading-relaxed font-normal">
                   {t('payment.waitingDesc')}
                 </p>
                 {payment?.paymentProof && (
                   <div className="mt-4 flex flex-col items-center gap-2">
-                    <span className="text-xs font-bold text-slate-500">{t('payment.previewProof')}</span>
+                    <span className="text-xs font-bold text-fg-secondary">{t('payment.previewProof')}</span>
                     <img 
                       src={payment.paymentProof} 
                       alt="Bukti Transfer" 
-                      className="w-48 h-auto border border-slate-200 rounded-xl shadow-sm"
+                      className="w-48 h-auto border border-border rounded-xl shadow-sm"
                     />
                   </div>
                 )}
                 <div className="pt-4">
-                  <Link to="/history" className="px-6 py-2.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold rounded-xl text-sm transition-all inline-block">
+                  <Link to="/history" className="px-6 py-2.5 bg-surface border border-border hover:bg-surface text-fg-secondary font-bold rounded-xl text-sm transition-all inline-block">
                     {t('payment.viewHistoryBtn')}
                   </Link>
                 </div>
@@ -426,11 +426,11 @@ export default function Payment() {
               <div className="glass-effect rounded-2xl p-8 border border-red-200 bg-red-50 text-center space-y-4">
                 <XCircle className="w-12 h-12 text-red-500 mx-auto" />
                 <h3 className="text-xl font-bold text-red-600">{t('payment.expiredTitle')}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed font-normal">
+                <p className="text-sm text-fg-secondary leading-relaxed font-normal">
                   {t('payment.expiredDesc')}
                 </p>
                 {payment?.adminNote && (
-                  <div className="p-3 bg-white border border-red-100 rounded-xl text-left text-xs text-slate-600">
+                  <div className="p-3 bg-surface border border-red-100 rounded-xl text-left text-xs text-fg-secondary">
                     <strong className="text-red-500">{t('payment.adminNote')}</strong> {payment.adminNote}
                   </div>
                 )}
@@ -444,11 +444,11 @@ export default function Payment() {
 
             {/* Form Input if Pending */}
             {!isPaid && !isWaiting && !isExpiredOrCancelled && (
-              <div className="glass-effect rounded-2xl p-6 md:p-8 border border-slate-200 space-y-6">
+              <div className="glass-effect rounded-2xl p-6 md:p-8 border border-border space-y-6">
                 
                 {/* Method selector */}
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
+                  <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-3">
                     {t('payment.selectTransferAccount')}
                   </label>
                   <div className="grid grid-cols-1 gap-3">
@@ -461,8 +461,8 @@ export default function Payment() {
                           key={m.idPaymentMethod}
                           className={`flex items-center gap-4 p-4 rounded-xl border transition-all cursor-pointer ${
                             isSelected
-                              ? 'border-blue-500 bg-blue-50/60 shadow-sm ring-2 ring-blue-200'
-                              : 'border-slate-200 bg-white hover:bg-slate-50'
+                              ? 'border-brand bg-brand/10/60 shadow-sm ring-2 ring-blue-200'
+                              : 'border-border bg-surface hover:bg-surface'
                           }`}
                         >
                           <input
@@ -471,28 +471,28 @@ export default function Payment() {
                             value={m.idPaymentMethod}
                             checked={isSelected}
                             onChange={handleMethodSelect}
-                            className="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                            className="w-4 h-4 text-brand focus:ring-brand"
                           />
                           <div className="flex-1 text-sm">
                             <div className="flex items-center justify-between gap-2">
-                              <span className="font-extrabold text-slate-800 flex items-center gap-2">
-                                {isMidtrans ? <Zap className="w-4 h-4 text-amber-500 fill-amber-500" /> : <Building2 className="w-4 h-4 text-slate-500" />}
+                              <span className="font-extrabold text-fg flex items-center gap-2">
+                                {isMidtrans ? <Zap className="w-4 h-4 text-amber-500 fill-amber-500" /> : <Building2 className="w-4 h-4 text-fg-secondary" />}
                                 {m.methodName}
                               </span>
                               <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border ${
                                 isMidtrans 
                                   ? 'bg-amber-50 text-amber-700 border-amber-200'
-                                  : 'bg-slate-100 text-slate-600 border-slate-200'
+                                  : 'bg-surface-hover text-fg-secondary border-border'
                               }`}>
                                 {isMidtrans ? t('payment.instantPaymentBadge') : t('payment.manualPaymentBadge')}
                               </span>
                             </div>
-                            <div className="text-xs text-slate-500 font-medium mt-1">
+                            <div className="text-xs text-fg-secondary font-medium mt-1">
                               {isMidtrans ? (
-                                <span className="text-blue-600 font-semibold">QRIS, GoPay, ShopeePay, Virtual Account, Kartu Kredit</span>
+                                <span className="text-brand font-semibold">QRIS, GoPay, ShopeePay, Virtual Account, Kartu Kredit</span>
                               ) : (
                                 <>
-                                  {t('payment.accountNo')} <span className="font-mono text-blue-600 font-bold">{m.accountNumber}</span> {t('payment.accountHolder')} {m.accountName}
+                                  {t('payment.accountNo')} <span className="font-mono text-brand font-bold">{m.accountNumber}</span> {t('payment.accountHolder')} {m.accountName}
                                 </>
                               )}
                             </div>
@@ -505,25 +505,25 @@ export default function Payment() {
 
                 {/* ── BRANCH 1: MIDTRANS INSTANT PAYMENT ── */}
                 {isMidtransSelected ? (
-                  <div className="p-6 bg-gradient-to-br from-blue-50 via-indigo-50/40 to-slate-50 rounded-2xl border border-blue-200 space-y-5 animate-fadeIn">
+                  <div className="p-6 bg-gradient-to-br from-blue-50 via-indigo-50/40 to-slate-50 rounded-2xl border border-border space-y-5 animate-fadeIn">
                     <div className="flex items-start gap-3">
-                      <div className="p-2.5 bg-blue-600 text-white rounded-xl shadow-md flex-shrink-0">
+                      <div className="p-2.5 bg-brand text-white rounded-xl shadow-md flex-shrink-0">
                         <Zap className="w-5 h-5 fill-white" />
                       </div>
                       <div>
-                        <h4 className="text-sm font-extrabold text-slate-800">Pembayaran Instan via Midtrans</h4>
-                        <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                        <h4 className="text-sm font-extrabold text-fg">Pembayaran Instan via Midtrans</h4>
+                        <p className="text-xs text-fg-secondary mt-1 leading-relaxed">
                           {t('payment.midtransNotice')}
                         </p>
                       </div>
                     </div>
 
-                    <div className="pt-3 border-t border-blue-100 flex flex-col gap-3">
+                    <div className="pt-3 border-t border-border flex flex-col gap-3">
                       <button
                         type="button"
                         onClick={handlePayWithMidtrans}
                         disabled={submitting}
-                        className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-md shadow-blue-500/20 hover:shadow-blue-500/40 active:scale-95 transition-all text-sm flex items-center justify-center gap-2 cursor-pointer"
+                        className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-md shadow-card hover:shadow-card active:scale-95 transition-all text-sm flex items-center justify-center gap-2 cursor-pointer"
                       >
                         {submitting ? (
                           <>
@@ -544,36 +544,36 @@ export default function Payment() {
                   <div className="space-y-6 animate-fadeIn">
                     {/* Account details instructions card */}
                     {selectedMethod && (
-                      <div className="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
-                        <span className="text-xs font-bold text-blue-600 uppercase block tracking-wider flex items-center gap-1.5">
-                          <ClipboardList className="w-4 h-4 text-blue-600" /> {t('payment.transferInstructions')}
+                      <div className="p-5 bg-surface rounded-xl border border-border space-y-4">
+                        <span className="text-xs font-bold text-brand uppercase block tracking-wider flex items-center gap-1.5">
+                          <ClipboardList className="w-4 h-4 text-brand" /> {t('payment.transferInstructions')}
                         </span>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-medium">
                           <div className="space-y-1.5">
-                            <span className="text-slate-500 block">{t('payment.bankProvider')}</span>
-                            <strong className="text-slate-800 text-sm font-black">{selectedMethod.provider}</strong>
+                            <span className="text-fg-secondary block">{t('payment.bankProvider')}</span>
+                            <strong className="text-fg text-sm font-black">{selectedMethod.provider}</strong>
                           </div>
                           <div className="space-y-1.5">
-                            <span className="text-slate-500 block">{t('payment.accountNumberLabel')}</span>
-                            <strong className="text-slate-800 text-sm font-mono font-black">{selectedMethod.accountNumber}</strong>
+                            <span className="text-fg-secondary block">{t('payment.accountNumberLabel')}</span>
+                            <strong className="text-fg text-sm font-mono font-black">{selectedMethod.accountNumber}</strong>
                           </div>
                           <div className="space-y-1.5">
-                            <span className="text-slate-500 block">{t('payment.ownerName')}</span>
-                            <strong className="text-slate-800 text-sm font-black">{selectedMethod.accountName}</strong>
+                            <span className="text-fg-secondary block">{t('payment.ownerName')}</span>
+                            <strong className="text-fg text-sm font-black">{selectedMethod.accountName}</strong>
                           </div>
                           <div className="space-y-1.5">
-                            <span className="text-slate-500 block">{t('payment.transferAmount')}</span>
-                            <strong className="text-blue-600 text-sm font-black">{formatRupiah(booking?.totalPrice || 0)}</strong>
+                            <span className="text-fg-secondary block">{t('payment.transferAmount')}</span>
+                            <strong className="text-brand text-sm font-black">{formatRupiah(booking?.totalPrice || 0)}</strong>
                           </div>
                         </div>
 
                         {selectedMethod.qrImage && (
-                          <div className="pt-3 border-t border-slate-200 text-center flex flex-col items-center gap-2">
-                            <span className="text-[10px] text-slate-500 uppercase tracking-wider block font-bold">{t('payment.scanQris')}</span>
+                          <div className="pt-3 border-t border-border text-center flex flex-col items-center gap-2">
+                            <span className="text-[10px] text-fg-secondary uppercase tracking-wider block font-bold">{t('payment.scanQris')}</span>
                             <img
                               src={selectedMethod.qrImage}
                               alt="QR Code"
-                              className="w-32 h-32 rounded-lg border border-slate-200 object-cover p-1 bg-white"
+                              className="w-32 h-32 rounded-lg border border-border object-cover p-1 bg-surface"
                             />
                           </div>
                         )}
@@ -581,23 +581,23 @@ export default function Payment() {
                     )}
 
                     {/* Upload proof form (File Picker) */}
-                    <form onSubmit={handleSubmitProof} className="space-y-6 pt-2 border-t border-slate-200">
+                    <form onSubmit={handleSubmitProof} className="space-y-6 pt-2 border-t border-border">
                       <div>
-                        <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">{t('payment.uploadProofLabel')}</label>
+                        <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('payment.uploadProofLabel')}</label>
                         <input
                           type="file"
                           accept="image/*"
                           onChange={handleFileChange}
                           required
-                          className="w-full bg-slate-50 border border-slate-200 focus:border-blue-400 rounded-xl px-4 py-3 text-sm text-slate-700 focus:outline-none transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                          className="w-full bg-surface border border-border focus:border-brand rounded-xl px-4 py-3 text-sm text-fg-secondary focus:outline-none transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-brand/10 file:text-brand hover:file:bg-brand/10"
                         />
                         {paymentProofDataUrl && (
                           <div className="mt-4">
-                            <p className="text-xs text-slate-500 mb-2">{t('payment.preview')}</p>
+                            <p className="text-xs text-fg-secondary mb-2">{t('payment.preview')}</p>
                             <img 
                               src={paymentProofDataUrl} 
                               alt="Preview" 
-                              className="h-32 w-auto border border-slate-200 rounded-lg object-contain bg-white" 
+                              className="h-32 w-auto border border-border rounded-lg object-contain bg-surface" 
                             />
                           </div>
                         )}
@@ -606,7 +606,7 @@ export default function Payment() {
                       <button
                         type="submit"
                         disabled={submitting}
-                        className="w-full py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 disabled:text-slate-500 text-white font-bold rounded-xl shadow-sm shadow-blue-500/20 hover:shadow-blue-500/30 active:scale-95 transition-all text-sm flex items-center justify-center gap-2 cursor-pointer"
+                        className="w-full py-4 bg-brand hover:bg-brand-hover disabled:bg-slate-300 disabled:text-fg-secondary text-white font-bold rounded-xl shadow-sm shadow-card hover:shadow-card active:scale-95 transition-all text-sm flex items-center justify-center gap-2 cursor-pointer"
                       >
                         {submitting ? (
                           <>
@@ -628,30 +628,30 @@ export default function Payment() {
 
           {/* Pricing summary */}
           <div className="space-y-6">
-            <div className="glass-effect rounded-2xl p-5 border border-slate-200 shadow-sm space-y-4">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-600 border-b border-slate-100 pb-2 flex items-center gap-1.5">
-                <FileText className="w-4 h-4 text-slate-500" /> {t('payment.billingSummary')}
+            <div className="glass-effect rounded-2xl p-5 border border-border shadow-sm space-y-4">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-fg-secondary border-b border-border pb-2 flex items-center gap-1.5">
+                <FileText className="w-4 h-4 text-fg-secondary" /> {t('payment.billingSummary')}
               </h3>
               
               <div className="space-y-1">
-                <span className="text-[10px] text-slate-400 uppercase tracking-widest block font-bold">{t('payment.bookingCode')}</span>
-                <span className="text-base font-mono font-extrabold text-slate-800">{booking?.bookingCode}</span>
+                <span className="text-[10px] text-fg-muted uppercase tracking-widest block font-bold">{t('payment.bookingCode')}</span>
+                <span className="text-base font-mono font-extrabold text-fg">{booking?.bookingCode}</span>
               </div>
 
               <div className="space-y-1">
-                <span className="text-[10px] text-slate-400 uppercase tracking-widest block font-bold">{t('payment.concertName')}</span>
-                <span className="text-sm font-bold text-slate-700">{event?.eventName || t('payment.loadingText')}</span>
-                <span className="text-[10px] text-slate-500 block mt-0.5 flex items-center gap-1">
-                  <Calendar className="w-3.5 h-3.5 text-slate-400" /> {event?.eventDate} • <MapPin className="w-3.5 h-3.5 text-slate-400" /> {event?.city}
+                <span className="text-[10px] text-fg-muted uppercase tracking-widest block font-bold">{t('payment.concertName')}</span>
+                <span className="text-sm font-bold text-fg-secondary">{event?.eventName || t('payment.loadingText')}</span>
+                <span className="text-[10px] text-fg-secondary block mt-0.5 flex items-center gap-1">
+                  <Calendar className="w-3.5 h-3.5 text-fg-muted" /> {event?.eventDate} • <MapPin className="w-3.5 h-3.5 text-fg-muted" /> {event?.city}
                 </span>
               </div>
 
-              <div className="border-t border-slate-100 pt-4 space-y-2 text-xs">
-                <div className="flex justify-between items-center text-slate-500">
+              <div className="border-t border-border pt-4 space-y-2 text-xs">
+                <div className="flex justify-between items-center text-fg-secondary">
                   <span>{t('payment.ticketQuantity')}</span>
-                  <span className="font-bold text-slate-800">x {booking?.numberOfTicket}</span>
+                  <span className="font-bold text-fg">x {booking?.numberOfTicket}</span>
                 </div>
-                <div className="flex justify-between items-center text-slate-500">
+                <div className="flex justify-between items-center text-fg-secondary">
                   <span>{t('payment.bookingStatus')}</span>
                   <span className={`px-2 py-0.5 rounded text-[10px] font-extrabold border ${
                     booking?.bookingStatus === 'PENDING' ? 'text-amber-600 bg-amber-50 border-amber-200 animate-pulse' :
@@ -662,16 +662,16 @@ export default function Payment() {
                   </span>
                 </div>
                 
-                <div className="flex justify-between items-center pt-3 border-t border-slate-100 text-sm font-extrabold">
-                  <span className="text-slate-800">{t('payment.totalBill')}</span>
-                  <span className="text-blue-600 text-base">{formatRupiah(booking?.totalPrice || 0)}</span>
+                <div className="flex justify-between items-center pt-3 border-t border-border text-sm font-extrabold">
+                  <span className="text-fg">{t('payment.totalBill')}</span>
+                  <span className="text-brand text-base">{formatRupiah(booking?.totalPrice || 0)}</span>
                 </div>
               </div>
             </div>
 
             {/* Redirect link history */}
             <div className="text-center pt-2">
-              <Link to="/history" className="text-xs text-blue-600 hover:text-blue-700 font-bold transition-colors">
+              <Link to="/history" className="text-xs text-brand hover:text-brand font-bold transition-colors">
                 {t('payment.viewAllHistory')}
               </Link>
             </div>

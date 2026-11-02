@@ -32,13 +32,13 @@ class ErrorBoundaryClass extends Component {
             </div>
             <div className="space-y-2">
               <h2 className="text-2xl font-bold text-gray-800">{t('errorBoundary.title')}</h2>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-fg-secondary">
                 {t('errorBoundary.subtitle')}
               </p>
             </div>
             <button
               onClick={this.handleReload}
-              className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer"
+              className="w-full py-3 bg-brand hover:bg-brand-hover text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer"
             >
               <RefreshCw className="w-4 h-4" /> {t('errorBoundary.reload')}
             </button>

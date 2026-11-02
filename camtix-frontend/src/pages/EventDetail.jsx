@@ -68,10 +68,10 @@ export default function EventDetail() {
 
   if (loading) {
     return (
-      <div className="gradient-bg min-h-screen text-slate-800 flex items-center justify-center">
+      <div className="gradient-bg min-h-screen text-fg flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 rounded-full border-4 border-blue-100 border-t-blue-500 animate-spin"></div>
-          <p className="text-slate-500 text-sm font-medium">{t('detail.loading')}</p>
+          <div className="w-12 h-12 rounded-full border-4 border-border border-t-blue-500 animate-spin"></div>
+          <p className="text-fg-secondary text-sm font-medium">{t('detail.loading')}</p>
         </div>
       </div>
     );
@@ -79,12 +79,12 @@ export default function EventDetail() {
 
   if (error && !event) {
     return (
-      <div className="gradient-bg min-h-screen text-slate-800 flex items-center justify-center px-6">
-        <div className="glass-effect rounded-2xl p-8 max-w-md w-full border border-slate-200 text-center space-y-4">
+      <div className="gradient-bg min-h-screen text-fg flex items-center justify-center px-6">
+        <div className="glass-effect rounded-2xl p-8 max-w-md w-full border border-border text-center space-y-4">
           <p className="text-4xl">⚠️</p>
           <h2 className="text-xl font-bold text-red-600">{t('detail.errorTitle')}</h2>
-          <p className="text-sm text-slate-500">{error}</p>
-          <Link to="/" className="inline-block px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold transition-all">
+          <p className="text-sm text-fg-secondary">{error}</p>
+          <Link to="/" className="inline-block px-6 py-2.5 bg-brand hover:bg-brand-hover text-white rounded-xl text-sm font-bold transition-all">
             {t('detail.backCatalog')}
           </Link>
         </div>
@@ -93,11 +93,11 @@ export default function EventDetail() {
   }
 
   return (
-    <div className="gradient-bg min-h-screen text-slate-800 pb-20 pt-28 px-6 md:px-12">
+    <div className="gradient-bg min-h-screen text-fg pb-20 pt-28 px-6 md:px-12">
       <div className="max-w-6xl mx-auto space-y-10">
         
         {/* Cover Hero Banner */}
-        <div className="relative rounded-3xl overflow-hidden h-[300px] md:h-[400px] border border-slate-200 shadow-xl">
+        <div className="relative rounded-3xl overflow-hidden h-[300px] md:h-[400px] border border-border shadow-xl">
           <img
             src={event?.picture || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=1200'}
             alt={event?.eventName}
@@ -108,7 +108,7 @@ export default function EventDetail() {
           <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-10 md:right-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
             <div>
               <div className="flex flex-wrap items-center gap-2 mb-3">
-                <span className="px-3 py-1 rounded-full border border-white/30 bg-white/20 text-xs font-semibold text-white backdrop-blur-md inline-block">
+                <span className="px-3 py-1 rounded-full border border-white/30 bg-surface/20 text-xs font-semibold text-white backdrop-blur-md inline-block">
                   {event?.category}
                 </span>
                 {isExpired && (
@@ -122,11 +122,11 @@ export default function EventDetail() {
               </h1>
             </div>
             
-            <div className="bg-white/90 backdrop-blur-md border border-slate-200 px-5 py-3 rounded-2xl flex items-center gap-3">
-              <Calendar className="w-5 h-5 text-blue-600" />
+            <div className="bg-surface/90 backdrop-blur-md border border-border px-5 py-3 rounded-2xl flex items-center gap-3">
+              <Calendar className="w-5 h-5 text-brand" />
               <div className="text-left">
-                <span className="text-[10px] text-slate-500 uppercase tracking-widest block font-bold">{t('detail.eventDate')}</span>
-                <span className="text-sm font-bold text-blue-600">{event?.eventDate} ({event?.eventTime || 'WIB'})</span>
+                <span className="text-[10px] text-fg-secondary uppercase tracking-widest block font-bold">{t('detail.eventDate')}</span>
+                <span className="text-sm font-bold text-brand">{event?.eventDate} ({event?.eventTime || 'WIB'})</span>
               </div>
             </div>
           </div>
@@ -142,37 +142,37 @@ export default function EventDetail() {
           
           {/* Main description details */}
           <div className="lg:col-span-2 space-y-8">
-             <div className="glass-effect rounded-2xl p-8 border border-slate-200 space-y-6">
-              <h3 className="text-xl font-bold text-blue-600 flex items-center gap-2">
-                <FileText className="w-5 h-5 text-blue-600" /> {t('detail.aboutConcert')}
+             <div className="glass-effect rounded-2xl p-8 border border-border space-y-6">
+              <h3 className="text-xl font-bold text-brand flex items-center gap-2">
+                <FileText className="w-5 h-5 text-brand" /> {t('detail.aboutConcert')}
               </h3>
-              <p className="text-sm text-slate-600 leading-relaxed font-normal whitespace-pre-wrap">
+              <p className="text-sm text-fg-secondary leading-relaxed font-normal whitespace-pre-wrap">
                 {event?.description}
               </p>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-slate-100">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-border">
                 <div>
-                  <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">{t('detail.mainArtist')}</span>
-                  <span className="text-sm font-semibold text-slate-800">{event?.artistName}</span>
+                  <span className="text-[10px] text-fg-muted uppercase tracking-wider font-bold block">{t('detail.mainArtist')}</span>
+                  <span className="text-sm font-semibold text-fg">{event?.artistName}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">{t('detail.city')}</span>
-                  <span className="text-sm font-semibold text-slate-800 flex items-center gap-1 mt-1"><MapPin className="w-3.5 h-3.5 text-blue-600" /> {event?.city}</span>
+                  <span className="text-[10px] text-fg-muted uppercase tracking-wider font-bold block">{t('detail.city')}</span>
+                  <span className="text-sm font-semibold text-fg flex items-center gap-1 mt-1"><MapPin className="w-3.5 h-3.5 text-brand" /> {event?.city}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">{t('detail.venue')}</span>
-                  <span className="text-sm font-semibold text-slate-800 flex items-center gap-1 mt-1"><MapPin className="w-3.5 h-3.5 text-blue-600" /> {event?.location}</span>
+                  <span className="text-[10px] text-fg-muted uppercase tracking-wider font-bold block">{t('detail.venue')}</span>
+                  <span className="text-sm font-semibold text-fg flex items-center gap-1 mt-1"><MapPin className="w-3.5 h-3.5 text-brand" /> {event?.location}</span>
                 </div>
               </div>
             </div>
 
             {/* Google Maps Location Embed */}
             {event && (
-              <div className="glass-effect rounded-2xl p-6 border border-slate-200 space-y-4">
-                <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                  <MapPin className="w-5 h-5 text-blue-600" /> {t('detail.mapTitle')}
+              <div className="glass-effect rounded-2xl p-6 border border-border space-y-4">
+                <h3 className="text-lg font-bold text-fg flex items-center gap-2">
+                  <MapPin className="w-5 h-5 text-brand" /> {t('detail.mapTitle')}
                 </h3>
-                <div className="rounded-xl overflow-hidden border border-slate-200 h-[280px]">
+                <div className="rounded-xl overflow-hidden border border-border h-[280px]">
                   <iframe
                     title="Event Location Map"
                     width="100%"
@@ -189,8 +189,8 @@ export default function EventDetail() {
 
           {/* Ticket buying panel */}
           <div className="space-y-6">
-            <h3 className="text-xl font-bold flex items-center gap-2 text-slate-800">
-              <Ticket className="w-5 h-5 text-slate-850" /> {t('detail.selectTicket')}
+            <h3 className="text-xl font-bold flex items-center gap-2 text-fg">
+              <Ticket className="w-5 h-5 text-fg" /> {t('detail.selectTicket')}
             </h3>
 
             {isExpired && (
@@ -202,7 +202,7 @@ export default function EventDetail() {
             
             <div className="space-y-4">
               {tickets.length === 0 ? (
-                <div className="glass-effect rounded-2xl p-6 text-center text-slate-500 border border-slate-200">
+                <div className="glass-effect rounded-2xl p-6 text-center text-fg-secondary border border-border">
                   {t('detail.noTickets')}
                 </div>
               ) : (
@@ -213,11 +213,11 @@ export default function EventDetail() {
                     <div
                       key={tItem.idTicket}
                       className={`glass-effect rounded-2xl p-5 border ${
-                        isBlocked ? 'border-slate-200 opacity-60 bg-slate-50' : 'border-slate-200 hover:border-blue-300'
+                        isBlocked ? 'border-border opacity-60 bg-surface' : 'border-border hover:border-border'
                       } transition-all relative overflow-hidden`}
                     >
                       {isExpired ? (
-                        <div className="absolute top-3 right-3 bg-slate-200 border border-slate-300 text-slate-600 font-bold px-2 py-0.5 rounded text-[9px] uppercase tracking-wider">
+                        <div className="absolute top-3 right-3 bg-surface-hover border border-border text-fg-secondary font-bold px-2 py-0.5 rounded text-[9px] uppercase tracking-wider">
                           {event?.status === 'CANCELLED' ? t('detail.eventCancelled') : t('detail.eventFinished')}
                         </div>
                       ) : isOutOfStock && (
@@ -226,29 +226,29 @@ export default function EventDetail() {
                         </div>
                       )}
                       
-                      <h4 className="text-base font-extrabold text-slate-800">{tItem.ticketType}</h4>
-                      <p className="text-xs text-slate-500 mt-1 font-normal line-clamp-2">
+                      <h4 className="text-base font-extrabold text-fg">{tItem.ticketType}</h4>
+                      <p className="text-xs text-fg-secondary mt-1 font-normal line-clamp-2">
                         {tItem.description || t('detail.defaultDesc')}
                       </p>
                       
-                      <div className="flex items-center justify-between mt-4 pt-3 border-t border-slate-100">
+                      <div className="flex items-center justify-between mt-4 pt-3 border-t border-border">
                         <div>
-                          <span className="text-[10px] text-slate-400 block uppercase tracking-wider font-bold">{t('detail.pricePerTicket')}</span>
-                          <span className="text-base font-extrabold text-blue-600">{formatRupiah(tItem.price)}</span>
-                          <span className="text-[10px] text-slate-500 block mt-0.5 font-medium">{t('detail.remainingStock')}: {tItem.stock}</span>
+                          <span className="text-[10px] text-fg-muted block uppercase tracking-wider font-bold">{t('detail.pricePerTicket')}</span>
+                          <span className="text-base font-extrabold text-brand">{formatRupiah(tItem.price)}</span>
+                          <span className="text-[10px] text-fg-secondary block mt-0.5 font-medium">{t('detail.remainingStock')}: {tItem.stock}</span>
                         </div>
                         
                         {isExpired ? (
                           <button
                             disabled
-                            className="px-4 py-2 bg-slate-200 text-slate-500 text-xs font-bold rounded-xl cursor-not-allowed"
+                            className="px-4 py-2 bg-surface-hover text-fg-secondary text-xs font-bold rounded-xl cursor-not-allowed"
                           >
                             {event?.status === 'CANCELLED' ? t('detail.eventCancelled') : t('detail.eventFinished')}
                           </button>
                         ) : isOutOfStock ? (
                           <button
                             disabled
-                            className="px-4 py-2 bg-slate-200 text-slate-500 text-xs font-bold rounded-xl"
+                            className="px-4 py-2 bg-surface-hover text-fg-secondary text-xs font-bold rounded-xl"
                           >
                             {t('detail.soldOut')}
                           </button>
@@ -256,14 +256,14 @@ export default function EventDetail() {
                           <button
                             disabled
                             title={t('detail.adminBlockedTooltip')}
-                            className="px-5 py-2.5 bg-slate-200 text-slate-500 text-xs font-bold rounded-xl cursor-not-allowed"
+                            className="px-5 py-2.5 bg-surface-hover text-fg-secondary text-xs font-bold rounded-xl cursor-not-allowed"
                           >
                             {t('detail.adminBlocked')}
                           </button>
                         ) : (
                           <Link
                             to={`/booking?eventId=${event?.idEvent}&ticketId=${tItem.idTicket}`}
-                            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-xs font-bold rounded-xl shadow-sm shadow-blue-500/20 hover:shadow-blue-500/30 active:scale-95 transition-all text-white cursor-pointer"
+                            className="px-5 py-2.5 bg-brand hover:bg-brand-hover text-xs font-bold rounded-xl shadow-sm shadow-card hover:shadow-card active:scale-95 transition-all text-white cursor-pointer"
                           >
                             {t('detail.bookTicket')}
                           </Link>
@@ -276,11 +276,11 @@ export default function EventDetail() {
             </div>
 
             {/* Safety tips */}
-             <div className="bg-blue-50/50 rounded-2xl p-4 border border-blue-100 space-y-2">
-              <span className="text-xs font-bold text-blue-600 uppercase flex items-center gap-1.5 tracking-wider">
-                <ShieldCheck className="w-4 h-4 text-blue-600" /> {t('detail.securityGuarantee')}
+             <div className="bg-brand/10/50 rounded-2xl p-4 border border-border space-y-2">
+              <span className="text-xs font-bold text-brand uppercase flex items-center gap-1.5 tracking-wider">
+                <ShieldCheck className="w-4 h-4 text-brand" /> {t('detail.securityGuarantee')}
               </span>
-              <p className="text-[10px] text-slate-500 leading-relaxed font-normal">
+              <p className="text-[10px] text-fg-secondary leading-relaxed font-normal">
                 {t('detail.securityDesc')}
               </p>
             </div>

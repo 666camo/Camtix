@@ -82,20 +82,20 @@ export default function ResetPassword() {
   const getInputClass = (fieldName) => {
     const hasError = touched[fieldName] && validationErrors[fieldName];
     const isValid = touched[fieldName] && !validationErrors[fieldName];
-    return `w-full bg-slate-50 border ${
+    return `w-full bg-surface border ${
       hasError
         ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
         : isValid
         ? 'border-emerald-400 focus:border-emerald-500 focus:ring-emerald-100'
-        : 'border-slate-200 focus:border-blue-400 focus:ring-blue-100'
-    } rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 transition-all`;
+        : 'border-border focus:border-brand focus:ring-brand/20'
+    } rounded-xl px-4 py-3 text-sm text-fg focus:outline-none focus:ring-2 transition-all`;
   };
 
   return (
     <Aurora className="px-6 py-20">
-      <div className="glass-effect rounded-2xl p-8 max-w-md w-full border border-slate-200 relative overflow-hidden shadow-2xl">
-        <h2 className="text-3xl font-extrabold text-center mb-2 tracking-tight text-slate-800">{t('auth.resetTitle')}</h2>
-        <p className="text-slate-500 text-sm text-center mb-8">{t('auth.resetSubtitle')}</p>
+      <div className="glass-effect rounded-2xl p-8 max-w-md w-full border border-border relative overflow-hidden shadow-2xl">
+        <h2 className="text-3xl font-extrabold text-center mb-2 tracking-tight text-fg">{t('auth.resetTitle')}</h2>
+        <p className="text-fg-secondary text-sm text-center mb-8">{t('auth.resetSubtitle')}</p>
 
         {error && (
           <div className="mb-6 p-4 rounded-xl border border-red-200 bg-red-50 text-red-600 text-sm flex items-center gap-2 animate-fadeIn">
@@ -113,7 +113,7 @@ export default function ResetPassword() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider">
                   {t('auth.resetTokenLabel')} <span className="text-red-500">*</span>
                 </label>
                 {urlToken && tokenInput === urlToken && (
@@ -123,7 +123,7 @@ export default function ResetPassword() {
                 )}
               </div>
               <div className="relative">
-                <KeyRound className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <KeyRound className="w-4 h-4 text-fg-muted absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="text"
                   value={tokenInput}
@@ -139,7 +139,7 @@ export default function ResetPassword() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
                 {t('auth.newPassword')} <span className="text-red-500">*</span>
               </label>
               <input
@@ -156,7 +156,7 @@ export default function ResetPassword() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
                 {t('auth.confirmPassword')} <span className="text-red-500">*</span>
               </label>
               <input
@@ -176,14 +176,14 @@ export default function ResetPassword() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-bold rounded-xl active:scale-[0.98] transition-all mt-4 text-sm flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                className="w-full py-4 bg-brand hover:bg-brand-hover disabled:bg-surface-hover disabled:text-fg-muted text-white font-bold rounded-xl active:scale-[0.98] transition-all mt-4 text-sm flex items-center justify-center gap-2 cursor-pointer shadow-md"
               >
                 {loading ? t('auth.saving') : t('auth.savePassword')}
               </button>
             </Magnet>
 
-            <p className="text-center text-xs text-slate-500 mt-4">
-              <Link to="/login" className="text-blue-600 hover:text-blue-700 font-bold transition-colors">
+            <p className="text-center text-xs text-fg-secondary mt-4">
+              <Link to="/login" className="text-brand hover:text-brand font-bold transition-colors">
                 ← {t('auth.backToLogin')}
               </Link>
             </p>

@@ -42,7 +42,7 @@ export default function AdminLayout() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 flex">
+    <div className="admin-shell light min-h-screen bg-surface-hover text-fg flex">
       {sidebarOpen && (
         <div
           className="fixed inset-0 bg-black/40 z-20 lg:hidden"
@@ -50,18 +50,18 @@ export default function AdminLayout() {
         />
       )}
 
-      <aside className={`w-72 bg-white border-r border-slate-200 flex flex-col fixed inset-y-0 shadow-sm z-30 transition-transform duration-200 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
-        <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+      <aside className={`w-72 bg-surface border-r border-border flex flex-col fixed inset-y-0 shadow-card z-30 transition-transform duration-200 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
+        <div className="p-6 border-b border-border flex items-center justify-between">
           <Link to="/" className="text-2xl font-extrabold tracking-wider gradient-text">
-            CAMTIX <span className="text-xs text-blue-600 border border-blue-200 bg-blue-50 px-2 py-0.5 rounded-full ml-1">ADMIN</span>
+            CAMTIX <span className="text-xs text-brand border border-border bg-brand-subtle px-2 py-0.5 rounded-full ml-1">ADMIN</span>
           </Link>
-          <button onClick={() => setSidebarOpen(false)} className="lg:hidden p-1 text-slate-400 hover:text-slate-600">
+          <button onClick={() => setSidebarOpen(false)} className="lg:hidden p-1 text-fg-muted hover:text-fg-secondary">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 space-y-1">
-          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 ml-2 mt-2">
+          <div className="text-[10px] font-bold text-fg-muted uppercase tracking-widest mb-3 ml-2 mt-2">
             {t('admin.navMenu')}
           </div>
           {navItems.map((item) => (
@@ -73,8 +73,8 @@ export default function AdminLayout() {
               className={({ isActive }) =>
                 `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
                   isActive
-                    ? 'bg-blue-50 text-blue-700 border border-blue-100 shadow-sm'
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-blue-600'
+                    ? 'bg-brand-subtle text-brand border border-border shadow-card'
+                    : 'text-fg-secondary hover:bg-surface-hover hover:text-brand'
                 }`
               }
             >
@@ -84,40 +84,40 @@ export default function AdminLayout() {
           ))}
         </div>
 
-        <div className="p-4 border-t border-slate-100 bg-slate-50/50">
+        <div className="p-4 border-t border-border bg-surface">
           <div className="flex items-center gap-3 px-2 mb-4">
-            <div className="w-10 h-10 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center text-blue-700 font-bold text-sm">
+            <div className="w-10 h-10 rounded-full bg-blue-100 border border-border flex items-center justify-center text-brand font-bold text-sm">
               {user?.fullName?.charAt(0) || 'A'}
             </div>
             <div className="flex-1 overflow-hidden">
-              <p className="text-xs font-bold text-slate-800 truncate">{user?.fullName || t('admin.administrator')}</p>
-              <p className="text-[10px] text-slate-500 truncate">{user?.role || 'ADMIN'}</p>
+              <p className="text-xs font-bold text-fg truncate">{user?.fullName || t('admin.administrator')}</p>
+              <p className="text-[10px] text-fg-muted truncate">{user?.role || 'ADMIN'}</p>
             </div>
           </div>
           <button
             onClick={handleLogout}
-            className="w-full py-2.5 bg-white border border-slate-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 text-slate-600 text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+            className="w-full py-2.5 bg-surface border border-border hover:bg-red-50 hover:text-red-600 hover:border-red-200 text-fg-secondary text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-card"
           >
             <LogOut className="w-4 h-4" /> {t('admin.logoutSystem')}
           </button>
         </div>
       </aside>
 
-      <main className="flex-1 lg:ml-72 flex flex-col min-h-screen bg-slate-50/50">
-        <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 px-4 lg:px-8 py-4 sticky top-0 z-10 flex items-center justify-between">
+      <main className="flex-1 lg:ml-72 flex flex-col min-h-screen bg-surface">
+        <header className="bg-surface/80 backdrop-blur-md border-b border-border px-4 lg:px-8 py-4 sticky top-0 z-10 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-1.5 text-slate-600 hover:text-blue-600 hover:bg-slate-100 rounded-lg">
+            <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-1.5 text-fg-secondary hover:text-brand hover:bg-slate-100 rounded-lg">
               <Menu className="w-5 h-5" />
             </button>
-            <h2 className="text-sm font-bold text-slate-700 flex items-center gap-2">
-              <Settings className="w-4 h-4 text-slate-500" /> {t('admin.portalTitle')}
+            <h2 className="text-sm font-bold text-fg-secondary flex items-center gap-2">
+              <Settings className="w-4 h-4 text-fg-muted" /> {t('admin.portalTitle')}
             </h2>
           </div>
           <div className="flex items-center gap-4">
             <LanguageSwitcher />
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-sm shadow-emerald-500/50"></span>
-              <span className="text-xs font-semibold text-slate-500 hidden sm:inline">{t('admin.systemOnline')}</span>
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-card shadow-emerald-500/50"></span>
+              <span className="text-xs font-semibold text-fg-muted hidden sm:inline">{t('admin.systemOnline')}</span>
             </div>
           </div>
         </header>

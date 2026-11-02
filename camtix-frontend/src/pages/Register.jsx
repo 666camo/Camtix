@@ -153,24 +153,24 @@ export default function Register() {
   const getInputClass = (fieldName) => {
     const hasError = touched[fieldName] && validationErrors[fieldName];
     const isValid = touched[fieldName] && !validationErrors[fieldName];
-    return `w-full bg-slate-50 border ${
+    return `w-full bg-surface border ${
       hasError
         ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
         : isValid
         ? 'border-emerald-400 focus:border-emerald-500 focus:ring-emerald-100'
-        : 'border-slate-200 focus:border-blue-400 focus:ring-blue-100'
-    } rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 transition-all`;
+        : 'border-border focus:border-brand focus:ring-brand/20'
+    } rounded-xl px-4 py-3 text-sm text-fg focus:outline-none focus:ring-2 transition-all`;
   };
 
   return (
     <Aurora className="pt-28 pb-16 px-6">
-      <div className="glass-effect rounded-2xl p-8 max-w-xl w-full border border-slate-200 relative overflow-hidden shadow-2xl">
-        <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-100/50 rounded-full blur-2xl -z-10"></div>
+      <div className="glass-effect rounded-2xl p-8 max-w-xl w-full border border-border relative overflow-hidden shadow-2xl">
+        <div className="absolute -top-10 -right-10 w-32 h-32 bg-brand/10/50 rounded-full blur-2xl -z-10"></div>
 
-        <h2 className="text-3xl font-extrabold text-center mb-2 tracking-tight text-slate-800">
+        <h2 className="text-3xl font-extrabold text-center mb-2 tracking-tight text-fg">
           {t('auth.registerTitle')} <span className="gradient-text">CamTix</span>
         </h2>
-        <p className="text-slate-500 text-sm text-center mb-8">{t('auth.registerSubtitle')}</p>
+        <p className="text-fg-secondary text-sm text-center mb-8">{t('auth.registerSubtitle')}</p>
 
         {error && (
           <div className="mb-6 p-4 rounded-xl border border-red-200 bg-red-50 text-red-600 text-sm flex items-center gap-2 animate-fadeIn">
@@ -182,7 +182,7 @@ export default function Register() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
                 {t('auth.firstName')} <span className="text-red-500">*</span>
               </label>
               <input
@@ -199,7 +199,7 @@ export default function Register() {
               )}
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
                 {t('auth.lastName')} <span className="text-red-500">*</span>
               </label>
               <input
@@ -219,7 +219,7 @@ export default function Register() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
                 {t('auth.age')} <span className="text-red-500">*</span>
               </label>
               <input
@@ -238,7 +238,7 @@ export default function Register() {
               )}
             </div>
             <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
                 {t('auth.phone')} <span className="text-red-500">*</span>
               </label>
               <input
@@ -257,7 +257,7 @@ export default function Register() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
               {t('auth.address')} <span className="text-red-500">*</span>
             </label>
             <textarea
@@ -275,7 +275,7 @@ export default function Register() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
               {t('auth.email')} <span className="text-red-500">*</span>
             </label>
             <input
@@ -294,7 +294,7 @@ export default function Register() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
                 {t('auth.passwordMin6')} <span className="text-red-500">*</span>
               </label>
               <input
@@ -311,7 +311,7 @@ export default function Register() {
               )}
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
                 Konfirmasi Password <span className="text-red-500">*</span>
               </label>
               <input
@@ -333,7 +333,7 @@ export default function Register() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-bold rounded-xl shadow-sm shadow-blue-500/20 hover:shadow-blue-500/30 active:scale-[0.98] transition-all mt-4 text-sm flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-4 bg-brand hover:bg-brand-hover disabled:bg-surface-hover disabled:text-fg-muted text-white font-bold rounded-xl shadow-sm shadow-card hover:shadow-card active:scale-[0.98] transition-all mt-4 text-sm flex items-center justify-center gap-2 cursor-pointer"
             >
               {loading ? (
                 <>
@@ -347,8 +347,8 @@ export default function Register() {
           </Magnet>
         </form>
 
-        <p className="text-center text-xs text-slate-500 mt-6 leading-relaxed">
-          {t('auth.hasAccount')} <Link to="/login" className="text-blue-600 hover:text-blue-700 font-bold transition-colors">{t('auth.loginLink')}</Link>
+        <p className="text-center text-xs text-fg-secondary mt-6 leading-relaxed">
+          {t('auth.hasAccount')} <Link to="/login" className="text-brand hover:text-brand font-bold transition-colors">{t('auth.loginLink')}</Link>
         </p>
       </div>
     </Aurora>

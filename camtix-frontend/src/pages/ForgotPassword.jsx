@@ -36,9 +36,9 @@ export default function ForgotPassword() {
 
   return (
     <Aurora className="px-6 py-20">
-      <div className="glass-effect rounded-2xl p-8 max-w-md w-full border border-slate-200 relative overflow-hidden shadow-2xl">
-        <h2 className="text-3xl font-extrabold text-center mb-2 tracking-tight text-slate-800">{t('auth.forgotTitle')}</h2>
-        <p className="text-slate-500 text-sm text-center mb-8">{t('auth.forgotSubtitle')}</p>
+      <div className="glass-effect rounded-2xl p-8 max-w-md w-full border border-border relative overflow-hidden shadow-2xl">
+        <h2 className="text-3xl font-extrabold text-center mb-2 tracking-tight text-fg">{t('auth.forgotTitle')}</h2>
+        <p className="text-fg-secondary text-sm text-center mb-8">{t('auth.forgotSubtitle')}</p>
 
         {error && (
           <div className="mb-6 p-4 rounded-xl border border-red-200 bg-red-50 text-red-600 text-sm flex items-center gap-2 animate-fadeIn">
@@ -62,7 +62,7 @@ export default function ForgotPassword() {
             <div className="space-y-3">
               <Link
                 to="/reset-password"
-                className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-sm"
+                className="w-full py-3.5 bg-brand hover:bg-brand-hover text-white font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-sm"
               >
                 <KeyRound className="w-4 h-4" />
                 {t('auth.openResetPage')}
@@ -70,7 +70,7 @@ export default function ForgotPassword() {
               
               <Link
                 to="/login"
-                className="w-full py-3.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold rounded-xl text-sm transition-all flex items-center justify-center shadow-sm"
+                className="w-full py-3.5 bg-surface hover:bg-surface border border-border text-fg-secondary font-bold rounded-xl text-sm transition-all flex items-center justify-center shadow-sm"
               >
                 {t('auth.backToLogin')}
               </Link>
@@ -79,13 +79,13 @@ export default function ForgotPassword() {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">{t('auth.accountEmail')}</label>
+              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('auth.accountEmail')}</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full bg-slate-50 border border-slate-200 focus:border-blue-400 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all"
+                className="w-full bg-surface border border-border focus:border-brand rounded-xl px-4 py-3 text-sm text-fg focus:outline-none focus:ring-2 focus:ring-brand/20 transition-all"
                 placeholder="name@example.com"
               />
             </div>
@@ -94,22 +94,22 @@ export default function ForgotPassword() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-bold rounded-xl active:scale-[0.98] transition-all mt-4 text-sm flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                className="w-full py-4 bg-brand hover:bg-brand-hover disabled:bg-surface-hover disabled:text-fg-muted text-white font-bold rounded-xl active:scale-[0.98] transition-all mt-4 text-sm flex items-center justify-center gap-2 cursor-pointer shadow-md"
               >
                 {loading ? t('auth.sending') : t('auth.sendResetLink')}
               </button>
             </Magnet>
 
             <div className="pt-2 text-center space-y-2">
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-fg-secondary">
                 {t('auth.hasTokenQuestion')}{' '}
-                <Link to="/reset-password" className="text-blue-600 hover:text-blue-700 font-bold transition-colors inline-flex items-center gap-0.5">
+                <Link to="/reset-password" className="text-brand hover:text-brand font-bold transition-colors inline-flex items-center gap-0.5">
                   {t('auth.resetPasswordNow')} <ArrowRight className="w-3 h-3" />
                 </Link>
               </p>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-fg-muted">
                 {t('auth.rememberPassword')}{' '}
-                <Link to="/login" className="text-slate-700 hover:text-blue-600 font-bold transition-colors">
+                <Link to="/login" className="text-fg-secondary hover:text-brand font-bold transition-colors">
                   {t('auth.loginBtn')}
                 </Link>
               </p>

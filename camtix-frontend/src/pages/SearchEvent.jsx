@@ -131,32 +131,32 @@ export default function SearchEvent() {
     setPage(0);
   }, [sortBy, pageSize, events]);
 
-  const inputClass = "w-full bg-slate-50 border border-slate-200 focus:border-blue-400 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all";
+  const inputClass = "w-full bg-surface border border-border focus:border-brand rounded-xl px-4 py-3 text-sm text-fg focus:outline-none focus:ring-2 focus:ring-brand/20 transition-all";
 
   return (
-    <div className="gradient-bg min-h-screen text-slate-800 pb-20 pt-28 px-6 md:px-12">
+    <div className="gradient-bg min-h-screen text-fg pb-20 pt-28 px-6 md:px-12">
       <div className="max-w-7xl mx-auto space-y-8">
         
         {/* Title */}
         <div className="text-center md:text-left">
-          <span className="text-xs font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
+          <span className="text-xs font-bold text-brand uppercase tracking-widest bg-brand/10 px-3 py-1 rounded-full border border-border">
             {t('search.badge')}
           </span>
-          <h1 className="text-3xl font-extrabold tracking-tight mt-2 text-slate-800">
+          <h1 className="text-3xl font-extrabold tracking-tight mt-2 text-fg">
             {t('search.title')} <span className="gradient-text">{t('search.titleHighlight')}</span>
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-fg-secondary mt-1">
             {t('search.subtitle')}
           </p>
         </div>
 
         {/* Filter Bar */}
-        <div className="glass-effect rounded-2xl p-6 border border-slate-200 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-blue-100 rounded-full blur-2xl -z-10"></div>
+        <div className="glass-effect rounded-2xl p-6 border border-border relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-brand/10 rounded-full blur-2xl -z-10"></div>
           
           <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-6 gap-4 items-end">
             <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">{t('search.keywordLabel')}</label>
+              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('search.keywordLabel')}</label>
               <input
                 type="text"
                 name="keyword"
@@ -168,7 +168,7 @@ export default function SearchEvent() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">{t('search.cityLabel')}</label>
+              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('search.cityLabel')}</label>
               <select
                 name="city"
                 value={query.city}
@@ -183,7 +183,7 @@ export default function SearchEvent() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">{t('search.categoryLabel')}</label>
+              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('search.categoryLabel')}</label>
               <select
                 name="category"
                 value={query.category}
@@ -198,7 +198,7 @@ export default function SearchEvent() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">{t('search.startDate')}</label>
+              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('search.startDate')}</label>
               <input
                 type="date"
                 name="startDate"
@@ -209,7 +209,7 @@ export default function SearchEvent() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">{t('search.endDate')}</label>
+              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('search.endDate')}</label>
               <input
                 type="date"
                 name="endDate"
@@ -221,11 +221,11 @@ export default function SearchEvent() {
 
             <div className="md:col-span-6 flex flex-col sm:flex-row justify-between items-center gap-4 mt-2">
               <div className="flex items-center gap-2 w-full sm:w-auto">
-                <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Urutkan:</span>
+                <span className="text-xs font-semibold text-fg-secondary whitespace-nowrap">Urutkan:</span>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+                  className="bg-surface border border-border rounded-xl px-3 py-2 text-xs font-bold text-fg-secondary focus:outline-none focus:ring-1 focus:ring-brand cursor-pointer"
                 >
                   <option value="newest">Terbaru Ditambahkan</option>
                   <option value="oldest">Terlama Ditambahkan</option>
@@ -242,14 +242,14 @@ export default function SearchEvent() {
                     setQuery({ keyword: '', city: '', category: '', startDate: '', endDate: '' });
                     setTimeout(() => handleSearch(), 100);
                   }}
-                  className="px-6 py-3 bg-slate-50 rounded-xl text-sm font-semibold hover:bg-slate-100 border border-slate-200 text-slate-600 transition-colors cursor-pointer"
+                  className="px-6 py-3 bg-surface rounded-xl text-sm font-semibold hover:bg-surface-hover border border-border text-fg-secondary transition-colors cursor-pointer"
                 >
                   {t('search.resetFilter')}
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-8 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 disabled:text-slate-500 text-white font-bold rounded-xl shadow-sm shadow-blue-500/20 hover:shadow-blue-500/30 active:scale-95 transition-all text-sm cursor-pointer flex items-center gap-2"
+                  className="px-8 py-3 bg-brand hover:bg-brand-hover disabled:bg-slate-300 disabled:text-fg-secondary text-white font-bold rounded-xl shadow-sm shadow-card hover:shadow-card active:scale-95 transition-all text-sm cursor-pointer flex items-center gap-2"
                 >
                   {loading ? (
                     <>
@@ -277,14 +277,14 @@ export default function SearchEvent() {
         <div>
           {loading ? (
             <div className="py-24 flex flex-col items-center justify-center gap-3">
-              <div className="w-10 h-10 rounded-full border-4 border-blue-100 border-t-blue-500 animate-spin"></div>
-              <p className="text-sm text-slate-500">{t('search.loading')}</p>
+              <div className="w-10 h-10 rounded-full border-4 border-border border-t-blue-500 animate-spin"></div>
+              <p className="text-sm text-fg-secondary">{t('search.loading')}</p>
             </div>
           ) : events.length === 0 ? (
-            <div className="glass-effect rounded-2xl py-20 text-center text-slate-500 border border-slate-200">
-              <Search className="w-10 h-10 text-slate-400 mx-auto mb-3" />
-              <p className="text-base font-bold text-slate-700">{t('search.noResult')}</p>
-              <p className="text-xs text-slate-400 mt-1">{t('search.noResultSub')}</p>
+            <div className="glass-effect rounded-2xl py-20 text-center text-fg-secondary border border-border">
+              <Search className="w-10 h-10 text-fg-muted mx-auto mb-3" />
+              <p className="text-base font-bold text-fg-secondary">{t('search.noResult')}</p>
+              <p className="text-xs text-fg-muted mt-1">{t('search.noResultSub')}</p>
             </div>
           ) : (
             <div className="space-y-8">
@@ -294,8 +294,8 @@ export default function SearchEvent() {
                   const displayStatus = evt.status === 'CANCELLED' ? 'CANCELLED' : expired ? 'FINISHED' : (evt.status || 'UPCOMING');
 
                   return (
-                    <div key={evt.idEvent} className="glass-effect rounded-2xl overflow-hidden hover:scale-[1.02] hover:shadow-xl transition-all duration-300 flex flex-col group border border-slate-200">
-                      <div className="relative h-48 overflow-hidden bg-slate-100">
+                    <div key={evt.idEvent} className="glass-effect rounded-2xl overflow-hidden hover:scale-[1.02] hover:shadow-xl transition-all duration-300 flex flex-col group border border-border">
+                      <div className="relative h-48 overflow-hidden bg-surface-hover">
                         {evt.picture ? (
                           <img 
                             src={evt.picture} 
@@ -303,44 +303,44 @@ export default function SearchEvent() {
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-slate-400 font-bold bg-slate-100">
+                          <div className="w-full h-full flex items-center justify-center text-fg-muted font-bold bg-surface-hover">
                             {t('home.noImage')}
                           </div>
                         )}
-                        <span className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-blue-600 border border-blue-200">
+                        <span className="absolute top-4 left-4 bg-surface/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-brand border border-border">
                           {evt.category || 'Event'}
                         </span>
-                        <span className={`absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-extrabold border ${
-                          displayStatus === 'UPCOMING' ? 'text-blue-600 border-blue-200' : 
+                        <span className={`absolute top-4 right-4 bg-surface/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-extrabold border ${
+                          displayStatus === 'UPCOMING' ? 'text-brand border-border' : 
                           displayStatus === 'ONGOING' ? 'text-emerald-600 border-emerald-200 animate-pulse' :
                           displayStatus === 'CANCELLED' ? 'text-red-600 border-red-200' :
-                          'text-slate-500 border-slate-200'
+                          'text-fg-secondary border-border'
                         }`}>
                           {displayStatus}
                         </span>
                       </div>
                       <div className="p-6 flex-1 flex flex-col">
-                        <span className="text-[10px] text-blue-600 uppercase tracking-widest font-bold mb-1 flex items-center gap-1">
-                          <MapPin className="w-3.5 h-3.5 text-blue-600" /> {evt.city} • {evt.location || t('home.location')}
+                        <span className="text-[10px] text-brand uppercase tracking-widest font-bold mb-1 flex items-center gap-1">
+                          <MapPin className="w-3.5 h-3.5 text-brand" /> {evt.city} • {evt.location || t('home.location')}
                         </span>
-                        <h3 className="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors mb-2 leading-snug">
+                        <h3 className="text-lg font-bold text-fg group-hover:text-brand transition-colors mb-2 leading-snug">
                           {evt.eventName}
                         </h3>
-                        <p className="text-xs text-slate-500 mb-6 flex-1 line-clamp-2">
+                        <p className="text-xs text-fg-secondary mb-6 flex-1 line-clamp-2">
                           {evt.description || t('search.noDesc')}
                         </p>
                         
-                        <div className="flex items-center justify-between border-t border-slate-100 pt-4 mt-auto">
+                        <div className="flex items-center justify-between border-t border-border pt-4 mt-auto">
                           <div>
-                            <span className="text-[10px] text-slate-400 uppercase tracking-wider block">{t('search.date')}</span>
-                            <span className="text-xs font-semibold text-slate-700">{evt.eventDate}</span>
+                            <span className="text-[10px] text-fg-muted uppercase tracking-wider block">{t('search.date')}</span>
+                            <span className="text-xs font-semibold text-fg-secondary">{evt.eventDate}</span>
                           </div>
                           <Link 
                             to={`/events/${evt.slug || evt.idEvent}`}
                             className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all duration-300 cursor-pointer ${
                               expired
-                                ? 'bg-slate-100 text-slate-500 border-slate-200 hover:bg-slate-200'
-                                : 'bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-600 border-blue-200 hover:border-blue-600'
+                                ? 'bg-surface-hover text-fg-secondary border-border hover:bg-surface-hover'
+                                : 'bg-brand/10 hover:bg-brand hover:text-white text-brand border-border hover:border-blue-600'
                             }`}
                           >
                             {expired ? (evt.status === 'CANCELLED' ? t('detail.eventCancelled') : t('detail.eventFinished')) : t('search.buyTicket')}
@@ -352,7 +352,7 @@ export default function SearchEvent() {
                 })}
               </div>
 
-              <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+              <div className="bg-surface rounded-2xl border border-border overflow-hidden shadow-sm">
                 <Pagination
                   currentPage={page}
                   totalPages={totalPages}

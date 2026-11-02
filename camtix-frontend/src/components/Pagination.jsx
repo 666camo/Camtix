@@ -43,24 +43,24 @@ export default function Pagination({
   const pages = getPageNumbers();
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-4 bg-white border-t border-slate-100 rounded-b-2xl">
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-4 bg-surface border-t border-border rounded-b-2xl">
       {/* Information text */}
-      <div className="text-xs text-slate-500 font-medium">
-        Showing <span className="font-bold text-slate-800">{startItem}</span> to{' '}
-        <span className="font-bold text-slate-800">{endItem}</span> of{' '}
-        <span className="font-bold text-slate-800">{totalItems}</span> entries
+      <div className="text-xs text-fg-secondary font-medium">
+        Showing <span className="font-bold text-fg">{startItem}</span> to{' '}
+        <span className="font-bold text-fg">{endItem}</span> of{' '}
+        <span className="font-bold text-fg">{totalItems}</span> entries
       </div>
 
       {/* Controls */}
       <div className="flex items-center gap-3">
         {/* Page size selector */}
         {onPageSizeChange && (
-          <div className="flex items-center gap-1.5 text-xs text-slate-500">
+          <div className="flex items-center gap-1.5 text-xs text-fg-secondary">
             <span>Show</span>
             <select
               value={pageSize}
               onChange={(e) => onPageSizeChange(Number(e.target.value))}
-              className="px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+              className="px-2 py-1 bg-surface border border-border rounded-lg text-xs font-semibold text-fg-secondary focus:outline-none focus:ring-1 focus:ring-brand cursor-pointer"
             >
               {pageSizeOptions.map((opt) => (
                 <option key={opt} value={opt}>
@@ -76,7 +76,7 @@ export default function Pagination({
           <button
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 0}
-            className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="p-1.5 rounded-lg border border-border text-fg-secondary hover:bg-surface disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             title="Previous Page"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -88,8 +88,8 @@ export default function Pagination({
               onClick={() => onPageChange(p)}
               className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${
                 p === currentPage
-                  ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/30'
-                  : 'text-slate-600 hover:bg-slate-100 border border-slate-200'
+                  ? 'bg-brand text-white shadow-sm shadow-card'
+                  : 'text-fg-secondary hover:bg-surface-hover border border-border'
               }`}
             >
               {p + 1}
@@ -99,7 +99,7 @@ export default function Pagination({
           <button
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage >= totalPages - 1}
-            className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="p-1.5 rounded-lg border border-border text-fg-secondary hover:bg-surface disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             title="Next Page"
           >
             <ChevronRight className="w-4 h-4" />

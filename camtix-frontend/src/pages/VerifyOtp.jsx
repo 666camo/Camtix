@@ -96,12 +96,12 @@ export default function VerifyOtp() {
 
   return (
     <div className="gradient-bg min-h-screen flex items-center justify-center px-6">
-      <div className="glass-effect rounded-2xl p-8 max-w-md w-full border border-slate-200 relative overflow-hidden">
+      <div className="glass-effect rounded-2xl p-8 max-w-md w-full border border-border relative overflow-hidden">
         {/* Accent */}
-        <div className="absolute -top-10 -left-10 w-32 h-32 bg-blue-100 rounded-full blur-2xl -z-10"></div>
+        <div className="absolute -top-10 -left-10 w-32 h-32 bg-brand/10 rounded-full blur-2xl -z-10"></div>
         
-        <h2 className="text-3xl font-extrabold text-center mb-2 tracking-tight text-slate-800">{t('auth.otpTitle')} <span className="gradient-text">OTP</span></h2>
-        <p className="text-slate-500 text-sm text-center mb-8">{t('auth.otpSubtitle')}</p>
+        <h2 className="text-3xl font-extrabold text-center mb-2 tracking-tight text-fg">{t('auth.otpTitle')} <span className="gradient-text">OTP</span></h2>
+        <p className="text-fg-secondary text-sm text-center mb-8">{t('auth.otpSubtitle')}</p>
 
         {error && (
           <div className="mb-6 p-4 rounded-xl border border-red-200 bg-red-50 text-red-600 text-sm flex items-center gap-2 animate-fadeIn">
@@ -119,25 +119,25 @@ export default function VerifyOtp() {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">{t('auth.email')}</label>
+            <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-2">{t('auth.email')}</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full bg-slate-50 border border-slate-200 focus:border-blue-400 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all"
+              className="w-full bg-surface border border-border focus:border-brand rounded-xl px-4 py-3 text-sm text-fg focus:outline-none focus:ring-2 focus:ring-brand/20 transition-all"
               placeholder="name@example.com"
             />
           </div>
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('auth.otpCode')}</label>
+              <label className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider">{t('auth.otpCode')}</label>
               <button
                 type="button"
                 onClick={handleResend}
                 disabled={timer > 0 || resendLoading}
-                className="text-xs font-bold text-blue-600 hover:text-blue-700 disabled:text-slate-400 transition-colors"
+                className="text-xs font-bold text-brand hover:text-brand disabled:text-fg-muted transition-colors"
               >
                 {timer > 0 ? t('auth.resendOtpTimer', { timer }) : t('auth.resendOtp')}
               </button>
@@ -147,7 +147,7 @@ export default function VerifyOtp() {
               value={otpCode}
               onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
               required
-              className="w-full bg-slate-50 border border-slate-200 focus:border-blue-400 rounded-xl px-4 py-3 text-center text-xl font-bold tracking-widest text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all"
+              className="w-full bg-surface border border-border focus:border-brand rounded-xl px-4 py-3 text-center text-xl font-bold tracking-widest text-fg focus:outline-none focus:ring-2 focus:ring-brand/20 transition-all"
               placeholder="000000"
             />
           </div>
@@ -155,7 +155,7 @@ export default function VerifyOtp() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-bold rounded-xl shadow-sm shadow-blue-500/20 hover:shadow-blue-500/30 active:scale-[0.98] transition-all mt-6 text-sm flex items-center justify-center gap-2"
+            className="w-full py-4 bg-brand hover:bg-brand-hover disabled:bg-surface-hover disabled:text-fg-muted text-white font-bold rounded-xl shadow-sm shadow-card hover:shadow-card active:scale-[0.98] transition-all mt-6 text-sm flex items-center justify-center gap-2"
           >
             {loading ? (
               <>

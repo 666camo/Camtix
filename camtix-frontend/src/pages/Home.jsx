@@ -1,446 +1,372 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { motion, useInView } from 'framer-motion';
 import eventService from '../services/eventService';
-import SplitText from '../components/SplitText';
-import Magnet from '../components/Magnet';
-import { 
-  Sparkles, 
-  Flame, 
-  MapPin, 
-  Search, 
-  Calendar, 
-  ShieldCheck, 
-  Zap, 
-  RefreshCw, 
-  Music, 
-  Ticket, 
+import {
+  Search,
+  MapPin,
   ArrowRight,
-  TrendingUp,
-  Star,
-  CheckCircle2
+  ShieldCheck,
+  Zap,
+  RefreshCw,
+  Music,
 } from 'lucide-react';
 
-const POPULAR_GENRES = [
-  { key: 'ALL', label: 'Semua Genre', icon: Music },
-  { key: 'Pop/Rock', label: 'Pop / Rock', icon: Flame },
-  { key: 'K-Pop', label: 'K-Pop', icon: Sparkles },
-  { key: 'Electronic', label: 'Electronic / EDM', icon: Zap },
-  { key: 'Jazz', label: 'Jazz & Soul', icon: Music },
-  { key: 'Festival', label: 'Festival', icon: Ticket },
+const GENRES = [
+  { key: 'ALL', label: 'Semua' },
+  { key: 'Pop/Rock', label: 'Pop / Rock' },
+  { key: 'K-Pop', label: 'K-Pop' },
+  { key: 'Electronic', label: 'EDM' },
+  { key: 'Jazz', label: 'Jazz' },
+  { key: 'Festival', label: 'Festival' },
 ];
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      delay: i * 0.08,
+      ease: [0.25, 0.8, 0.25, 1],
+    },
+  }),
+};
+
+function Section({ children, className = '', delay = 0 }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-60px' });
+
+  return (
+    <motion.section
+      ref={ref}
+      initial={{ opacity: 0, y: 32 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay, ease: [0.25, 0.8, 0.25, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.section>
+  );
+}
 
 export default function Home() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  
+
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  
-  // Interactive Quick Search & Filter states
   const [searchKeyword, setSearchKeyword] = useState('');
   const [selectedGenre, setSelectedGenre] = useState('ALL');
 
-  const fetchEvents = async () => {
-    setLoading(true);
-    setError('');
-    try {
-      const response = await eventService.getAllEvents();
-      if (response && response.data) {
-        setEvents(response.data);
-      } else {
-        setError(t('home.errorFormat'));
-      }
-    } catch (err) {
-      console.error(err);
-      setError(t('home.errorLoad'));
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchEvents();
-  }, []);
+    (async () => {
+      setLoading(true);
+      try {
+        const res = await eventService.getAllEvents();
+        setEvents(res?.data || []);
+      } catch {
+        setError(t('home.errorLoad'));
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [t]);
 
-  const isEventExpired = (ev) => {
+  const isExpired = (ev) => {
     if (!ev) return false;
     if (ev.status === 'FINISHED' || ev.status === 'CANCELLED') return true;
     if (!ev.eventDate) return false;
-    
-    const eventDateObj = new Date(ev.eventDate);
+    const d = new Date(ev.eventDate);
     if (ev.eventTime) {
-      const [hours, minutes] = ev.eventTime.split(':').map(Number);
-      if (!isNaN(hours) && !isNaN(minutes)) {
-        eventDateObj.setHours(hours, minutes, 0, 0);
-        return eventDateObj < new Date();
+      const [h, m] = ev.eventTime.split(':').map(Number);
+      if (!isNaN(h) && !isNaN(m)) {
+        d.setHours(h, m, 0, 0);
+        return d < new Date();
       }
     }
-    eventDateObj.setHours(23, 59, 59, 999);
-    return eventDateObj < new Date();
+    d.setHours(23, 59, 59, 999);
+    return d < new Date();
   };
 
-  const handleQuickSearchSubmit = (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
-    const query = searchKeyword.trim();
-    if (query) {
-      navigate(`/search?keyword=${encodeURIComponent(query)}`);
-    } else {
-      navigate('/search');
-    }
+    const q = searchKeyword.trim();
+    navigate(q ? `/search?keyword=${encodeURIComponent(q)}` : '/search');
   };
 
-  // Filter events by selected Genre tab
-  const filteredEvents = events.filter((ev) => {
+  const filtered = events.filter((ev) => {
     if (selectedGenre === 'ALL') return true;
     const cat = (ev.category || '').toLowerCase();
-    const target = selectedGenre.toLowerCase();
-    return cat.includes(target) || (target === 'pop/rock' && (cat.includes('pop') || cat.includes('rock')));
+    const tgt = selectedGenre.toLowerCase();
+    return cat.includes(tgt) || (tgt === 'pop/rock' && (cat.includes('pop') || cat.includes('rock')));
   });
 
+  const features = [
+    { title: t('home.feat1Title'), desc: t('home.feat1Desc'), icon: ShieldCheck },
+    { title: t('home.feat2Title'), desc: t('home.feat2Desc'), icon: Zap },
+    { title: t('home.feat3Title'), desc: t('home.feat3Desc'), icon: RefreshCw },
+  ];
+
   return (
-    <div className="gradient-bg min-h-screen pb-24 pt-28 space-y-24">
-      
-      {/* ── HERO SECTION ── */}
-      <header className="relative px-6 max-w-7xl mx-auto text-center">
-        {/* Soft Ambient Mesh Glows */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-blue-200/50 via-indigo-200/40 to-violet-200/30 rounded-full blur-3xl -z-10 pointer-events-none" />
+    <div className="min-h-screen pb-24 pt-28 space-y-20">
 
-        <div className="max-w-4xl mx-auto space-y-6">
-          {/* Glowing Top Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 border border-indigo-100 shadow-sm shadow-indigo-100/50 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-indigo-600 animate-pulse" />
-            <span className="text-xs font-bold uppercase tracking-wider text-indigo-700">
-              {t('home.badge')}
-            </span>
-          </div>
+      {/* ── HERO ── */}
+      <header className="relative px-6 max-w-5xl mx-auto text-center">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          className="space-y-5"
+        >
+          <motion.h1
+            variants={fadeUp}
+            custom={0}
+            className="text-4xl sm:text-5xl md:text-6xl font-display font-800 tracking-tight text-fg leading-[1.1]"
+          >
+            {t('home.title1')}{' '}
+            <span className="gradient-text">{t('home.title2')}</span>
+          </motion.h1>
 
-          {/* Main Headline */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-slate-900 leading-[1.15]">
-            <SplitText text={t('home.title1')} /> <br className="hidden sm:inline" />
-            <span className="gradient-text"><SplitText text={t('home.title2')} /></span>
-          </h1>
-
-          {/* Subtitle */}
-          <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed font-normal">
+          <motion.p
+            variants={fadeUp}
+            custom={1}
+            className="text-base sm:text-lg text-fg-secondary max-w-xl mx-auto leading-relaxed"
+          >
             {t('home.subtitle')}
-          </p>
+          </motion.p>
 
-          {/* Floating Search Bar */}
-          <div className="pt-4 max-w-2xl mx-auto">
-            <form 
-              onSubmit={handleQuickSearchSubmit}
-              className="p-2 sm:p-2.5 bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-full border border-slate-200/90 shadow-xl shadow-indigo-950/5 flex flex-col sm:flex-row items-center gap-2 transition-all hover:border-indigo-300 focus-within:ring-4 focus-within:ring-indigo-100"
+          <motion.form
+            variants={fadeUp}
+            custom={2}
+            onSubmit={handleSearch}
+            className="max-w-lg mx-auto p-1.5 bg-surface rounded-2xl sm:rounded-full border border-border shadow-card flex flex-col sm:flex-row items-center gap-1.5 transition-shadow focus-within:shadow-card-hover focus-within:ring-2 ring-ring"
+          >
+            <div className="flex items-center gap-3 px-4 w-full flex-1">
+              <Search className="w-4 h-4 text-fg-muted flex-shrink-0" />
+              <input
+                type="text"
+                value={searchKeyword}
+                onChange={(e) => setSearchKeyword(e.target.value)}
+                placeholder={t('home.quickSearchPlaceholder')}
+                className="w-full bg-transparent text-sm text-fg placeholder:text-fg-muted focus:outline-none py-2"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full sm:w-auto px-6 py-2.5 bg-brand hover:bg-brand-hover text-white font-600 rounded-xl sm:rounded-full text-sm transition-colors cursor-pointer flex items-center justify-center gap-2"
             >
-              <div className="flex items-center gap-3 px-4 w-full flex-1">
-                <Search className="w-5 h-5 text-indigo-600 flex-shrink-0" />
-                <input
-                  type="text"
-                  value={searchKeyword}
-                  onChange={(e) => setSearchKeyword(e.target.value)}
-                  placeholder={t('home.quickSearchPlaceholder')}
-                  className="w-full bg-transparent text-sm text-slate-800 placeholder-slate-400 focus:outline-none py-2"
-                />
-              </div>
+              <span>{t('home.searchAction')}</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </motion.form>
 
+          <motion.div
+            variants={fadeUp}
+            custom={3}
+            className="flex flex-wrap items-center justify-center gap-2 pt-1"
+          >
+            {GENRES.map((g) => (
               <button
-                type="submit"
-                className="w-full sm:w-auto px-7 py-3 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl sm:rounded-full text-sm shadow-md shadow-indigo-500/20 active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-2"
+                key={g.key}
+                onClick={() => setSelectedGenre(g.key)}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-600 transition-all cursor-pointer ${
+                  selectedGenre === g.key
+                    ? 'bg-fg text-[var(--bg)] shadow-sm'
+                    : 'bg-surface text-fg-secondary border border-border hover:border-border-strong'
+                }`}
               >
-                <span>{t('home.searchAction')}</span>
-                <ArrowRight className="w-4 h-4" />
+                {g.label}
               </button>
-            </form>
-          </div>
-
-          {/* Genre Pills */}
-          <div className="pt-3 flex flex-wrap items-center justify-center gap-2">
-            {POPULAR_GENRES.map((genre) => {
-              const Icon = genre.icon;
-              const isSelected = selectedGenre === genre.key;
-              return (
-                <button
-                  key={genre.key}
-                  onClick={() => setSelectedGenre(genre.key)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                    isSelected
-                      ? 'bg-slate-900 text-white shadow-md shadow-slate-900/10 scale-105'
-                      : 'bg-white/80 hover:bg-white text-slate-600 border border-slate-200/80 hover:border-slate-300'
-                  }`}
-                >
-                  <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-amber-400' : 'text-slate-400'}`} />
-                  <span>{genre.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
+            ))}
+          </motion.div>
+        </motion.div>
       </header>
 
-      {/* ── STATS METRICS BAR ── */}
-      <section className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-          {[
-            { value: `${events.length > 0 ? events.length : '12'}+`, label: t('home.statsEvents'), icon: Calendar, color: 'text-blue-600', bg: 'bg-blue-50/80' },
-            { value: '100K+', label: t('home.statsTickets'), icon: Ticket, color: 'text-indigo-600', bg: 'bg-indigo-50/80' },
-            { value: '100%', label: t('home.statsSecurity'), icon: ShieldCheck, color: 'text-emerald-600', bg: 'bg-emerald-50/80' },
-            { value: '4.9/5', label: t('home.statsSatisfaction'), icon: Star, color: 'text-amber-500', bg: 'bg-amber-50/80' },
-          ].map((stat, idx) => {
-            const Icon = stat.icon;
-            return (
-              <div 
-                key={idx} 
-                className="p-5 sm:p-6 bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4 transition-transform hover:-translate-y-1"
-              >
-                <div className={`w-12 h-12 rounded-2xl ${stat.bg} ${stat.color} flex items-center justify-center flex-shrink-0 shadow-inner`}>
-                  <Icon className="w-6 h-6" />
-                </div>
-                <div>
-                  <div className="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
-                    {stat.value}
-                  </div>
-                  <div className="text-xs font-semibold text-slate-500 mt-0.5">
-                    {stat.label}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ── CONCERT CATALOG SECTION ── */}
-      <section id="katalog" className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
-          <div className="text-left space-y-1">
-            <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-indigo-600">
-              <TrendingUp className="w-4 h-4" />
-              <span>Trending Now</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
-              <Flame className="w-8 h-8 text-orange-500 fill-orange-500/20 flex-shrink-0" />
+      {/* ── EVENT CATALOG ── */}
+      <Section className="max-w-6xl mx-auto px-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-3">
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-display font-700 text-fg tracking-tight">
               {t('home.catalogTitle')}
             </h2>
-            <p className="text-slate-500 text-sm font-normal">
-              {t('home.catalogSubtitle')}
-            </p>
+            <p className="text-fg-secondary text-sm mt-1">{t('home.catalogSubtitle')}</p>
           </div>
-
-          <Link 
-            to="/search" 
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-slate-50 text-indigo-600 font-bold rounded-xl border border-slate-200 shadow-sm hover:border-indigo-200 transition-all text-xs self-start md:self-auto"
+          <Link
+            to="/search"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-surface text-brand font-600 rounded-xl border border-border hover:border-border-strong transition-colors text-xs self-start md:self-auto"
           >
-            <span>{t('home.searchMore')}</span>
+            {t('home.searchMore')}
+            <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
 
         {loading ? (
-          <div className="py-24 flex flex-col items-center justify-center gap-3">
-            <div className="w-12 h-12 rounded-full border-4 border-indigo-100 border-t-indigo-600 animate-spin" />
-            <p className="text-sm font-semibold text-slate-500">{t('home.loading')}</p>
+          <div className="py-20 flex flex-col items-center gap-3">
+            <div className="w-10 h-10 rounded-full border-3 border-border border-t-brand animate-spin" />
+            <p className="text-sm font-500 text-fg-muted">{t('home.loading')}</p>
           </div>
         ) : error && events.length === 0 ? (
-          <div className="p-6 rounded-2xl border border-red-200 bg-red-50/80 text-red-600 text-sm text-center">
+          <div className="p-5 rounded-2xl border border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 text-sm text-center">
             {error}
           </div>
-        ) : filteredEvents.length === 0 ? (
-          <div className="py-16 text-center bg-white/60 backdrop-blur-sm rounded-3xl border border-slate-200 p-8 space-y-3">
-            <Music className="w-12 h-12 text-slate-300 mx-auto" />
-            <h3 className="text-base font-bold text-slate-700">Tidak ada konser pada kategori ini</h3>
-            <p className="text-xs text-slate-400">Pilih kategori lain atau cari menggunakan kata kunci.</p>
+        ) : filtered.length === 0 ? (
+          <div className="py-14 text-center bg-surface rounded-2xl border border-border p-8 space-y-2">
+            <Music className="w-10 h-10 text-fg-muted mx-auto" />
+            <h3 className="text-sm font-600 text-fg">Tidak ada konser pada kategori ini</h3>
+            <p className="text-xs text-fg-muted">Pilih kategori lain atau cari menggunakan kata kunci.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredEvents.map((evt) => {
-              const expired = isEventExpired(evt);
-              const displayStatus = evt.status === 'CANCELLED' ? 'CANCELLED' : expired ? 'FINISHED' : (evt.status || 'UPCOMING');
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {filtered.map((evt, i) => {
+              const expired = isExpired(evt);
+              const status = evt.status === 'CANCELLED' ? 'CANCELLED' : expired ? 'FINISHED' : (evt.status || 'UPCOMING');
 
-              // Format month and day for the date block
-              let dateMonth = 'EVT';
-              let dateDay = '--';
+              let month = '';
+              let day = '--';
               if (evt.eventDate) {
                 try {
                   const d = new Date(evt.eventDate);
-                  dateMonth = d.toLocaleDateString('id-ID', { month: 'short' }).toUpperCase();
-                  dateDay = d.toLocaleDateString('id-ID', { day: '2-digit' });
-                } catch {
-                  // Fallback
-                }
+                  month = d.toLocaleDateString('id-ID', { month: 'short' }).toUpperCase();
+                  day = d.toLocaleDateString('id-ID', { day: '2-digit' });
+                } catch { /* date parse fallback */ }
               }
 
               return (
-                <div
+                <motion.div
                   key={evt.idEvent}
-                  className="luxe-card luxe-card-interactive rounded-3xl overflow-hidden flex flex-col group h-full relative"
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: '-30px' }}
+                  custom={i % 3}
+                  className="group bg-surface rounded-2xl border border-border shadow-card hover:shadow-card-hover overflow-hidden flex flex-col transition-shadow duration-300"
                 >
-                  {/* Poster Image & Badges */}
-                  <div className="relative h-56 overflow-hidden bg-slate-100">
+                  <div className="relative h-52 overflow-hidden bg-surface-hover">
                     {evt.picture ? (
-                      <img 
-                        src={evt.picture} 
-                        alt={evt.eventName} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
+                      <img
+                        src={evt.picture}
+                        alt={evt.eventName}
+                        className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500 ease-out"
                       />
                     ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 font-bold bg-slate-100 gap-2">
-                        <Music className="w-8 h-8 opacity-40" />
-                        <span className="text-[11px] uppercase tracking-wider">{t('home.noImage')}</span>
+                      <div className="w-full h-full flex flex-col items-center justify-center text-fg-muted gap-2">
+                        <Music className="w-7 h-7 opacity-40" />
+                        <span className="text-[10px] uppercase tracking-wider font-500">{t('home.noImage')}</span>
                       </div>
                     )}
 
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-black/20" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
-                    {/* Date Block Overlay (Top Left) */}
-                    <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md rounded-2xl px-3 py-1.5 text-center shadow-lg border border-white/60">
-                      <span className="block text-[9px] font-black text-indigo-600 uppercase tracking-wider">
-                        {dateMonth}
-                      </span>
-                      <span className="block text-base font-black text-slate-900 leading-none">
-                        {dateDay}
-                      </span>
+                    <div className="absolute top-3 left-3 bg-surface/90 backdrop-blur-sm rounded-xl px-2.5 py-1 text-center border border-border">
+                      <span className="block text-[9px] font-700 text-brand uppercase tracking-wider">{month}</span>
+                      <span className="block text-sm font-700 text-fg leading-none">{day}</span>
                     </div>
 
-                    {/* Category & Status Pill (Top Right) */}
-                    <div className="absolute top-4 right-4 flex flex-col items-end gap-1.5">
-                      <span className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-slate-800 border border-white/40 shadow-sm">
+                    <div className="absolute top-3 right-3 flex flex-col items-end gap-1">
+                      <span className="bg-surface/90 backdrop-blur-sm px-2.5 py-0.5 rounded-lg text-[10px] font-600 text-fg border border-border">
                         {evt.category || 'Concert'}
                       </span>
-                      <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-extrabold border uppercase shadow-sm ${
-                        displayStatus === 'UPCOMING' ? 'bg-blue-600 text-white border-blue-500' : 
-                        displayStatus === 'ONGOING' ? 'bg-emerald-600 text-white border-emerald-500 animate-pulse' :
-                        displayStatus === 'CANCELLED' ? 'bg-red-600 text-white border-red-500' :
-                        'bg-slate-700 text-slate-200 border-slate-600'
+                      <span className={`px-2 py-0.5 rounded-lg text-[9px] font-700 uppercase ${
+                        status === 'UPCOMING' ? 'bg-brand/90 text-white' :
+                        status === 'ONGOING' ? 'bg-emerald-500/90 text-white' :
+                        status === 'CANCELLED' ? 'bg-red-500/90 text-white' :
+                        'bg-fg-muted/80 text-white'
                       }`}>
-                        {displayStatus}
+                        {status}
                       </span>
                     </div>
 
-                    {/* Bottom overlay info */}
-                    <div className="absolute bottom-3 left-4 right-4 text-white">
-                      <span className="text-xs font-semibold text-white/90 drop-shadow flex items-center gap-1">
-                        <MapPin className="w-3.5 h-3.5 text-rose-400" />
-                        <span>{evt.city || t('home.city')} • {evt.location || t('home.location')}</span>
+                    <div className="absolute bottom-2.5 left-3 right-3">
+                      <span className="text-xs font-500 text-white/90 flex items-center gap-1">
+                        <MapPin className="w-3 h-3" />
+                        {evt.city || t('home.city')} · {evt.location || t('home.location')}
                       </span>
                     </div>
                   </div>
 
-                  {/* Body Content */}
-                  <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                    <div className="space-y-2">
-                      <h3 className="text-xl font-bold text-slate-900 group-hover:text-indigo-600 transition-colors leading-snug">
+                  <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
+                    <div className="space-y-1.5">
+                      <h3 className="text-base font-700 text-fg group-hover:text-brand transition-colors leading-snug">
                         {evt.eventName}
                       </h3>
                       {evt.artistName && (
-                        <p className="text-xs font-bold text-indigo-600 uppercase tracking-wider">
-                          By {evt.artistName}
+                        <p className="text-[11px] font-600 text-brand uppercase tracking-wide">
+                          {evt.artistName}
                         </p>
                       )}
-                      <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed font-normal">
+                      <p className="text-xs text-fg-secondary line-clamp-2 leading-relaxed">
                         {evt.description || t('home.noDesc')}
                       </p>
                     </div>
 
-                    {/* Action & Price Footer */}
-                    <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                    <div className="pt-3 border-t border-border flex items-center justify-between gap-3">
                       <div>
-                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">
+                        <span className="text-[10px] text-fg-muted font-600 uppercase tracking-wide block">
                           {t('home.eventDateLabel')}
                         </span>
-                        <span className="text-xs font-bold text-slate-700">
-                          {evt.eventDate || '-'}
-                        </span>
+                        <span className="text-xs font-600 text-fg">{evt.eventDate || '-'}</span>
                       </div>
-
-                      <Link 
+                      <Link
                         to={`/events/${evt.slug || evt.idEvent}`}
-                        className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 flex items-center gap-1.5 shadow-sm ${
+                        className={`px-4 py-2 rounded-xl text-xs font-600 transition-all duration-200 flex items-center gap-1.5 ${
                           expired
-                            ? 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'
-                            : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-500/20 hover:shadow-indigo-500/30 hover:scale-[1.02] active:scale-95'
+                            ? 'bg-surface-hover text-fg-muted border border-border cursor-not-allowed'
+                            : 'bg-brand hover:bg-brand-hover text-white'
                         }`}
                       >
-                        <span>
-                          {expired 
-                            ? (evt.status === 'CANCELLED' ? t('detail.eventCancelled') : t('detail.eventFinished')) 
-                            : t('home.buyTicket')}
-                        </span>
-                        {!expired && <ArrowRight className="w-3.5 h-3.5" />}
+                        {expired
+                          ? (evt.status === 'CANCELLED' ? t('detail.eventCancelled') : t('detail.eventFinished'))
+                          : t('home.buyTicket')}
+                        {!expired && <ArrowRight className="w-3 h-3" />}
                       </Link>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
         )}
-      </section>
+      </Section>
 
-      {/* ── VALUE PROPOSITIONS (WHY CHOOSE CAMTIX) ── */}
-      <section className="max-w-7xl mx-auto px-6">
-        <div className="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-8 sm:p-14 text-white shadow-2xl relative overflow-hidden">
-          {/* Ambient Glows inside card */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />
-
-          <div className="relative z-10 max-w-2xl mx-auto text-center space-y-3 mb-12">
-            <span className="text-xs font-extrabold text-indigo-400 uppercase tracking-widest bg-white/10 px-3 py-1 rounded-full border border-white/10">
-              CamTix Guarantee
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-black tracking-tight">
+      {/* ── WHY CHOOSE CAMTIX ── */}
+      <Section className="max-w-5xl mx-auto px-6">
+        <div className="bg-surface rounded-3xl border border-border shadow-card p-8 sm:p-12">
+          <div className="text-center max-w-lg mx-auto space-y-2 mb-10">
+            <h2 className="text-2xl sm:text-3xl font-display font-700 text-fg tracking-tight">
               {t('home.whyChooseTitle')}
             </h2>
-            <p className="text-sm text-slate-300 leading-relaxed font-normal">
+            <p className="text-sm text-fg-secondary leading-relaxed">
               {t('home.whyChooseSubtitle')}
             </p>
           </div>
 
-          <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                title: t('home.feat1Title'),
-                desc: t('home.feat1Desc'),
-                icon: ShieldCheck,
-                color: 'text-emerald-400',
-                bg: 'bg-emerald-500/10 border-emerald-500/20'
-              },
-              {
-                title: t('home.feat2Title'),
-                desc: t('home.feat2Desc'),
-                icon: Zap,
-                color: 'text-amber-400',
-                bg: 'bg-amber-500/10 border-amber-500/20'
-              },
-              {
-                title: t('home.feat3Title'),
-                desc: t('home.feat3Desc'),
-                icon: RefreshCw,
-                color: 'text-blue-400',
-                bg: 'bg-blue-500/10 border-blue-500/20'
-              },
-            ].map((feat, idx) => {
-              const Icon = feat.icon;
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {features.map((f, i) => {
+              const Icon = f.icon;
               return (
-                <div 
-                  key={idx}
-                  className="p-6 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 space-y-4 transition-all hover:bg-white/10"
+                <motion.div
+                  key={i}
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: '-30px' }}
+                  custom={i}
+                  className="p-6 rounded-2xl bg-brand-subtle border border-border space-y-3 transition-colors hover:bg-accent-subtle"
                 >
-                  <div className={`w-12 h-12 rounded-2xl ${feat.bg} border ${feat.color} flex items-center justify-center`}>
-                    <Icon className="w-6 h-6" />
+                  <div className="w-10 h-10 rounded-xl bg-brand/10 flex items-center justify-center">
+                    <Icon className="w-5 h-5 text-brand" />
                   </div>
-                  <h3 className="text-lg font-bold text-white">
-                    {feat.title}
-                  </h3>
-                  <p className="text-xs text-slate-300 leading-relaxed font-normal">
-                    {feat.desc}
-                  </p>
-                </div>
+                  <h3 className="text-base font-700 text-fg">{f.title}</h3>
+                  <p className="text-xs text-fg-secondary leading-relaxed">{f.desc}</p>
+                </motion.div>
               );
             })}
           </div>
         </div>
-      </section>
+      </Section>
 
     </div>
   );
